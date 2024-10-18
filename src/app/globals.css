@@ -2,7 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+@font-face {
+  font-family: 'Roboto';
+  src: url('./fonts/helvetica-255/Helvetica-Bold.ttf') format('truetype'),
+    url('./fonts/helvetica-255/Helvetica-Bold.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+
+body {
+  font-family: 'Helvetica'; /* Fallback to sans-serif */
+}
+
+/* :root {
   --background: #ffffff;
   --foreground: #171717;
 }
@@ -24,4 +36,4 @@ body {
   .text-balance {
     text-wrap: balance;
   }
-}
+} */

@@ -1,0 +1,7 @@
+'use client'
+
+const page = () => {
+  return <div>contact</div>
+}
+
+export default page
