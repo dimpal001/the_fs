@@ -33,7 +33,7 @@ const SubscribeCard = ({ isSmall }) => {
   }
 
   return (
-    <div className='flex max-md:w-full items-start'>
+    <div className='flex max-md:w-full w-full items-start'>
       {isSmall ? (
         <div className='w-full lg:max-w-3xl'>
           <h2 className='text-lg mt-5 text-white font-semibold mb-4'>
@@ -65,7 +65,7 @@ const SubscribeCard = ({ isSmall }) => {
           </div>
         </div>
       ) : (
-        <div className='bg-slate-900 lg:p-14 p-8 rounded-2xl max-w-md mx-auto lg:max-w-3xl'>
+        <div className='bg-slate-900 lg:p-14 p-8 rounded-2xl mx-auto w-full'>
           <h2 className='text-xl lg:text-2xl text-white font-semibold text-center mb-4'>
             Subscribe to our Newsletter
           </h2>

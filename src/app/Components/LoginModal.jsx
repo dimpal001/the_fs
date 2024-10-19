@@ -144,7 +144,7 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
                 }}
                 className='text-blue-600 cursor-pointer'
               >
-                Joi now
+                Join now
               </span>
             </p>
           </div>

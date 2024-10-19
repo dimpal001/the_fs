@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '../../../../utils/db'
+import slugify from 'slugify'
 
 // Create a new category
 export async function POST(request) {
@@ -13,14 +14,31 @@ export async function POST(request) {
       )
     }
 
+    // Generate a slug from the category name
+    let slug = slugify(name, { lower: true, strict: true })
+
+    // Check if the category name or slug already exists
+    const [existingCategory] = await db.query(
+      'SELECT * FROM Categories WHERE name = ? OR slug = ?',
+      [name, slug]
+    )
+
+    if (existingCategory.length > 0) {
+      return NextResponse.json(
+        { message: 'Category name or slug already exists' },
+        { status: 400 }
+      )
+    }
+
+    // Insert the category with the generated slug
     const [result] = await db.query(
-      'INSERT INTO Categories (name) VALUES (?)',
-      [name]
+      'INSERT INTO Categories (name, slug) VALUES (?, ?)',
+      [name, slug]
     )
 
     if (result.affectedRows === 1) {
       const [allCategories] = await db.query(
-        'SELECT name FROM Categories ORDER BY name ASC'
+        'SELECT name, slug FROM Categories ORDER BY name ASC'
       )
       return NextResponse.json(
         {
@@ -82,8 +100,6 @@ export async function PATCH(request) {
   try {
     const body = await request.json()
     const { id, name } = body
-    console.log(id)
-    console.log(name)
 
     if (!id || !name) {
       return NextResponse.json(
@@ -92,9 +108,26 @@ export async function PATCH(request) {
       )
     }
 
+    // Generate the new slug based on the new name
+    const newSlug = slugify(name, { lower: true, strict: true })
+
+    // Check if the new name or slug already exists (excluding the current category)
+    const [existingCategory] = await db.query(
+      'SELECT * FROM Categories WHERE (name = ? OR slug = ?) AND id != ?',
+      [name, newSlug, id]
+    )
+
+    if (existingCategory.length > 0) {
+      return NextResponse.json(
+        { message: 'Category name or slug already exists' },
+        { status: 400 }
+      )
+    }
+
+    // Update the category's name and slug
     const [result] = await db.query(
-      'UPDATE Categories SET name = ? WHERE id = ?',
-      [name, id]
+      'UPDATE Categories SET name = ?, slug = ? WHERE id = ?',
+      [name, newSlug, id]
     )
 
     if (result.affectedRows === 1) {
@@ -109,7 +142,7 @@ export async function PATCH(request) {
       )
     }
   } catch (error) {
-    console.error(error)
+    console.error('Error updating category:', error.message)
     return NextResponse.json(
       { message: 'Error updating category' },
       { status: 500 }

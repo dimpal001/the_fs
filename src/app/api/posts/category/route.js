@@ -3,19 +3,30 @@ import { db } from '../../../../utils/db'
 
 export async function GET(request, { params }) {
   const { searchParams } = new URL(request.url)
-  const category_id = searchParams.get('id')
-  console.log(category_id)
+  const slug = searchParams.get('slug') // Fetch slug from the query params
+  console.log(slug)
 
   const page = parseInt(searchParams.get('page') || '1', 10)
   const limit = parseInt(searchParams.get('limit') || '10', 10)
   const offset = (page - 1) * limit
 
   try {
+    // Fetch the category_id and name from Categories table using the slug
+    const [[category]] = await db.query(
+      `SELECT id, name FROM Categories WHERE slug = ?`,
+      [slug]
+    )
+
+    // If no category is found, return an error response
+    if (!category) {
+      return NextResponse.json({ error: 'Category not found' }, { status: 404 })
+    }
+
     // Fetch the total number of posts for the category
     const [[{ totalCount }]] = await db.query(
       `SELECT COUNT(*) AS totalCount FROM BlogPosts ` +
         `WHERE JSON_CONTAINS(BlogPosts.category_ids, ?)`,
-      [JSON.stringify(category_id)]
+      [JSON.stringify(category.id)]
     )
 
     // Fetch the posts for the specified category
@@ -25,16 +36,17 @@ export async function GET(request, { params }) {
         `JOIN Users ON BlogPosts.author_id = Users.id ` +
         `WHERE JSON_CONTAINS(BlogPosts.category_ids, ?) ` +
         `LIMIT ${limit} OFFSET ${offset}`,
-      [JSON.stringify(category_id)]
+      [JSON.stringify(category.id)]
     )
 
     // Calculate total pages
     const totalPages = Math.ceil(totalCount / limit)
 
-    // Return posts along with pagination information
+    // Return posts along with pagination information and the category name
     return NextResponse.json(
       {
         posts,
+        categoryName: category.name,
         currentPage: page,
         totalPages,
         totalPosts: totalCount,

@@ -17,6 +17,15 @@ export async function POST(request) {
 
     const user = users[0]
 
+    // Check user is verified or not
+    console.log(user[0].isVerified)
+    if (!user[0].isVerified) {
+      return NextResponse.json(
+        { message: 'This user is not verified!' },
+        { status: 404 }
+      )
+    }
+
     // Check password
     const isMatch = await compare(password, user[0].password)
     if (!isMatch) {

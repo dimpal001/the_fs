@@ -53,17 +53,7 @@ const Header = () => {
   }
 
   const handleClick = (item) => {
-    const formattedTitle = item.name
-      .toLowerCase()
-      .replace(/[?/:;'&*$#%.,!]/g, '')
-      .replace(/ /g, '-')
-      .replace(/--+/g, '-')
-      .trim()
-
-    setSelectedCategoryId(item.id)
-    localStorage.setItem('selectedCategoryId', item.id)
-    localStorage.setItem('selectedCategoryName', item.name)
-    router.push(`/category/${formattedTitle}`)
+    router.push(`/category/${item?.slug}`)
   }
 
   useEffect(() => {

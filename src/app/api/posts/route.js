@@ -1,13 +1,12 @@
 import { NextResponse } from 'next/server'
 import { db } from '../../../utils/db'
 import { sendBlogPostAlert } from '@/utils/sendBlogPostAlert'
+import slugify from 'slugify'
 
 export async function POST(request) {
   try {
     const { title, content, author_id, category_ids, status, tags } =
       await request.json()
-
-    console.log(title)
 
     if (!title || !content) {
       return NextResponse.json(
@@ -16,8 +15,16 @@ export async function POST(request) {
       )
     }
 
+    // Generate slug from title and append part of current timestamp
+    const timeSuffix = Date.now().toString().slice(-4)
+    const slug = `${slugify(title, {
+      lower: true,
+      strict: true,
+    })}-${timeSuffix}`
+
+    // Insert the post into the BlogPosts table with the generated slug
     await db.query(
-      'INSERT INTO BlogPosts (title, content, author_id, category_ids, created_at, updated_at, status, tags) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO BlogPosts (title, content, author_id, category_ids, created_at, updated_at, status, tags, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
         title,
         content,
@@ -27,11 +34,12 @@ export async function POST(request) {
         new Date(),
         status,
         tags,
+        slug,
       ]
     )
 
     return NextResponse.json(
-      { message: 'Post created successfully' },
+      { message: 'Post created successfully', slug },
       { status: 201 }
     )
   } catch (error) {

@@ -144,8 +144,8 @@ const HomePage = () => {
           </Helmet>
 
           {/* New hero section  */}
-          <section className='lg:h-[470px] relative w-full gap-5 py-7 flex max-md:flex-col items-center'>
-            <div className='lg:w-[28%] max-md:h-[300px] w-full h-full max-md:p-3 ps-3'>
+          <section className='lg:h-[470px] lg:p-10 relative w-full gap-5 py-7 flex max-md:flex-col items-center'>
+            <div className='lg:w-[28%] max-md:h-[300px] w-full h-full max-md:p-3'>
               <Image
                 src={'https://picsum.photos/685/979'}
                 width={0}
@@ -174,7 +174,7 @@ const HomePage = () => {
                 Read More ..
               </p>
             </div>
-            <div className='lg:w-[30%] h-full p-3 lg:pr-10 flex flex-col gap-3'>
+            <div className='lg:w-[30%] h-full flex flex-col gap-3'>
               <HeroBlogCard
                 imageUrl={`https://picsum.photos/778/374`}
                 delay={0}
@@ -210,7 +210,7 @@ const HomePage = () => {
                 strokeWidth={2}
               />
             </div>
-            <div className='grid max-md:grid-cols-1 grid-cols-2 lg:p-8 py-10 gap-28 max-md:gap-10'>
+            <div className='grid max-md:grid-cols-1 grid-cols-2 py-10 gap-28 max-md:gap-10'>
               {latestPosts &&
                 latestPosts.length > 0 &&
                 latestPosts.slice(0, 2).map((post, index) => (
@@ -275,7 +275,7 @@ const HomePage = () => {
               <div className='absolute top-[130px] -right-14 z-10 w-[80px] h-[80px] opacity-15 bg-gradient-to-b from-amber-400 to-amber-800 rounded-full filter' />
             </div>
             {/* <div className='h-[0.5px] bg-neutral-300 my-10'></div> */}
-            <div className='pt-10 lg:p-16'>
+            <div className='pt-10 pb-16'>
               {category2Posts?.slice(0, 1).map((post, index) => (
                 <BlogPostCard3
                   key={index}
@@ -303,7 +303,7 @@ const HomePage = () => {
           </section>
 
           {/* Instagram section  */}
-          <section className='flex lg:-mt-20 px-24 gap-10 max-md:p-5 max-md:flex-col p-10'>
+          <section className='flex lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10'>
             <div className='lg:w-1/3'>
               <div className='w-full relative h-[420px] max-md:h-[370px]'>
                 <Image
@@ -343,8 +343,8 @@ const HomePage = () => {
                   <ArrowRight size={55} />
                 </div>
               </div>
-              <div className='grid grid-cols-4 max-md:mt-10 max-md:grid-cols-1 gap-5'>
-                <div className='lg:w-[190px] w-full h-[230px]'>
+              <div className='grid grid-cols-4 justify-between max-md:mt-10 max-md:grid-cols-1 gap-5'>
+                <div className='lg:w-[210px] w-full h-[230px]'>
                   <Image
                     src={'https://picsum.photos/775/749'}
                     width={0}
@@ -360,7 +360,7 @@ const HomePage = () => {
                     alt={'Image'}
                   />
                 </div>
-                <div className='lg:w-[190px] w-full h-[230px]'>
+                <div className='lg:w-[210px] w-full h-[230px]'>
                   <Image
                     src={'https://picsum.photos/775/879'}
                     width={0}
@@ -376,7 +376,7 @@ const HomePage = () => {
                     alt={'Image'}
                   />
                 </div>
-                <div className='lg:w-[190px] w-full h-[230px]'>
+                <div className='lg:w-[210px] w-full h-[230px]'>
                   <Image
                     src={'https://picsum.photos/775/259'}
                     width={0}
@@ -392,7 +392,7 @@ const HomePage = () => {
                     alt={'Image'}
                   />
                 </div>
-                <div className='lg:w-[190px] w-full h-[230px]'>
+                <div className='lg:w-[210px] w-full h-[230px]'>
                   <Image
                     src={'https://picsum.photos/782/749'}
                     width={0}
@@ -423,7 +423,7 @@ const HomePage = () => {
                 strokeWidth={2}
               /> */}
             </div>
-            <div className='grid max-md:grid-cols-1 grid-cols-3 lg:p-8 py-10 gap-14 max-md:gap-5'>
+            <div className='grid max-md:grid-cols-1 grid-cols-3 py-10 gap-14 max-md:gap-5'>
               {latestPosts &&
                 latestPosts.length > 0 &&
                 latestPosts

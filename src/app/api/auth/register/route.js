@@ -39,6 +39,10 @@ export async function POST(request) {
       const otp = generateOTP()
       const expirationTime = new Date(Date.now() + 10 * 60 * 1000)
 
+      if (users.length > 0) {
+        console.log(users)
+      }
+
       await db.query(
         'UPDATE Users SET password = ?, role = ?, otp = ?, otp_expiration = ? WHERE email = ?',
         [hashedPassword, role, otp, expirationTime, email]
@@ -59,7 +63,7 @@ export async function POST(request) {
     const otp = generateOTP()
     await db.query(
       'INSERT INTO Users (email, password, role, otp, isVerified) VALUES (?, ?, ?, ?, ?)',
-      [email, hashedPassword, role, otp, false]
+      [email, hashedPassword, role, otp, 0]
     )
 
     await sendOtp(email, otp)
