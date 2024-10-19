@@ -8,9 +8,6 @@ import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState, useRef } from 'react'
 
-import { PutObjectCommand } from '@aws-sdk/client-s3'
-import { S3 } from '@aws-sdk/client-s3'
-
 import { Helmet } from 'react-helmet'
 import Loading from '@/app/Components/Loading'
 
@@ -42,29 +39,28 @@ const AccountPage = () => {
     setFile(event.target.files[0])
   }
 
-  const s3Client = new S3({
-    endpoint: 'https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com',
-    forcePathStyle: false,
-    region: 'blr1',
-    credentials: {
-      accessKeyId: 'DO00AREQYJDZ4KNKJ6AT',
-      secretAccessKey: 'SWPRt+2D3e2fYSp6E8g1zfivrPCi3JkH+w9ggKBG5Sg',
-    },
-  })
-
-  const params = {
-    Bucket: 'the-fashion-salad',
-    Key: `profile-pictures/${file?.name}`,
-    Body: file,
-    ACL: 'public-read',
-  }
-
   const handleProfileUpload = async () => {
+    if (!file) {
+      enqueueSnackbar('Please select a file to upload.', { variant: 'error' })
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('file', file)
+
     try {
-      const data = await s3Client.send(new PutObjectCommand(params))
-      console.log('Return : ', data)
+      const response = await axios.post('/api/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      enqueueSnackbar('Profile picture uploaded successfully!', {
+        variant: 'success',
+      })
+      console.log('Upload Response:', response.data)
     } catch (err) {
-      console.log('Error', err)
+      console.error('Upload Error:', err)
+      enqueueSnackbar('Error uploading profile picture', { variant: 'error' })
     }
   }
 
@@ -141,10 +137,10 @@ const AccountPage = () => {
       setUser(updatedUser)
       setName(updatedUser.name)
     } catch (error) {
-      // enqueueSnackbar(
-      //   error?.response?.data?.message || 'An unexpected error occurred',
-      //   { variant: 'error' }
-      // )
+      enqueueSnackbar(
+        error?.response?.data?.message || 'An unexpected error occurred',
+        { variant: 'error' }
+      )
     } finally {
       setUpdating(false)
     }
@@ -297,6 +293,8 @@ const AccountPage = () => {
   )
 }
 
+export default AccountPage
+
 const InfoCard = ({ label, data, bg }) => {
   return (
     <div className={`px-10 text-white py-6 flex flex-col rounded-3xl ${bg}`}>
@@ -332,5 +330,3 @@ const PostCard = ({ post }) => {
     </div>
   )
 }
-
-export default AccountPage

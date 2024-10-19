@@ -159,7 +159,7 @@ const Profile = ({ params }) => {
             </div>
             {/* Name  */}
             <h1 className='lg:text-5xl text-4xl p-5 font-semibold text-neutral-600 text-center'>
-              {userData.name ? userData.name : 'Anonymous'}
+              {userData?.name ? userData?.name : 'Anonymous'}
             </h1>
             <p className='text-sm text-neutral-500 text-center'>
               Lorem ipsum dolor, sit amet consectetur adipisicing elit.
