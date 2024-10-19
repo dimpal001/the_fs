@@ -8,7 +8,7 @@ import { enqueueSnackbar } from 'notistack'
 import Loading from '../../Components/Loading'
 import { Edit, EyeIcon, Trash2 } from 'lucide-react'
 import Input from '@/app/Components/Input'
-import ReviewPostModal from '@/app/admin/components/ReviewPostModal'
+import ReviewPostModal from '@/app/Components/components/ReviewPostModal'
 import DeleteModal from '@/app/Components/DeleteModal'
 
 const MyPosts = () => {

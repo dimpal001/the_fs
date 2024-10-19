@@ -13,6 +13,7 @@ import { S3 } from '@aws-sdk/client-s3'
 
 import { Helmet } from 'react-helmet'
 import Loading from '@/app/Components/Loading'
+
 const AccountPage = () => {
   const [name, setName] = useState('')
   const [file, setFile] = useState(null)
