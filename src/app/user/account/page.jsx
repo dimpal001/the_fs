@@ -7,16 +7,21 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState, useRef } from 'react'
+import { S3 } from '@aws-sdk/client-s3'
 
 import { Helmet } from 'react-helmet'
 import Loading from '@/app/Components/Loading'
 
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+
 const AccountPage = () => {
   const [name, setName] = useState('')
   const [file, setFile] = useState(null)
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [oldPassword, setOldPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
   const [updating, setUpdating] = useState(false)
+  const [changing, setChanging] = useState(false)
   const [fetching, setFetching] = useState(false)
   const [posts, setPosts] = useState([])
   const { user } = useUserContext()
@@ -39,30 +44,51 @@ const AccountPage = () => {
     setFile(event.target.files[0])
   }
 
+  const s3Client = new S3Client({
+    endpoint: 'https://the-fashion-salad.blr1.digitaloceanspaces.com',
+    forcePathStyle: false,
+    region: 'blr1',
+    credentials: {
+      accessKeyId: 'DO00TK892YLJBW7MV82Y',
+      // secretAccessKey: 'SWPRt+2D3e2fYSp6E8g1zfivrPCi3JkH+w9ggKBG5Sg',
+      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
+    },
+  })
+
+  const params = {
+    Bucket: 'the-fashion-salad',
+    Key: `profile-pictures/${file?.name}`,
+    Body: file,
+    ACL: 'public-read',
+  }
+
   const handleProfileUpload = async () => {
-    if (!file) {
-      enqueueSnackbar('Please select a file to upload.', { variant: 'error' })
-      return
-    }
-
-    const formData = new FormData()
-    formData.append('file', file)
-
     try {
-      const response = await axios.post('/api/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      })
-      enqueueSnackbar('Profile picture uploaded successfully!', {
-        variant: 'success',
-      })
-      console.log('Upload Response:', response.data)
+      const data = await s3Client.send(new PutObjectCommand(params))
+      console.log(
+        'Successfully uploaded object: ' + params.Bucket + '/' + params.Key
+      )
+      console.log(data)
     } catch (err) {
-      console.error('Upload Error:', err)
-      enqueueSnackbar('Error uploading profile picture', { variant: 'error' })
+      console.log('Error', err)
     }
   }
+
+  // const handleProfileUpload = async (event) => {
+  //   event.preventDefault()
+  //   const formData = new FormData()
+  //   formData.append('file', file)
+
+  //   try {
+  //     const response = await axios.post('/api/upload', {
+  //       formData,
+  //     })
+  //     const result = await response.json()
+  //     setMessage(result.message)
+  //   } catch (error) {
+  //     setMessage('Error uploading file')
+  //   }
+  // }
 
   const fetchUserData = async () => {
     try {
@@ -91,29 +117,31 @@ const AccountPage = () => {
   }
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          fetchUserPosts()
-          observer.disconnect()
-        }
-      },
-      { threshold: 1.0 }
-    )
-
-    if (postsSectionRef.current) {
-      observer.observe(postsSectionRef.current)
-    }
-
-    return () => {
-      if (postsSectionRef.current) {
-        observer.unobserve(postsSectionRef.current)
-      }
-    }
+    setTimeout(() => {
+      fetchUserPosts()
+    }, 2000)
   }, [])
 
   if (fetching) {
     return <Loading />
+  }
+
+  const validation = () => {
+    let valid = true
+
+    // Password validation
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    if (!passwordRegex.test(newPassword)) {
+      setPasswordError(
+        'Password must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.'
+      )
+      valid = false
+    } else {
+      setPasswordError('')
+    }
+
+    return valid
   }
 
   const handleUpdate = async () => {
@@ -137,28 +165,40 @@ const AccountPage = () => {
       setUser(updatedUser)
       setName(updatedUser.name)
     } catch (error) {
-      enqueueSnackbar(
-        error?.response?.data?.message || 'An unexpected error occurred',
-        { variant: 'error' }
-      )
+      // enqueueSnackbar(
+      //   error?.response?.data?.message || 'An unexpected error occurred',
+      //   { variant: 'error' }
+      // )
     } finally {
       setUpdating(false)
     }
   }
 
   const handleChangePassword = async () => {
-    try {
-      setUpdating(true)
-      const response = await axios.patch('/api/admin/users/', {
-        id: user.id,
-        oldPassword: password,
-        newPassword: confirmPassword,
-      })
-      enqueueSnackbar('Password changed successfully!', { variant: 'success' })
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' })
-    } finally {
-      setUpdating(false)
+    if (oldPassword === '') {
+      enqueueSnackbar('Enter a valid old password', { variant: 'error' })
+      return
+    }
+    if (newPassword === '') {
+      enqueueSnackbar('Enter a valid new password', { variant: 'error' })
+      return
+    }
+    if (validation()) {
+      try {
+        setChanging(true)
+        const response = await axios.patch('/api/admin/users/', {
+          id: user.id,
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        })
+        enqueueSnackbar('Password changed successfully!', {
+          variant: 'success',
+        })
+      } catch (error) {
+        enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
+      } finally {
+        setChanging(false)
+      }
     }
   }
 
@@ -238,8 +278,8 @@ const AccountPage = () => {
                   <label className='text-gray-700'>Old Password</label>
                   <Input
                     type='password'
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
                     placeholder='Old Password'
                     required
                   />
@@ -249,14 +289,16 @@ const AccountPage = () => {
                   <label className='text-gray-700'>New Password</label>
                   <Input
                     type='password'
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
                     placeholder='New Password'
                     required
                   />
+                  <p className='text-red-600 text-sm'>{passwordError}</p>
                 </div>
 
                 <Button
+                  loading={changing}
                   onClick={handleChangePassword}
                   label='Change Password'
                 />
@@ -293,8 +335,6 @@ const AccountPage = () => {
   )
 }
 
-export default AccountPage
-
 const InfoCard = ({ label, data, bg }) => {
   return (
     <div className={`px-10 text-white py-6 flex flex-col rounded-3xl ${bg}`}>
@@ -330,3 +370,5 @@ const PostCard = ({ post }) => {
     </div>
   )
 }
+
+export default AccountPage

@@ -103,18 +103,6 @@ const HomePage = () => {
     return doc.body.textContent || ''
   }
 
-  const handleClick = (post) => {
-    const formattedTitle = post.title
-      ?.toLowerCase()
-      .replace(/[?/:;'&*$#%.,!]/g, '')
-      .replace(/ /g, '-')
-      .replace(/--+/g, '-')
-      .trim()
-
-    setSelectedPostId(post.id)
-    router.push(`/blogs/${formattedTitle}`)
-  }
-
   const handleSeeMore = (categoryId) => {
     console.log(categoryId)
     const category = categories.find((category) => category.id === categoryId)
@@ -346,11 +334,9 @@ const HomePage = () => {
             <div className='lg:w-2/3 flex flex-col relative justify-between'>
               <div className='flex justify-between'>
                 <div>
-                  <p className='text-5xl max-md:text-3xl font-semibold'>
-                    Follow us
-                  </p>
-                  <p className='text-8xl max-md:text-6xl font-bold'>
-                    Instagram
+                  <p className='text-5xl max-md:text-3xl font-semibold'>Our</p>
+                  <p className='text-8xl max-md:text-5xl font-bold'>
+                    Social Diaries
                   </p>
                 </div>
                 <div>
@@ -358,7 +344,7 @@ const HomePage = () => {
                 </div>
               </div>
               <div className='grid grid-cols-4 max-md:mt-10 max-md:grid-cols-1 gap-5'>
-                <div className='lg:w-[200px] w-full h-[230px]'>
+                <div className='lg:w-[190px] w-full h-[230px]'>
                   <Image
                     src={'https://picsum.photos/775/749'}
                     width={0}
@@ -374,7 +360,7 @@ const HomePage = () => {
                     alt={'Image'}
                   />
                 </div>
-                <div className='lg:w-[200px] w-full h-[230px]'>
+                <div className='lg:w-[190px] w-full h-[230px]'>
                   <Image
                     src={'https://picsum.photos/775/879'}
                     width={0}
@@ -390,7 +376,7 @@ const HomePage = () => {
                     alt={'Image'}
                   />
                 </div>
-                <div className='lg:w-[200px] w-full h-[230px]'>
+                <div className='lg:w-[190px] w-full h-[230px]'>
                   <Image
                     src={'https://picsum.photos/775/259'}
                     width={0}
@@ -406,7 +392,7 @@ const HomePage = () => {
                     alt={'Image'}
                   />
                 </div>
-                <div className='lg:w-[200px] w-full h-[230px]'>
+                <div className='lg:w-[190px] w-full h-[230px]'>
                   <Image
                     src={'https://picsum.photos/782/749'}
                     width={0}

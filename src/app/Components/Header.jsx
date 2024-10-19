@@ -195,7 +195,7 @@ const Header = () => {
 
             <Link href={'/'}>
               <Image
-                className='lg:ms-28'
+                className='lg:ms-28 max-md:w-[160px]'
                 src={
                   'https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
                 }

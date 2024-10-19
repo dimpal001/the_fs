@@ -16,7 +16,9 @@ export async function GET(request) {
 
   try {
     const [posts] = await db.query(
-      `SELECT BlogPosts.*, Users.name AS author_name 
+      `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.author_id, BlogPosts.slug,
+              SUBSTRING(BlogPosts.content, 1, 150) AS content, 
+              Users.name AS author_name 
          FROM BlogPosts
          JOIN Users ON BlogPosts.author_id = Users.id
          WHERE JSON_CONTAINS(BlogPosts.category_ids, ?, '$') 

@@ -9,7 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.670.0",
+    "@aws-sdk/client-s3": "^3.675.0",
+    "@aws-sdk/lib-storage": "^3.675.0",
     "@aws-sdk/signature-v4-crt": "^3.669.0",
     "@blocknote/core": "^0.16.0",
     "@blocknote/mantine": "^0.16.0",
@@ -22,6 +23,7 @@
     "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "digitalocean": "^1.2.1",
+    "formidable": "^3.5.2",
     "jodit-react": "^4.1.2",
     "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",

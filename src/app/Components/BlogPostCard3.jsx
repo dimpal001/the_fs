@@ -8,15 +8,6 @@ const BlogPostCard3 = ({ title, imageUrl, post, onClick }) => {
   const router = useRouter()
 
   const handleClick = () => {
-    const formattedTitle = post.title
-      ?.toLowerCase()
-      .replace(/[?/:;'&*$#%.,!]/g, '')
-      .replace(/ /g, '-')
-      .replace(/--+/g, '-')
-      .trim()
-
-    localStorage.setItem('selectedPostId', post.id)
-    setSelectedPostId(post.id)
     router.push(`/blogs/${post?.slug}`)
   }
 
