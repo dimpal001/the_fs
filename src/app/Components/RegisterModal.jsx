@@ -30,46 +30,46 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
     }
 
     // // Password validation
-    // const passwordRegex =
-    //   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
-    // if (!passwordRegex.test(password)) {
-    //   setPasswordError(
-    //     'Password must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.'
-    //   )
-    //   valid = false
-    // } else {
-    //   setPasswordError('')
-    // }
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    if (!passwordRegex.test(password)) {
+      setPasswordError(
+        'Password must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.'
+      )
+      valid = false
+    } else {
+      setPasswordError('')
+    }
 
     // // Confirm password validation
-    // if (cPassword !== password) {
-    //   setCPasswordError('Passwords do not match.')
-    //   valid = false
-    // } else {
-    //   setCPasswordError('')
-    // }
+    if (cPassword !== password) {
+      setCPasswordError('Passwords do not match.')
+      valid = false
+    } else {
+      setCPasswordError('')
+    }
 
     return valid
   }
 
   const handleSubmit = async () => {
-    // if (validation()) {
-    try {
-      setSubmitting(true)
-      console.log(email, password)
-      const response = await axios.post(`/api/auth/register`, {
-        email,
-        password,
-      })
-      setIsTypeOtp(true)
-      enqueueSnackbar(response.data.message, { variant: 'success' })
-    } catch (error) {
-      console.log(error)
-      enqueueSnackbar(error.response.data.message, { variant: 'error' })
-    } finally {
-      setSubmitting(false)
+    if (validation()) {
+      try {
+        setSubmitting(true)
+        console.log(email, password)
+        const response = await axios.post(`/api/auth/register`, {
+          email,
+          password,
+        })
+        setIsTypeOtp(true)
+        enqueueSnackbar(response.data.message, { variant: 'success' })
+      } catch (error) {
+        console.log(error)
+        enqueueSnackbar(error.response.data.message, { variant: 'error' })
+      } finally {
+        setSubmitting(false)
+      }
     }
-    // }
   }
 
   const verifyOtp = async () => {
@@ -117,21 +117,30 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
           <div className='flex flex-col gap-3'>
             <Input
               error={emailError}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                setEmailError('')
+              }}
               value={email}
               placeholder={'Your mail address'}
             />
             <Input
               type={'password'}
               error={passwordError}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value)
+                setPasswordError('')
+              }}
               value={password}
               placeholder={'A strong password'}
             />
             <Input
               type={'password'}
               error={cPasswordError}
-              onChange={(e) => setCPassword(e.target.value)}
+              onChange={(e) => {
+                setCPassword(e.target.value)
+                setCPasswordError('')
+              }}
               value={cPassword}
               placeholder={'Confirm password'}
             />

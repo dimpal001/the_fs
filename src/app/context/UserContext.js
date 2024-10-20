@@ -17,16 +17,23 @@ export const UserProvider = ({ children }) => {
   useEffect(() => {
     // Check if localStorage is available
     if (typeof window !== 'undefined') {
-      const storedUser = JSON.parse(localStorage.getItem('user'))
+      const storedUser = localStorage.getItem('user')
       if (storedUser) {
-        setUser(storedUser)
+        try {
+          const parsedUser = JSON.parse(storedUser)
+          setUser(parsedUser)
+        } catch (error) {
+          console.error('Error parsing user data:', error)
+          // Optionally clear invalid data from localStorage
+          localStorage.removeItem('user')
+        }
       }
     }
   }, [])
 
   const logout = () => {
     setUser(null)
-    // Optionally, clear user data from localStorage on logout
+    // Clear user data from localStorage on logout
     if (typeof window !== 'undefined') {
       localStorage.removeItem('user')
     }

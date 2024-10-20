@@ -71,7 +71,7 @@ export async function GET(request) {
       JSON.stringify([word]),
     ])
 
-    const totalCountResult = await db.query(countQuery, countParams)
+    const [totalCountResult] = await db.query(countQuery, countParams)
     const totalPosts = totalCountResult[0]?.totalPosts || 0
     const totalPages = Math.ceil(totalPosts / limit)
 

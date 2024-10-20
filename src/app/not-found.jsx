@@ -1,13 +1,16 @@
-import Image from 'next/image'
+'use client'
+
 import React, { useEffect, useState } from 'react'
 import { Ban, OctagonAlert } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 import axios from 'axios'
-import BlogPostCard from './BlogPostCard'
-import LoadMore from './LoadMore'
+import BlogPostCard from './Components/BlogPostCard'
+import LoadMore from './Components/LoadMore'
+import Image from 'next/image'
+import ErrorImg from '../../public/icons/404.png'
 
-const DataNotFound = ({ label }) => {
+const ErrorPage = ({ label }) => {
   const router = useRouter()
   const [posts, setPosts] = useState([])
 
@@ -32,15 +35,27 @@ const DataNotFound = ({ label }) => {
   return (
     <div>
       <div className='min-h-[400px] flex flex-col gap-1 justify-center items-center'>
-        <OctagonAlert size={100} className='text-first' />
-        <p className='lg:text-sm text-base text-zinc-500 tracking-wider'>
-          {label ? label : 'No data found to display!'}
-        </p>
+        <div className='rounded-2xl max-lg:w-[250px] mb-10 lg:w-[370px]'>
+          <Image
+            className='rounded-t-2xl'
+            src={ErrorImg}
+            width={0}
+            height={0}
+            sizes='100vw'
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              cursor: 'pointer',
+            }}
+            alt={'Error page'}
+          />
+        </div>
         <p
           onClick={() => router.push('/')}
           className='text-first cursor-pointer font-semibold italic'
         >
-          Home
+          Back to Home
         </p>
       </div>
       <div className='min-h-[200px] max-md:px-6 container mx-auto'>
@@ -70,4 +85,4 @@ const DataNotFound = ({ label }) => {
   )
 }
 
-export default DataNotFound
+export default ErrorPage

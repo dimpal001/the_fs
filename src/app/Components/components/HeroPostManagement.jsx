@@ -63,7 +63,7 @@ const HeroPostManagement = () => {
   }
 
   const handleAddToHero = async (id, status) => {
-    if (heroPosts.length === 4) {
+    if (heroPosts.length === 4 && status === 1) {
       enqueueSnackbar('You are not allowed to add more posts here', {
         variant: 'error',
       })

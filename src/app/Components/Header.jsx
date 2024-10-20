@@ -101,6 +101,12 @@ const Header = () => {
                         </p>
                       ))}
                     <div className='flex flex-col lg:hidden gap-4'>
+                      <SearchBox
+                        onClick={() => {
+                          router.push('/search')
+                          setIsMenuOpen(false)
+                        }}
+                      />
                       <CreatePost
                         setIsLoginModalOpen={setIsLoginModalOpen}
                         setIsMenuOpen={setIsMenuOpen}
@@ -169,20 +175,6 @@ const Header = () => {
               </Drawer>
             </div>
 
-            {/* Categories  */}
-            {/* <div className='max-md:hidden hidden'>
-              <div className='flex w-full justify-center gap-10 items-center tracking-wider'>
-                {categoryList.length > 0 &&
-                  categoryList.map((item, index) => (
-                    <NavItem
-                      key={index}
-                      name={item.name}
-                      onClick={() => handleClick(item)}
-                    />
-                  ))}
-              </div>
-            </div> */}
-
             <Link href={'/'}>
               <Image
                 className='lg:ms-28 max-md:w-[160px]'
@@ -194,106 +186,6 @@ const Header = () => {
                 alt='The fashion salad'
               />
             </Link>
-
-            <div className='lg:hidden hidden'>
-              <Menu size={32} onClick={toggleDrawer} />
-              <Drawer
-                open={isDrawerOpen}
-                onClose={toggleDrawer}
-                direction='right'
-                className='w-full'
-                size={300}
-              >
-                <div className='p-5'>
-                  <X
-                    className='m-3 absolute top-0 right-0'
-                    onClick={toggleDrawer}
-                  />
-                  <div className='flex flex-col w-full gap-7 tracking-wider'>
-                    {categoryList.length > 0 &&
-                      categoryList.map((item, index) => (
-                        <NavItem
-                          key={index}
-                          name={item.name}
-                          onClick={() => {
-                            toggleDrawer()
-                            handleClick(item)
-                          }}
-                        />
-                      ))}
-                  </div>
-                  <div className='flex pt-10 items-center gap-4'>
-                    {/* Login */}
-                    {!user && (
-                      <Button
-                        variant={'second'}
-                        onClick={() => {
-                          toggleDrawer()
-                          setIsLoginModalOpen(true)
-                        }}
-                        label={'Login'}
-                      />
-                    )}
-                    {!user && (
-                      <Button
-                        onClick={() => {
-                          toggleDrawer()
-                          setIsRegisterModalOpen(true)
-                        }}
-                        label={'Join'}
-                      />
-                    )}
-
-                    {user && <CreatePost />}
-                    {user && (
-                      <DynamicMenu button={<CircleUserRound />}>
-                        {user.role === 'admin' && (
-                          <ClickItem
-                            label={'Dashboard'}
-                            onClick={() => {
-                              toggleDrawer()
-                              router.push('/admin/dashboard')
-                            }}
-                          />
-                        )}
-                        <ClickItem
-                          label={'Profile'}
-                          onClick={() => {
-                            toggleDrawer()
-                            router.push(`/profile/${user?.id}`)
-                          }}
-                        />
-                        <ClickItem
-                          label={'Account'}
-                          onClick={() => {
-                            toggleDrawer()
-                            router.push('/user/account')
-                          }}
-                        />
-                        <ClickItem
-                          label={'Posts'}
-                          onClick={() => {
-                            toggleDrawer()
-                            router.push('/user/my-posts')
-                          }}
-                        />
-                        <ClickItem
-                          label={'Logout'}
-                          onClick={() => {
-                            toggleDrawer()
-                            localStorage.removeItem('user')
-                            setUser(null)
-                            router.push('/')
-                          }}
-                        />
-                      </DynamicMenu>
-                    )}
-
-                    {/* Join */}
-                  </div>
-                </div>
-              </Drawer>
-            </div>
 
             {/* User  */}
             <div className='flex max-md:hidden items-center gap-4'>

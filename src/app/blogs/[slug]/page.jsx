@@ -17,12 +17,14 @@ import SubscribeCard from '@/app/Components/SubscribeCard'
 import Avatar from '@/app/Components/Avatar'
 import Replies from '@/app/Components/Replies'
 import HeroBlogCard from '@/app/Components/HeroBlogCard'
+import DataNotFound from '@/app/Components/DataNotFound'
 
 const Blog = ({ params }) => {
   const { setSelectedCategoryId } = useCategoryContext()
   const { user } = useUserContext()
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [notfound, setNotfound] = useState(false)
   const [replies, setReplies] = useState([])
   const [relatedPosts, setRelatedPosts] = useState([])
   const [categories, setCategories] = useState([])
@@ -45,6 +47,7 @@ const Blog = ({ params }) => {
       fetchReplies(response.data.post.id)
       setSelectedCategoryId(post.category_ids)
     } catch (error) {
+      setNotfound(true)
     } finally {
       setLoading(false)
     }
@@ -190,78 +193,81 @@ const Blog = ({ params }) => {
         </Helmet>
 
         {/* New design  */}
-        <div className='lg:flex lg:gap-10 lg:p-10 p-5 lg:px-20'>
-          <div className='lg:w-2/3'>
-            <div className='w-full h-[200px] rounded-xl lg:h-[350px]'>
-              <Image
-                className='rounded-xl'
-                src={'https://picsum.photos/651/207'}
-                width={0}
-                height={0}
-                sizes='100vw'
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  cursor: 'pointer',
-                }}
-                alt={'hh'}
-              />
-            </div>
-            <div className='flex p-2 justify-between items-center'>
-              <ProfileCard name={post?.author_name} id={post?.author_id} />
-              <div className='flex gap-7 items-center text-sm max-md:text-xs text-neutral-600'>
-                <p>{post?.views} Views</p>
-                <div className='flex gap-1 items-center'>
-                  <div
-                    className={`cursor-pointer ${
-                      likeAnimation ? 'animate-heart-pop' : ''
-                    }`}
-                    onClick={hasLiked ? handleRemoveLike : handleLike}
-                  >
-                    <Heart
-                      size={20}
-                      color='red'
-                      fill={hasLiked ? 'red' : 'none'}
-                      className={`transition-all duration-300 ${
-                        hasLiked ? 'scale-125' : ''
+        {post && (
+          <div className='lg:flex lg:gap-10 lg:p-10 p-5 lg:px-20'>
+            <div className='lg:w-2/3'>
+              <div className='w-full h-[200px] rounded-xl lg:h-[350px]'>
+                <Image
+                  className='rounded-xl'
+                  src={'https://picsum.photos/651/207'}
+                  width={0}
+                  height={0}
+                  sizes='100vw'
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    cursor: 'pointer',
+                  }}
+                  alt={'hh'}
+                />
+              </div>
+              <div className='flex p-2 justify-between items-center'>
+                <ProfileCard name={post?.author_name} id={post?.author_id} />
+                <div className='flex gap-7 items-center text-sm max-md:text-xs text-neutral-600'>
+                  <p>{post?.views} Views</p>
+                  <div className='flex gap-1 items-center'>
+                    <div
+                      className={`cursor-pointer ${
+                        likeAnimation ? 'animate-heart-pop' : ''
                       }`}
-                    />
+                      onClick={hasLiked ? handleRemoveLike : handleLike}
+                    >
+                      <Heart
+                        size={20}
+                        color='red'
+                        fill={hasLiked ? 'red' : 'none'}
+                        className={`transition-all duration-300 ${
+                          hasLiked ? 'scale-125' : ''
+                        }`}
+                      />
+                    </div>
+                    {post?.likes} Likes
                   </div>
-                  {post?.likes} Likes
                 </div>
               </div>
-            </div>
-            <div className='p-3 font-serif'>
-              <h1 className='text-6xl max-md:text-3xl font-semibold'>
-                {post?.title}
-              </h1>
-              <div
-                className='mt-3 max-md:text-lg max-md:text-justify text-2xl leading-[38px] tracking-wide text-neutral-600'
-                dangerouslySetInnerHTML={{ __html: post?.content }}
-              />
-            </div>
+              <div className='p-3 font-serif'>
+                <h1 className='text-6xl max-md:text-3xl font-semibold'>
+                  {post?.title}
+                </h1>
+                <div
+                  className='mt-3 max-md:text-lg max-md:text-justify text-2xl leading-[38px] tracking-wide text-neutral-600'
+                  dangerouslySetInnerHTML={{ __html: post?.content }}
+                />
+              </div>
 
-            {/* Replies Section */}
-            <Replies replies={replies} postId={post?.id} />
+              {/* Replies Section */}
+              <Replies replies={replies} postId={post?.id} />
 
-            {/* Trigger for related posts */}
-            <div ref={relatedPostsTrigger} className='h-1'></div>
-          </div>
-          <div className='max-md:mt-5 lg:w-1/3'>
-            <SubscribeCard />
-            <div className='w-full flex flex-col gap-4 mt-7'>
-              {relatedPosts.length > 0 &&
-                relatedPosts.map((post, index) => (
-                  <HeroBlogCard
-                    post={post}
-                    key={post.id}
-                    imageUrl={`https://picsum.photos/348/9${index}4`}
-                  />
-                ))}
+              {/* Trigger for related posts */}
+              <div ref={relatedPostsTrigger} className='h-1'></div>
+            </div>
+            <div className='max-md:mt-5 lg:w-1/3'>
+              <SubscribeCard />
+              <div className='w-full flex flex-col gap-4 mt-7'>
+                {relatedPosts.length > 0 &&
+                  relatedPosts.map((post, index) => (
+                    <HeroBlogCard
+                      post={post}
+                      key={post.id}
+                      imageUrl={`https://picsum.photos/348/9${index}4`}
+                    />
+                  ))}
+              </div>
             </div>
           </div>
-        </div>
+        )}
+        {notfound && <DataNotFound />}
       </div>
     </div>
   )

@@ -95,7 +95,9 @@ const CategoryBlog = ({ params }) => {
                   />
                 ))}
             </div>
-            {totalPages > posts.length && <LoadMore />}
+            <div className='mt-10'>
+              {totalPages > posts.length && <LoadMore />}
+            </div>
           </div>
         ) : (
           <DataNotFound />

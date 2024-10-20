@@ -1,28 +1,64 @@
 'use client'
-
+import dynamic from 'next/dynamic'
 import axios from 'axios'
-import { ScanSearch } from 'lucide-react'
+import { Loader, ScanSearch } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
-import React, { useState } from 'react'
+import React, { useState, useEffect, Suspense } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Input from '../Components/Input'
 import BlogPostCard from '../Components/BlogPostCard'
+const LoadMore = dynamic(() => import('../Components/LoadMore'), { ssr: false })
 
-const SearchPage = (params) => {
+const SearchPage = () => {
+  const router = useRouter()
+
+  // Wrap useSearchParams inside Suspense
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SearchContent router={router} />
+    </Suspense>
+  )
+}
+
+const SearchContent = ({ router }) => {
+  const searchParams = useSearchParams()
+
   const [showHeroSection, setShowHeroSection] = useState(true)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [searchQuery, setSearchQuery] = useState(
+    searchParams.get('search') || ''
+  )
   const [resultQuery, setResultQuery] = useState('')
   const [posts, setPosts] = useState([])
-  const [currentPage, setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(
+    parseInt(searchParams.get('page')) || 1
+  )
   const [totalPages, setTotalPages] = useState(null)
+  const [totalPosts, setTotalPosts] = useState(null)
+  const [searching, setSearching] = useState(false)
+  const [isEmpty, setIsEmpty] = useState(false)
+
+  useEffect(() => {
+    if (searchQuery) {
+      fetchSearchPosts(currentPage)
+    }
+  }, [])
 
   const fetchSearchPosts = async (page, e) => {
-    e.preventDefault()
+    if (e) e.preventDefault()
+
+    if (resultQuery !== searchQuery) {
+      page = 1
+      setPosts([])
+    }
+
     if (searchQuery === '') {
       enqueueSnackbar('Enter a valid query!')
       return
     }
 
     try {
+      setIsEmpty(false)
+      setSearching(true)
       setResultQuery(searchQuery)
       const response = await axios.get('/api/posts/search', {
         params: {
@@ -33,13 +69,29 @@ const SearchPage = (params) => {
       if (response.data.posts.length > 0) {
         setShowHeroSection(false)
       }
-      setPosts(response.data.posts)
-      console.log(posts)
-    } catch (error) {}
+      if (response.data.posts.length === 0) {
+        setIsEmpty(true)
+      }
+      setPosts((prevPosts) => [...prevPosts, ...response.data.posts])
+      setCurrentPage(response.data.currentPage)
+      setTotalPages(response.data.totalPages)
+      setTotalPosts(response.data.totalPosts)
+      router.replace(`/search/?search=${searchQuery}`)
+    } catch (error) {
+      enqueueSnackbar('Failed to fetch search results.', { variant: 'error' })
+    } finally {
+      setSearching(false)
+    }
+  }
+
+  const handleLoadMore = async (e) => {
+    e.preventDefault()
+    const newPage = currentPage + 1
+    await fetchSearchPosts(newPage, e)
   }
 
   return (
-    <div className='min-h-[590px] w-full'>
+    <div className='min-h-[590px] w-full max-md:px-6'>
       {/* Hero Section */}
       {showHeroSection && (
         <div className='h-[450px] w-full flex flex-col justify-center items-center text-center'>
@@ -50,8 +102,11 @@ const SearchPage = (params) => {
             Search through our collection of resources and discover something
             new today.
           </p>
-          <div className='max-md:px-10'>
-            <div className='flex px-5 justify-between items-center border border-dashed border-first'>
+          <div className='max-md:px-10 flex items-center flex-col justify-center'>
+            <form
+              onSubmit={(e) => fetchSearchPosts(currentPage, e)}
+              className='flex px-5 max-md:w-[85%] justify-between items-center border border-dashed border-first'
+            >
               <input
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
@@ -63,40 +118,60 @@ const SearchPage = (params) => {
                 onClick={(e) => fetchSearchPosts(currentPage, e)}
                 className=''
               >
-                <ScanSearch className='text-gray-500' size={24} />
+                {searching ? (
+                  <Loader className='text-first animate-spin' size={24} />
+                ) : (
+                  <ScanSearch className='text-gray-500' size={24} />
+                )}
               </button>
-            </div>
+            </form>
+            {isEmpty && (
+              <p className='text-lg text-neutral-500 py-5'>No data found</p>
+            )}
           </div>
         </div>
       )}
-      {posts.length > 0 && (
-        <div className='container py-10 mx-auto'>
-          <div className='flex justify-between'>
+      {!showHeroSection && (
+        <div className='container pt-10 mx-auto'>
+          <div className='flex max-md:flex-col-reverse max-md:gap-3 justify-between'>
             <div>
-              <h2 className='text-5xl max-md:text-3xl font-[900]'>
+              <h2 className='text-5xl max-md:text-xl font-[900]'>
                 Search Result for {resultQuery}
               </h2>
             </div>
             <div>
               <form onSubmit={(e) => fetchSearchPosts(currentPage, e)}>
-                <Input
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder={'Search'}
-                />
+                <div className='relative lg:w-[400px]'>
+                  <Input
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder={'Type and hit enter ..'}
+                  />
+                  {searching && (
+                    <Loader
+                      className='text-first absolute top-2 right-3 animate-spin'
+                      size={24}
+                    />
+                  )}
+                </div>
               </form>
             </div>
           </div>
-          <div className='py-10 grid grid-cols-3 gap-10'>
-            {posts.map((post, index) => (
-              <BlogPostCard
-                post={post}
-                imageUrl={`https://picsum.photos/178/3${index}8`}
-                key={index}
-              />
-            ))}
+          <div className='py-10 max-md:grid-cols-1 grid grid-cols-3 gap-10'>
+            {posts.length > 0 &&
+              posts.map((post, index) => (
+                <BlogPostCard
+                  post={post}
+                  imageUrl={`https://picsum.photos/178/3${index}8`}
+                  key={index}
+                />
+              ))}
           </div>
         </div>
+      )}
+
+      {totalPosts > posts.length && (
+        <LoadMore onClick={(e) => handleLoadMore(e)} />
       )}
     </div>
   )

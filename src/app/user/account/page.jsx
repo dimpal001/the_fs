@@ -7,7 +7,6 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState, useRef } from 'react'
-import { S3 } from '@aws-sdk/client-s3'
 
 import { Helmet } from 'react-helmet'
 import Loading from '@/app/Components/Loading'
@@ -16,15 +15,17 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 const AccountPage = () => {
   const [name, setName] = useState('')
+  const [nameError, setNameError] = useState('')
   const [file, setFile] = useState(null)
   const [oldPassword, setOldPassword] = useState('')
+  const [oldPasswordError, setOldPasswordError] = useState('')
   const [newPassword, setNewPassword] = useState('')
-  const [passwordError, setPasswordError] = useState('')
+  const [newPasswordError, setNewPasswordError] = useState('')
   const [updating, setUpdating] = useState(false)
   const [changing, setChanging] = useState(false)
   const [fetching, setFetching] = useState(false)
   const [posts, setPosts] = useState([])
-  const { user } = useUserContext()
+  const { user, setUser } = useUserContext()
   const [fetchUser, setFetchUser] = useState({})
   const router = useRouter()
   const postsSectionRef = useRef(null)
@@ -50,6 +51,7 @@ const AccountPage = () => {
     region: 'blr1',
     credentials: {
       accessKeyId: 'DO00TK892YLJBW7MV82Y',
+      // secretAccessKey: process.env.SPACES_SECRET,
       secretAccessKey: 'SWPRt+2D3e2fYSp6E8g1zfivrPCi3JkH+w9ggKBG5Sg',
       // secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
     },
@@ -99,7 +101,11 @@ const AccountPage = () => {
       setFetchUser(response.data)
       setName(response.data.name)
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+      enqueueSnackbar(error.response.data.message)
+      // localStorage.removeItem('user')
+      // localStorage.removeItem('token')
+      setUser(null)
+      router.push('/')
     } finally {
       setFetching(false)
     }
@@ -108,7 +114,7 @@ const AccountPage = () => {
   const fetchUserPosts = async () => {
     try {
       const response = await axios.get('/api/posts/', {
-        params: { userId: user.id },
+        params: { userId: user?.id },
       })
       setPosts(response.data)
     } catch (error) {
@@ -126,64 +132,78 @@ const AccountPage = () => {
     return <Loading />
   }
 
-  const validation = () => {
+  const passwordValidation = () => {
     let valid = true
 
-    // Password validation
+    // Old Password error
+    if (oldPassword === '') {
+      setOldPasswordError('Old password should not be empty.')
+      valid = false
+    } else {
+      setOldPasswordError('')
+    }
+
+    // New Password validation
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
     if (!passwordRegex.test(newPassword)) {
-      setPasswordError(
+      setNewPasswordError(
         'Password must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.'
       )
       valid = false
     } else {
-      setPasswordError('')
+      setNewPasswordError('')
+    }
+
+    return valid
+  }
+
+  const nameValidation = () => {
+    let valid = true
+
+    if (name.length === 0) {
+      setNameError('Name should not be empty.')
+      valid = false
+    } else if (name.length > 25) {
+      setNameError('Your name is too long to update.')
+      valid = false
+    } else {
+      setNameError('')
     }
 
     return valid
   }
 
   const handleUpdate = async () => {
-    if (name === '') {
-      enqueueSnackbar('Name field cannot be empty!', { variant: 'error' })
-      return
-    }
-    try {
-      setUpdating(true)
-      const response = await axios.patch('/api/admin/users/', {
-        id: user.id,
-        name: name,
-      })
+    if (nameValidation()) {
+      try {
+        setUpdating(true)
+        const response = await axios.patch('/api/admin/users/', {
+          id: user.id,
+          name: name,
+        })
 
-      enqueueSnackbar('Information updated successfully!', {
-        variant: 'success',
-      })
-      fetchUserData()
-      const updatedUser = { ...user, name: response.data.user[0].name }
-      localStorage.setItem('user', JSON.stringify(updatedUser))
-      setUser(updatedUser)
-      setName(updatedUser.name)
-    } catch (error) {
-      // enqueueSnackbar(
-      //   error?.response?.data?.message || 'An unexpected error occurred',
-      //   { variant: 'error' }
-      // )
-    } finally {
-      setUpdating(false)
+        enqueueSnackbar('Information updated successfully!', {
+          variant: 'success',
+        })
+        fetchUserData()
+        const updatedUser = { ...user, name: response.data.user[0].name }
+        localStorage.setItem('user', JSON.stringify(updatedUser))
+        setUser(updatedUser)
+        setName(updatedUser.name)
+      } catch (error) {
+        // enqueueSnackbar(
+        //   error?.response?.data?.message || 'An unexpected error occurred',
+        //   { variant: 'error' }
+        // )
+      } finally {
+        setUpdating(false)
+      }
     }
   }
 
   const handleChangePassword = async () => {
-    if (oldPassword === '') {
-      enqueueSnackbar('Enter a valid old password', { variant: 'error' })
-      return
-    }
-    if (newPassword === '') {
-      enqueueSnackbar('Enter a valid new password', { variant: 'error' })
-      return
-    }
-    if (validation()) {
+    if (passwordValidation()) {
       try {
         setChanging(true)
         const response = await axios.patch('/api/admin/users/', {
@@ -247,6 +267,7 @@ const AccountPage = () => {
                 <div className='flex flex-col gap-3'>
                   <label className='text-gray-700'>Name</label>
                   <Input
+                    error={nameError}
                     type='text'
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -277,6 +298,7 @@ const AccountPage = () => {
                 <div className='flex flex-col gap-3'>
                   <label className='text-gray-700'>Old Password</label>
                   <Input
+                    error={oldPasswordError}
                     type='password'
                     value={oldPassword}
                     onChange={(e) => setOldPassword(e.target.value)}
@@ -288,13 +310,13 @@ const AccountPage = () => {
                 <div className='flex flex-col gap-3'>
                   <label className='text-gray-700'>New Password</label>
                   <Input
+                    error={newPasswordError}
                     type='password'
                     value={newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     placeholder='New Password'
                     required
                   />
-                  <p className='text-red-600 text-sm'>{passwordError}</p>
                 </div>
 
                 <Button
@@ -349,10 +371,20 @@ const PostCard = ({ post }) => {
   const handleClickEdit = () => {
     router.push(`/user/edit-post/${post.id}`)
   }
+
+  const handleOpenBlog = (slug) => {
+    router.push(`/blogs/${slug}`)
+  }
+
   return (
     <div className='flex max-md:flex-col justify-between lg:items-center border-b pb-3'>
       <div>
-        <h3 className='text-lg font-semibold'>{post?.title}</h3>
+        <h3
+          onClick={() => handleOpenBlog(post?.slug)}
+          className='text-lg hover:text-first cursor-pointer font-semibold'
+        >
+          {post?.title}
+        </h3>
         <p className='text-sm text-gray-500'>
           Posted on: {new Date(post?.created_at).toDateString()} &nbsp; | &nbsp;
           {post.status}

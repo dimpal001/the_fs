@@ -70,14 +70,16 @@ const MyPosts = () => {
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/posts/`, {
+      const response = await axios.delete(`/api/posts/`, {
         params: { id: selectedPost.id },
       })
 
       setIsDeleteModalOpen(false)
 
+      // Filter out the deleted post from the posts and filteredPosts arrays
       const updatedPosts = posts.filter((p) => p.id !== selectedPost.id)
-      selectedPost(null)
+
+      setSelectedPost(null)
       setPosts(updatedPosts)
       setFilteredPosts(updatedPosts)
 

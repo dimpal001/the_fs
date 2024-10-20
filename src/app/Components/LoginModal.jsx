@@ -9,10 +9,15 @@ import { useRouter } from 'next/navigation'
 
 const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
   const [email, setEmail] = useState('')
+  const [emailError, setEmailError] = useState('')
   const [password, setPassword] = useState('')
+  const [passwordError, setPasswordError] = useState('')
   const [otp, setOtp] = useState('')
+  const [otpError, setOtpError] = useState('')
   const [newPassword, setNewPassword] = useState('')
+  const [newPasswordError, setNewPasswordError] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+  const [cPasswordError, setCPasswordError] = useState('')
   const [submitting, setSubmitting] = useState(false)
   const [isDeactivated, setIsDeactivated] = useState(false)
   const [isForgotPassword, setIsForgotPassword] = useState(false)
@@ -22,80 +27,161 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
 
   // Toggle between login and forgot password views
   const toggleForgotPassword = () => {
+    setEmailError('')
+    setPasswordError('')
+    setOtpSent(false)
     setIsForgotPassword(!isForgotPassword)
     setIsDeactivated(false)
   }
 
-  // Handle user login
-  const handleSubmit = async () => {
-    try {
-      setIsDeactivated(false)
-      setSubmitting(true)
-      const response = await axios.post('/api/auth/login', {
-        email,
-        password,
-      })
+  const validation = () => {
+    let valid = true
 
-      if (response.data.user[0].is_active === 0) {
-        setIsDeactivated(true)
-        return
-      }
+    // Email validation
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // if (!emailRegex.test(email)) {
+    //   setEmailError('Please enter a valid email address.')
+    //   valid = false
+    // } else {
+    //   setEmailError('')
+    // }
 
-      localStorage.setItem('token', JSON.stringify(response.data.token))
-      localStorage.setItem('user', JSON.stringify(response.data.user[0]))
-      setUser(response.data.user[0])
-      router.push('/')
-      onClose()
-    } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' })
-    } finally {
-      setSubmitting(false)
+    // Password Validation
+    if (password === '') {
+      setPasswordError('Password should not be empty!')
+      valid = false
+    } else {
+      setPasswordError('')
     }
+
+    return valid
+  }
+
+  // Handle user login
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (validation()) {
+      try {
+        setIsDeactivated(false)
+        setSubmitting(true)
+        const response = await axios.post('/api/auth/login', {
+          email,
+          password,
+        })
+
+        if (response.data.user[0].is_active === 0) {
+          setIsDeactivated(true)
+          return
+        }
+
+        localStorage.setItem('token', JSON.stringify(response.data.token))
+        localStorage.setItem('user', JSON.stringify(response.data.user[0]))
+        setUser(response.data.user[0])
+        router.push('/')
+        onClose()
+      } catch (error) {
+        enqueueSnackbar(error.response.data.message, { variant: 'error' })
+      } finally {
+        setSubmitting(false)
+      }
+    }
+  }
+
+  const sendOtpValidation = () => {
+    let valid = true
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email address.')
+      valid = false
+    } else {
+      setEmailError('')
+    }
+
+    return valid
   }
 
   // Send OTP for password reset
-  const handleSendOtp = async () => {
-    try {
-      setSubmitting(true)
-      const response = await axios.post('/api/auth/forgot-password', { email })
-      enqueueSnackbar(response?.data?.message, { variant: 'success' })
-      setOtpSent(true)
-    } catch (error) {
-      enqueueSnackbar(error.response?.data?.message || 'Error sending OTP', {
-        variant: 'error',
-      })
-    } finally {
-      setSubmitting(false)
+  const handleSendOtp = async (e) => {
+    e.preventDefault()
+    if (sendOtpValidation()) {
+      try {
+        setSubmitting(true)
+        const response = await axios.post('/api/auth/forgot-password', {
+          email,
+        })
+        enqueueSnackbar(response?.data?.message, { variant: 'success' })
+        setOtpSent(true)
+      } catch (error) {
+        enqueueSnackbar(error.response?.data?.message || 'Error sending OTP', {
+          variant: 'error',
+        })
+      } finally {
+        setSubmitting(false)
+      }
     }
   }
 
-  // Handle OTP verification and password reset
-  const handleResetPassword = async () => {
-    if (newPassword !== confirmPassword) {
-      enqueueSnackbar('Passwords do not match', { variant: 'error' })
-      return
+  const resetPasswordValidation = () => {
+    let valid = true
+
+    // OTP validation
+    if (otp.length !== 6) {
+      setOtpError('Please enter 6 digits OTP')
+      valid = false
+    } else {
+      setOtpError('')
     }
 
-    try {
-      setSubmitting(true)
-      const response = await axios.post(
-        '/api/auth/forgot-password/verify-otp',
-        {
-          email,
-          otp,
-          newPassword,
-        }
+    // // Password validation
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+    if (!passwordRegex.test(newPassword)) {
+      setNewPasswordError(
+        'Password must be at least 8 characters long, with at least 1 uppercase, 1 lowercase, 1 number, and 1 special character.'
       )
-      enqueueSnackbar('Password reset successfully', { variant: 'success' })
-      toggleForgotPassword()
-      onClose()
-    } catch (error) {
-      enqueueSnackbar(
-        error.response?.data?.message || 'Error resetting password',
-        { variant: 'error' }
-      )
-    } finally {
-      setSubmitting(false)
+      valid = false
+    } else {
+      setNewPasswordError('')
+    }
+
+    // // Confirm password validation
+    if (newPassword !== confirmPassword) {
+      setCPasswordError('Passwords do not match.')
+      valid = false
+    } else {
+      setCPasswordError('')
+    }
+
+    return valid
+  }
+
+  // Handle OTP verification and password reset
+  const handleResetPassword = async (e) => {
+    e.preventDefault()
+    if (resetPasswordValidation()) {
+      try {
+        setSubmitting(true)
+        const response = await axios.post(
+          '/api/auth/forgot-password/verify-otp',
+          {
+            email,
+            otp,
+            newPassword,
+          }
+        )
+        enqueueSnackbar('Password reset successfully', { variant: 'success' })
+        toggleForgotPassword()
+        onClose()
+      } catch (error) {
+        enqueueSnackbar(
+          error.response?.data?.message || 'Error resetting password',
+          { variant: 'error' }
+        )
+      } finally {
+        setSubmitting(false)
+      }
     }
   }
 
@@ -107,15 +193,26 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
       </ModalHeader>
       <ModalBody>
         {!isForgotPassword ? (
-          <div className='flex flex-col gap-3'>
+          <form
+            onSubmit={(e) => handleSubmit(e)}
+            className='flex flex-col gap-3'
+          >
             <Input
-              onChange={(e) => setEmail(e.target.value)}
+              error={emailError}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                setEmailError('')
+              }}
               value={email}
               placeholder={'Your email address'}
             />
             <Input
+              error={passwordError}
               type={'password'}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value)
+                setPasswordError('')
+              }}
               value={password}
               placeholder={'Your password'}
             />
@@ -147,11 +244,18 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
                 Join now
               </span>
             </p>
-          </div>
+          </form>
         ) : !otpSent ? (
-          <div className='flex flex-col gap-3'>
+          <form
+            onSubmit={(e) => handleSendOtp(e)}
+            className='flex flex-col gap-3'
+          >
             <Input
-              onChange={(e) => setEmail(e.target.value)}
+              error={emailError}
+              onChange={(e) => {
+                setEmail(e.target.value)
+                setEmailError('')
+              }}
               value={email}
               placeholder={'Your email address'}
             />
@@ -166,24 +270,39 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
             >
               Back to Login
             </button>
-          </div>
+          </form>
         ) : (
-          <div className='flex flex-col gap-3'>
+          <form
+            onSubmit={(e) => handleResetPassword(e)}
+            className='flex flex-col gap-3'
+          >
             <Input
+              error={otpError}
               value={otp}
-              onChange={(e) => setOtp(e.target.value)}
+              onChange={(e) => {
+                setOtp(e.target.value)
+                setOtpError('')
+              }}
               placeholder={'Enter OTP'}
             />
             <Input
+              error={newPasswordError}
               type={'password'}
               value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={(e) => {
+                setNewPassword(e.target.value)
+                setNewPasswordError('')
+              }}
               placeholder={'New Password'}
             />
             <Input
+              error={cPasswordError}
               type={'password'}
               value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value)
+                setCPasswordError('')
+              }}
               placeholder={'Confirm Password'}
             />
             <Button
@@ -197,7 +316,7 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
             >
               Back to Login
             </button>
-          </div>
+          </form>
         )}
       </ModalBody>
     </Modal>
