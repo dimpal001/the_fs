@@ -9,6 +9,7 @@ import BlogPostCard from './Components/BlogPostCard'
 import LoadMore from './Components/LoadMore'
 import Image from 'next/image'
 import ErrorImg from '../../public/icons/404.png'
+import { Helmet } from 'react-helmet'
 
 const ErrorPage = ({ label }) => {
   const router = useRouter()
@@ -34,6 +35,9 @@ const ErrorPage = ({ label }) => {
   }, [])
   return (
     <div>
+      <Helmet>
+        <title>Page not found</title>
+      </Helmet>
       <div className='min-h-[400px] flex flex-col gap-1 justify-center items-center'>
         <div className='rounded-2xl max-lg:w-[250px] mb-10 lg:w-[370px]'>
           <Image

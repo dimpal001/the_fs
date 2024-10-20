@@ -7,7 +7,7 @@ export async function GET(request, { params }) {
   console.log(slug)
 
   const page = parseInt(searchParams.get('page') || '1', 10)
-  const limit = parseInt(searchParams.get('limit') || '10', 10)
+  const limit = parseInt(searchParams.get('limit') || '9', 10)
   const offset = (page - 1) * limit
 
   try {
