@@ -63,16 +63,16 @@ const Blog = ({ params }) => {
   }
 
   const handleLike = async () => {
+    if (!user) {
+      enqueueSnackbar('Please login first')
+      return
+    }
     setHasLiked(true)
     setLikeAnimation(true)
     setTimeout(() => {
       setLikeAnimation(false)
     }, 300)
     try {
-      if (!user) {
-        enqueueSnackbar('Please login first')
-        return
-      }
       const response = await axios.post('/api/posts/likes', {
         user_id: user.id,
         blog_post_id: post.id,
