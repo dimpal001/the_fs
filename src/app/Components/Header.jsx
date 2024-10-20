@@ -1,6 +1,6 @@
 'use client'
 
-import { CircleUserRound, Menu, X } from 'lucide-react'
+import { CircleUserRound, Menu, Search, SearchCheck, X } from 'lucide-react'
 import Button from './Button'
 import { useEffect, useState } from 'react'
 import RegisterModal from './RegisterModal'
@@ -297,6 +297,11 @@ const Header = () => {
 
             {/* User  */}
             <div className='flex max-md:hidden items-center gap-4'>
+              <SearchBox
+                onClick={() => {
+                  router.push('/search')
+                }}
+              />
               <CreatePost setIsLoginModalOpen={setIsLoginModalOpen} />
               {!user && (
                 // Login
@@ -380,6 +385,17 @@ const NavItem = ({ name, onClick }) => {
       >
         {name}
       </p>
+    </div>
+  )
+}
+
+const SearchBox = ({ onClick }) => {
+  return (
+    <div onClick={onClick}>
+      <div className='flex items-center gap-2 cursor-pointer group lg:p-2'>
+        <p className='font-semibold group-hover:text-first'>Search</p>
+        <Search className='font-semibold group-hover:text-first' />
+      </div>
     </div>
   )
 }

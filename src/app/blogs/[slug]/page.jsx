@@ -31,6 +31,7 @@ const Blog = ({ params }) => {
 
   const [hasLiked, setHasLiked] = useState(false)
   const [slug, setSlug] = useState(params.slug)
+  const [likeAnimation, setLikeAnimation] = useState(false)
 
   // Fetch the blog post and its replies
   const handleFetchBlogPost = async (slug) => {
@@ -59,7 +60,11 @@ const Blog = ({ params }) => {
   }
 
   const handleLike = async () => {
-    console.log(user?.id)
+    setHasLiked(true)
+    setLikeAnimation(true)
+    setTimeout(() => {
+      setLikeAnimation(false)
+    }, 300)
     try {
       if (!user) {
         enqueueSnackbar('Please login first')
@@ -75,7 +80,6 @@ const Blog = ({ params }) => {
           ...prevPost,
           likes: prevPost.likes + 1,
         }))
-        setHasLiked(true)
       }
     } catch (error) {
       // enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
@@ -121,10 +125,10 @@ const Blog = ({ params }) => {
   }
 
   // Fetch related posts based on category IDs
-  const fetchRelatedPosts = async (categoryIds) => {
+  const fetchRelatedPosts = async (categoryId) => {
     try {
       const response = await axios.get(`/api/posts/related`, {
-        params: { category_id: categoryIds },
+        params: { category_id: categoryId },
       })
       setRelatedPosts(response.data)
     } catch (error) {
@@ -134,7 +138,7 @@ const Blog = ({ params }) => {
 
   useEffect(() => {
     setTimeout(() => {
-      fetchRelatedPosts()
+      fetchRelatedPosts(post?.category_ids[0])
     }, 1000)
   }, [post])
 
@@ -209,13 +213,21 @@ const Blog = ({ params }) => {
               <div className='flex gap-7 items-center text-sm max-md:text-xs text-neutral-600'>
                 <p>{post?.views} Views</p>
                 <div className='flex gap-1 items-center'>
-                  <Heart
-                    className='cursor-pointer'
-                    size={20}
-                    color='red'
-                    fill={hasLiked ? 'red' : 'white'}
+                  <div
+                    className={`cursor-pointer ${
+                      likeAnimation ? 'animate-heart-pop' : ''
+                    }`}
                     onClick={hasLiked ? handleRemoveLike : handleLike}
-                  />
+                  >
+                    <Heart
+                      size={20}
+                      color='red'
+                      fill={hasLiked ? 'red' : 'none'}
+                      className={`transition-all duration-300 ${
+                        hasLiked ? 'scale-125' : ''
+                      }`}
+                    />
+                  </div>
                   {post?.likes} Likes
                 </div>
               </div>

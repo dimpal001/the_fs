@@ -1,15 +1,14 @@
 'use client'
 
 import Image from 'next/image'
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState } from 'react'
 import SubscribeCard from './Components/SubscribeCard'
 import HeroBlogCard from './Components/HeroBlogCard'
-import { ArrowRight, ArrowRightFromLine } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
 import BlogPostCard from './Components/BlogPostCard'
 import BlogPostCard3 from './Components/BlogPostCard3'
 import BlogPostCard4 from './Components/BlogPostCard4'
 import axios from 'axios'
-import { useBlogContext } from './context/BlogContext'
 import { useRouter } from 'next/navigation'
 import Loading from './Components/Loading'
 import { useCategoryContext } from './context/CategoryContext'
@@ -25,10 +24,8 @@ const HomePage = () => {
   const [loadingCategory1, setLoadingCategory1] = useState(false)
   const [loadingCategory2, setLoadingCategory2] = useState(false)
   const [isClient, setIsClient] = useState(false)
-  const loadMoreRef = useRef(null)
   const { setSelectedCategoryId } = useCategoryContext()
 
-  const { setSelectedPostId } = useBlogContext()
   const router = useRouter()
 
   const handleFetchLatestPosts = async () => {
@@ -103,28 +100,8 @@ const HomePage = () => {
     return doc.body.textContent || ''
   }
 
-  const handleSeeMore = (categoryId) => {
-    console.log(categoryId)
-    const category = categories.find((category) => category.id === categoryId)
-
-    if (category) {
-      const { id, name } = category
-
-      const formattedTitle = name
-        .toLowerCase()
-        .replace(/[?/:;'&*$#%.,!]/g, '')
-        .replace(/ /g, '-')
-        .replace(/--+/g, '-')
-        .trim()
-
-      setSelectedCategoryId(id)
-      localStorage.setItem('selectedCategoryId', id)
-      localStorage.setItem('selectedCategoryName', name)
-
-      router.push(`/category/${formattedTitle}`)
-    } else {
-      console.log('Category not found')
-    }
+  const handleSeeMore = (slug) => {
+    router.push(`/category/${slug}`)
   }
 
   return (
@@ -174,7 +151,7 @@ const HomePage = () => {
                 Read More ..
               </p>
             </div>
-            <div className='lg:w-[30%] h-full flex flex-col gap-3'>
+            <div className='lg:w-[30%] max-md:p-3 h-full flex flex-col gap-3'>
               <HeroBlogCard
                 imageUrl={`https://picsum.photos/778/374`}
                 delay={0}
@@ -204,7 +181,7 @@ const HomePage = () => {
                 Latest Blog Posts
               </h2>
               <ArrowRight
-                onClick={() => handleSeeMore(latestPosts[3].category_ids[0])}
+                onClick={() => handleSeeMore(categories[0].slug)}
                 size={50}
                 className='cursor-pointer hover:text-first'
                 strokeWidth={2}
@@ -334,8 +311,8 @@ const HomePage = () => {
             <div className='lg:w-2/3 flex flex-col relative justify-between'>
               <div className='flex justify-between'>
                 <div>
-                  <p className='text-5xl max-md:text-3xl font-semibold'>Our</p>
-                  <p className='text-8xl max-md:text-5xl font-bold'>
+                  <p className='text-5xl max-md:text-2xl font-semibold'>Our</p>
+                  <p className='text-8xl max-md:text-4xl font-bold'>
                     Social Diaries
                   </p>
                 </div>

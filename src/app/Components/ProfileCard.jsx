@@ -9,11 +9,11 @@ const ProfileCard = ({ name, id, date }) => {
     route.push(`/profile/${id}`)
   }
   return (
-    <div className='flex gap-3 cursor-pointer items-center'>
+    <div className='flex gap-3 max-md:gap-1 cursor-pointer items-center'>
       <Image
         onClick={handleClick}
         src={UserImg}
-        className='w-14'
+        className='w-14 max-md:w-10'
         alt='Profile image'
       />
       <div>

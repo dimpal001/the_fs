@@ -21,14 +21,15 @@ const EditPost = () => {
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
-  const [tags, setTags] = useState([]) // State for tags
-  const [newTag, setNewTag] = useState('') // State for inputting new tag
+  const [tags, setTags] = useState([])
 
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target
 
     if (checked) {
-      setSelectedCategoryIds((prev) => [...prev, id])
+      setSelectedCategoryIds((prev) =>
+        prev.includes(id) ? prev : [...prev, id]
+      )
     } else {
       setSelectedCategoryIds((prev) =>
         prev.filter((categoryId) => categoryId !== id)
@@ -55,7 +56,7 @@ const EditPost = () => {
       setTitle(fetchedPost.title)
       setContent(fetchedPost.content)
       setSelectedCategoryIds(fetchedPost.category_ids)
-      setTags(fetchedPost.tags || []) // Load tags from the fetched post
+      setTags(fetchedPost.tags || [])
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
@@ -184,13 +185,14 @@ const EditPost = () => {
                     type='checkbox'
                     name={category.name}
                     value={selectedCategoryIds}
-                    id={category.id}
+                    checked={selectedCategoryIds.includes(category.slug)}
+                    id={category.slug}
                     onChange={handleCheckboxChange}
                     className='h-5 w-5 accent-blue-500'
                   />
                   <label
                     className='capitalize text-gray-600'
-                    htmlFor={category.id}
+                    htmlFor={category.slug}
                   >
                     {category.name}
                   </label>

@@ -194,69 +194,71 @@ const ReplyManagement = () => {
       </p>
 
       {/* Replies Table */}
-      <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
-        <thead>
-          <tr className='bg-gray-200'>
-            <th className='px-4 py-2 text-start'>Reply</th>
-            <th className='px-4 py-2 text-start'>Reply by</th>
-            <th className='px-4 py-2 text-start'>Replied on</th>
-            <th className='px-4 py-2 text-start'>Status</th>
-            <th className='px-4 py-2 text-end'>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredReplies.map((reply) => (
-            <tr key={reply.id} className='border-b'>
-              <td className='px-4 py-2 w-[550px] flex gap-3 items-center'>
-                {reply.content}{' '}
-                <Eye
-                  onClick={() => {
-                    setSelectedId(reply.id)
-                    setIsViewReplyModalOpen(true)
-                  }}
-                  className='cursor-pointer'
-                />
-              </td>
-              <td className='px-4 py-2'>
-                {reply.author_name ? reply?.author_name : reply?.name}
-              </td>
-              <td className='px-4 py-2 text-sm'>
-                {new Date(reply.created_at).toDateString()}
-              </td>
-              <td
-                className={`px-4 py-2 capitalize text-sm ${
-                  reply?.is_approved ? 'text-green-600' : 'text-red-500'
-                }`}
-              >
-                {reply.is_approved ? 'Verified' : 'Not verified'}
-              </td>
-              <td className='px-4 py-2 text-end'>
-                <button
-                  onClick={() => handleReviewPost(reply.blog_post_id)}
-                  className='bg-blue-500 text-white px-4 py-1 mr-2 rounded-sm'
-                >
-                  Post
-                </button>
-                <button
-                  onClick={() => handleApproveReply(reply)}
-                  className={`${
-                    reply.status === 'approved' &&
-                    'opacity-50 cursor-not-allowed'
-                  } bg-green-500 text-white px-4 py-1 rounded-sm`}
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() => openDeleteModal(reply)}
-                  className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
-                >
-                  Delete
-                </button>
-              </td>
+      <div className='max-md:overflow-x-scroll'>
+        <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
+          <thead>
+            <tr className='bg-gray-200'>
+              <th className='px-4 py-2 text-start'>Reply</th>
+              <th className='px-4 py-2 text-start'>Reply by</th>
+              <th className='px-4 py-2 text-start'>Replied on</th>
+              <th className='px-4 py-2 text-start'>Status</th>
+              <th className='px-4 py-2 text-end'>Actions</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredReplies.map((reply) => (
+              <tr key={reply.id} className='border-b'>
+                <td className='px-4 py-2 w-[550px] flex gap-3 items-center'>
+                  {reply.content}{' '}
+                  <Eye
+                    onClick={() => {
+                      setSelectedId(reply.id)
+                      setIsViewReplyModalOpen(true)
+                    }}
+                    className='cursor-pointer'
+                  />
+                </td>
+                <td className='px-4 py-2'>
+                  {reply.author_name ? reply?.author_name : reply?.name}
+                </td>
+                <td className='px-4 py-2 text-sm'>
+                  {new Date(reply.created_at).toDateString()}
+                </td>
+                <td
+                  className={`px-4 py-2 capitalize text-sm ${
+                    reply?.is_approved ? 'text-green-600' : 'text-red-500'
+                  }`}
+                >
+                  {reply.is_approved ? 'Verified' : 'Not verified'}
+                </td>
+                <td className='px-4 py-2 text-end'>
+                  <button
+                    onClick={() => handleReviewPost(reply.blog_post_id)}
+                    className='bg-blue-500 text-white px-4 py-1 mr-2 rounded-sm'
+                  >
+                    Post
+                  </button>
+                  <button
+                    onClick={() => handleApproveReply(reply)}
+                    className={`${
+                      reply.status === 'approved' &&
+                      'opacity-50 cursor-not-allowed'
+                    } bg-green-500 text-white px-4 py-1 rounded-sm`}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => openDeleteModal(reply)}
+                    className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <Paggination
         currentPage={currentPage}
         totalPages={totalPages}

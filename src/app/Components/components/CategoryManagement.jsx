@@ -183,7 +183,7 @@ const CategoryManagement = () => {
         </p>
       </div>
 
-      <div className='flex gap-5 w-full'>
+      <div className='flex gap-5 max-md:overflow-x-scroll w-full'>
         {/* Category Table  */}
         <table className='w-3/4 table-auto bg-white h-full shadow-md'>
           <thead>

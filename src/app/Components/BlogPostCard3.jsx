@@ -43,6 +43,9 @@ const BlogPostCard3 = ({ title, imageUrl, post, onClick }) => {
       {/* Text Section */}
       <div className='lg:p-7 py-7 flex flex-col h-full w-full justify-between'>
         {/* Title */}
+        <p className='text-sm text-neutral-500'>
+          {new Date(post?.created_at).toDateString()}
+        </p>{' '}
         <h2
           onClick={handleClick}
           className='text-lg cursor-pointer lg:py-3 lg:text-4xl font-semibold'
@@ -50,14 +53,10 @@ const BlogPostCard3 = ({ title, imageUrl, post, onClick }) => {
           {post?.title}
         </h2>
         <p className='text-neutral-500'>{stripHtml(post?.content)}</p>
-
         {/* Author Details */}
         <div className='flex mt-12 justify-between items-center'>
           <div className='flex items-center gap-14'>
-            <p className='text-sm text-neutral-500'>
-              {new Date(post?.created_at).toDateString()}
-            </p>{' '}
-            <div className='flex gap-4 text-neutral-500 text-sm'>
+            <div className='flex gap-4 text-neutral-500 max-md:text-xs text-sm'>
               <p>{post?.views} Views</p>
               <p>{post?.likes} Likes</p>
               <p>{post?.replies} Replies</p>

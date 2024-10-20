@@ -75,32 +75,34 @@ const AboutUsManagement = () => {
           ? new Date(content.updated_at).toDateString()
           : 'N/A'}
       </p>
-      <div>
-        {/* JoditEditor to edit the fetched content */}
-        <JoditEditor
-          ref={editor}
-          value={content.content}
-          tabIndex={1}
-          onBlur={(newContent) =>
-            setContent((prev) => ({ ...prev, content: newContent }))
-          }
-          onChange={(newContent) =>
-            setContent((prev) => ({ ...prev, content: newContent }))
-          }
-        />
-        <div className='mt-3'>
-          <Button
-            onClick={handleUpdate}
-            label={'Update'}
-            loading={submitting}
+      <div className='max-md:overflow-x-scroll'>
+        <div>
+          {/* JoditEditor to edit the fetched content */}
+          <JoditEditor
+            ref={editor}
+            value={content.content}
+            tabIndex={1}
+            onBlur={(newContent) =>
+              setContent((prev) => ({ ...prev, content: newContent }))
+            }
+            onChange={(newContent) =>
+              setContent((prev) => ({ ...prev, content: newContent }))
+            }
           />
+          <div className='mt-3'>
+            <Button
+              onClick={handleUpdate}
+              label={'Update'}
+              loading={submitting}
+            />
+          </div>
         </div>
-      </div>
-      <div>
-        {/* Displaying the saved content */}
-        <div className='p-7 border border-zinc-200 rounded-sm mt-2'>
-          <p className='text-4xl mb-5 font-semibold'>About</p>
-          <div dangerouslySetInnerHTML={{ __html: content.content }} />
+        <div>
+          {/* Displaying the saved content */}
+          <div className='p-7 border border-zinc-200 rounded-sm mt-2'>
+            <p className='text-4xl mb-5 font-semibold'>About</p>
+            <div dangerouslySetInnerHTML={{ __html: content.content }} />
+          </div>
         </div>
       </div>
     </div>

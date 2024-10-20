@@ -155,79 +155,81 @@ const UserManagement = () => {
         {filteredUsers.length} Results found
       </p>
 
-      <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
-        <thead>
-          <tr className='bg-gray-200'>
-            <th className='px-4 py-2 text-start'>Email</th>
-            <th className='px-4 py-2 text-start'>Name</th>
-            <th className='px-4 py-2 text-start'>Created at</th>
-            <th className='px-4 py-2 text-start'>Role</th>
-            <th className='px-4 py-2 text-start'></th>
-            <th className='px-4 py-2 text-end'>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredUsers.map((user) => (
-            <tr key={user.id} className='hover:bg-gray-100'>
-              <td className='px-4 py-2'>{user.email}</td>
-              <td
-                onClick={() => {
-                  setIsUserModalOpen(true)
-                  setSelectedId(user.id)
-                }}
-                className='px-4 py-2 hover:text-first hover:underline cursor-pointer'
-              >
-                {user.name}
-              </td>
-              <td className='px-4 py-2'>
-                {new Date(user.created_at).toLocaleDateString()}
-              </td>
-              <td className='px-4 py-2 capitalize'>{user.role}</td>
-              <td className='px-4 py-2 text-sm text-zinc-400 capitalize'>
-                {!user.is_active && 'This account is deactivated'}
-              </td>
-              <td className='px-4 py-2 text-end'>
-                {user.is_active ? (
-                  <button
-                    onClick={() => handleDeactivate(user)}
-                    className='bg-gray-600 text-white px-4 py-1 rounded-sm'
-                  >
-                    Deactivate
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => handleActivate(user)}
-                    className='bg-green-600 text-white px-4 py-1 ml-2 rounded-sm'
-                  >
-                    Activate
-                  </button>
-                )}
-                <button
-                  onClick={() => {
-                    setSelectedId(user.id)
-                    setDeleteModalOpen(true)
-                  }}
-                  className='bg-red-600 text-white px-4 py-1 ml-2 rounded-sm'
-                >
-                  Delete
-                </button>
-              </td>
+      <div className='max-md:overflow-x-scroll'>
+        <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
+          <thead>
+            <tr className='bg-gray-200'>
+              <th className='px-4 py-2 text-start'>Email</th>
+              <th className='px-4 py-2 text-start'>Name</th>
+              <th className='px-4 py-2 text-start'>Created at</th>
+              <th className='px-4 py-2 text-start'>Role</th>
+              <th className='px-4 py-2 text-start'></th>
+              <th className='px-4 py-2 text-end'>Actions</th>
             </tr>
-          ))}
-          {isUserModalOpen && (
-            <UserProfileModal
-              isOpen={true}
-              onClose={() => setIsUserModalOpen(false)}
-              id={selectedId}
+          </thead>
+          <tbody>
+            {filteredUsers.map((user) => (
+              <tr key={user.id} className='hover:bg-gray-100'>
+                <td className='px-4 py-2'>{user.email}</td>
+                <td
+                  onClick={() => {
+                    setIsUserModalOpen(true)
+                    setSelectedId(user.id)
+                  }}
+                  className='px-4 py-2 hover:text-first hover:underline cursor-pointer'
+                >
+                  {user.name}
+                </td>
+                <td className='px-4 py-2'>
+                  {new Date(user.created_at).toLocaleDateString()}
+                </td>
+                <td className='px-4 py-2 capitalize'>{user.role}</td>
+                <td className='px-4 py-2 text-sm text-zinc-400 capitalize'>
+                  {!user.is_active && 'This account is deactivated'}
+                </td>
+                <td className='px-4 py-2 text-end'>
+                  {user.is_active ? (
+                    <button
+                      onClick={() => handleDeactivate(user)}
+                      className='bg-gray-600 text-white px-4 py-1 rounded-sm'
+                    >
+                      Deactivate
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleActivate(user)}
+                      className='bg-green-600 text-white px-4 py-1 ml-2 rounded-sm'
+                    >
+                      Activate
+                    </button>
+                  )}
+                  <button
+                    onClick={() => {
+                      setSelectedId(user.id)
+                      setDeleteModalOpen(true)
+                    }}
+                    className='bg-red-600 text-white px-4 py-1 ml-2 rounded-sm'
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+            {isUserModalOpen && (
+              <UserProfileModal
+                isOpen={true}
+                onClose={() => setIsUserModalOpen(false)}
+                id={selectedId}
+              />
+            )}
+            <DeleteModal
+              onOpen={isDeleteModalOpen}
+              onClose={() => setDeleteModalOpen(false)}
+              onDelete={handleUserDelete}
             />
-          )}
-          <DeleteModal
-            onOpen={isDeleteModalOpen}
-            onClose={() => setDeleteModalOpen(false)}
-            onDelete={handleUserDelete}
-          />
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
       <Paggination
         currentPage={currentPage}
         totalPages={totalPages}

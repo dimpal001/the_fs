@@ -129,7 +129,7 @@ const HeroPostManagement = () => {
       <h2 className='text-2xl font-bold mb-4'>Manage Hero Posts</h2>
 
       {heroPosts.length > 0 && (
-        <div>
+        <div className='max-md:overflow-x-scroll'>
           <p className='text-xl font-semibold py-2'>Hero Post</p>
           <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
             <thead>
@@ -161,7 +161,7 @@ const HeroPostManagement = () => {
         </div>
       )}
 
-      <div>
+      <div className='max-md:overflow-x-scroll'>
         <p className='text-xl font-semibold py-2'>All Posts</p>
         <div className='flex items-center gap-4'>
           <div>

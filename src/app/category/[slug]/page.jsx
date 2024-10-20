@@ -1,11 +1,6 @@
 'use client'
 
-import { useCategoryContext } from '@/app/context/CategoryContext'
-import Image from 'next/image'
-import Img from '../../assets/durga-puja-outfit-banner-image.webp'
-import { categoryList } from '@/app/data'
 import { useEffect, useState } from 'react'
-import ProfileCard from '@/app/Components/ProfileCard'
 import { useRouter } from 'next/navigation'
 import { Helmet } from 'react-helmet'
 import { enqueueSnackbar } from 'notistack'
@@ -13,9 +8,9 @@ import axios from 'axios'
 import Loading from '@/app/Components/Loading'
 import DataNotFound from '@/app/Components/DataNotFound'
 import BlogPostCard4 from '@/app/Components/BlogPostCard4'
+import LoadMore from '@/app/Components/LoadMore'
 
 const CategoryBlog = ({ params }) => {
-  const { selectedCategoryId } = useCategoryContext()
   const [posts, setPosts] = useState([])
   const [categoryName, setCategoryName] = useState('')
   const [currentPage, setCurrentPage] = useState(null)
@@ -26,6 +21,11 @@ const CategoryBlog = ({ params }) => {
 
   const slug = params.slug
 
+  const capitalizeFirstLetter = (str) => {
+    if (!str) return ''
+    return str.charAt(0).toUpperCase() + str.slice(1)
+  }
+
   const handleFetchPosts = async (page) => {
     try {
       setLoading(true)
@@ -33,8 +33,7 @@ const CategoryBlog = ({ params }) => {
         params: { slug: slug, page: page },
       })
       setPosts((prevPosts) => [...prevPosts, ...response.data.posts])
-      console.log(response.data)
-      setCategoryName(response.data.categoryName)
+      setCategoryName(capitalizeFirstLetter(response.data.categoryName))
       setCurrentPage(response.data.currentPage)
       setTotalPages(response.data.totalPages)
       setTotalPosts(response.data.totalPosts)
@@ -48,18 +47,6 @@ const CategoryBlog = ({ params }) => {
   useEffect(() => {
     handleFetchPosts(currentPage)
   }, [])
-
-  // useEffect(() => {
-  //   // const filteredCategory = categoryList.find(
-  //   //   (category) => category.id === selectedCategoryId
-  //   // )
-  //   // if (filteredCategory) {
-  //   //   setPosts(filteredCategory.posts)
-  //   // } else {
-  //   //   setPosts([])
-  //   // }
-  //   setCategoryName(filteredCategory?.name)
-  // }, [slug, currentPage])
 
   const handleClick = (post) => {
     router.push(`/blogs/${post?.slug}`)
@@ -81,7 +68,9 @@ const CategoryBlog = ({ params }) => {
     <div className='container px-10 mx-auto'>
       {/* Using Head component for dynamic title */}
       <Helmet>
-        <title>{categoryName || 'Blog category - The fashion salad'}</title>
+        <title className='capitalize'>
+          {categoryName || 'Blog category - The fashion salad'}
+        </title>
       </Helmet>
 
       <div>
@@ -106,13 +95,7 @@ const CategoryBlog = ({ params }) => {
                   />
                 ))}
             </div>
-            <div onClick={handleLoadMore} className='flex mt-10 justify-center'>
-              {totalPosts > posts.length && (
-                <button className='text-lg px-5 py-2 border hover:bg-first hover:text-white font-thin border-first rounded-none text-first border-dotted'>
-                  Load More
-                </button>
-              )}
-            </div>
+            {totalPages > posts.length && <LoadMore />}
           </div>
         ) : (
           <DataNotFound />

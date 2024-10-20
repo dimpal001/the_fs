@@ -22,7 +22,7 @@ export async function GET(request) {
          FROM BlogPosts
          JOIN Users ON BlogPosts.author_id = Users.id
          WHERE JSON_CONTAINS(BlogPosts.category_ids, ?, '$') 
-         LIMIT 4`,
+         LIMIT 5`,
       [`"${category_id}"`]
     )
 

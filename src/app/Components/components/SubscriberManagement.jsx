@@ -134,35 +134,37 @@ const SubscriberManagement = () => {
 
       <div className=' w-full'>
         {/* subscriber Table  */}
-        <table className='w-full table-auto bg-white h-full shadow-md'>
-          <thead>
-            <tr className='bg-gray-200'>
-              <th className='px-4 py-2 text-start'>Subscriber</th>
-              <th className='px-4 py-2 text-end'>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filterSubscribers.length > 0 ? (
-              filterSubscribers.map((subscriber, index) => (
-                <tr key={index} className='hover:bg-gray-100'>
-                  <td className='px-4 py-2'>{subscriber.email}</td>
-                  <td className='px-4 py-2 flex justify-end'>
-                    <button
-                      onClick={() => handleDelete(subscriber)}
-                      className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
-                    >
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))
-            ) : (
-              <div className='flex justify-center items-center h-full'>
-                <p className='p-10'>No subscriber found</p>
-              </div>
-            )}
-          </tbody>
-        </table>
+        <div className='max-md:overflow-x-scroll'>
+          <table className='w-full table-auto bg-white h-full shadow-md'>
+            <thead>
+              <tr className='bg-gray-200'>
+                <th className='px-4 py-2 text-start'>Subscriber</th>
+                <th className='px-4 py-2 text-end'>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {filterSubscribers.length > 0 ? (
+                filterSubscribers.map((subscriber, index) => (
+                  <tr key={index} className='hover:bg-gray-100'>
+                    <td className='px-4 py-2'>{subscriber.email}</td>
+                    <td className='px-4 py-2 flex justify-end'>
+                      <button
+                        onClick={() => handleDelete(subscriber)}
+                        className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <div className='flex justify-center items-center h-full'>
+                  <p className='p-10'>No subscriber found</p>
+                </div>
+              )}
+            </tbody>
+          </table>
+        </div>
         <Paggination
           currentPage={currentPage}
           totalPages={totalPages}

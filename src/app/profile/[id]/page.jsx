@@ -135,8 +135,8 @@ const Profile = ({ params }) => {
 
   return (
     <div>
-      <div className='min-h-[650px] flex items-center justify-center bg-neutral-50'>
-        <div className='lg:w-[60%] w-[90%] lg:p-14 p-6 shadow-xl rounded-3xl bg-white'>
+      <div className='min-h-[650px] relative flex items-center justify-center bg-neutral-50'>
+        <div className='lg:w-[60%] relative z-20 w-[90%] lg:p-14 p-6 shadow-xl rounded-3xl bg-white'>
           <div className='lg:-mt-32 -mt-16'>
             {/* Image  */}
             <div className='flex justify-center'>
@@ -168,9 +168,6 @@ const Profile = ({ params }) => {
               <p className='font-semibold max-md:text-xs max-md:text-center tracking-wide'>
                 {followers} Followers
               </p>
-              {/* <p className='font-semibold max-md:text-xs max-md:text-center tracking-wide'>
-                {following} Following
-              </p> */}
               <p className='font-semibold max-md:text-xs max-md:text-center tracking-wide'>
                 {noOfPosts} Posts
               </p>
@@ -193,6 +190,10 @@ const Profile = ({ params }) => {
               </button>
             </div>
           </div>
+        </div>
+        <div className='absolute top-0 right-0 left-0 h-full z-10'>
+          <div className='h-1/2 bg-gradient-to-b from-pink-300 to-neutral-50'></div>
+          <div></div>
         </div>
       </div>
       <div className='container mx-auto py-10 p-5'>

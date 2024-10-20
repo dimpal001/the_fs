@@ -2,7 +2,7 @@ const Input = ({ lefIcon, placeholder, type, onChange, value, error }) => {
   return (
     <div className='flex w-full flex-col'>
       <div
-        className={`border flex items-center ${
+        className={`border flex border-dotted focus:border-first items-center ${
           error ? 'border-red-500' : 'border-neutral-400'
         }`}
       >

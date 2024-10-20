@@ -32,7 +32,9 @@ const Header = ({ showDrawer, setShowDrawer }) => {
         <Link className='hover:text-first' href={'/'}>
           Main Website
         </Link>
-        <CreatePost />
+        <div className='max-md:hidden'>
+          <CreatePost />
+        </div>
         <button
           onClick={handleLogout}
           className='px-4 py-2 bg-red-500 text-white rounded-sm'

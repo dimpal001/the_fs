@@ -30,7 +30,9 @@ const CreatePost = () => {
     const { id, checked } = event.target
 
     if (checked) {
-      setSelectedCategoryIds((prev) => [...prev, id])
+      setSelectedCategoryIds((prev) =>
+        prev.includes(id) ? prev : [...prev, id]
+      )
     } else {
       setSelectedCategoryIds((prev) =>
         prev.filter((categoryId) => categoryId !== id)
@@ -206,7 +208,7 @@ const CreatePost = () => {
                     type='checkbox'
                     name={category.name}
                     value={selectedCategoryIds}
-                    id={category.id}
+                    id={category.slug}
                     onChange={handleCheckboxChange}
                     className='h-5 w-5 accent-blue-500'
                   />

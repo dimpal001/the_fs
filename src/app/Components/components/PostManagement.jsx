@@ -209,99 +209,102 @@ const PostManagement = () => {
         {filteredPosts.length} Results found
       </p>
 
-      <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
-        <thead>
-          <tr className='bg-gray-200'>
-            <th className='px-4 text-start py-2'>Title</th>
-            <th className='px-4 text-start py-2'>Author Name</th>
-            <th className='px-4 text-start py-2'>Status</th>
-            <th className='px-4 text-start py-2'>Preview</th>
-            <th className='px-4 py-2'>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredPosts.map((post) => (
-            <tr key={post.id}>
-              <td className='px-4 py-2'>{post.title}</td>
-              <td className='px-4 py-2'>{post.author_email}</td>
-              <td className='px-4 py-2 capitalize'>{post.status}</td>
-              <td className='px-4 py-2'>
-                <button
-                  onClick={() => handleReviewModal(post)}
-                  className='bg-blue-500 text-white px-4 py-1 rounded-sm'
-                >
-                  Preview
-                </button>
-              </td>
-              <td className='px-4 py-2 flex justify-end items-center'>
-                <button
-                  onClick={() => handleApprovePost(post)}
-                  className={`${
-                    post.status === 'approve'
-                      ? 'bg-green-400 cursor-not-allowed'
-                      : 'bg-green-600'
-                  } w-28 text-white px-4 py-1 rounded-sm`}
-                  disabled={isApprovingId === post.id}
-                >
-                  {isApprovingId === post.id ? (
-                    <Loader size={24} className='animate-spin' />
-                  ) : post.status === 'approved' ? (
-                    'Approved'
-                  ) : (
-                    'Approve'
-                  )}
-                </button>
-                <button
-                  onClick={() => {
-                    setSelectedPost(post)
-                    setIsRejectModalOpen(true)
-                  }}
-                  className={`bg-yellow-500 ${
-                    post.status === 'approve' && 'opacity-50 cursor-not-allowed'
-                  } text-white px-4 py-1 ml-2 rounded-sm`}
-                >
-                  Reject
-                </button>
-                <button
-                  onClick={() => handleDeactive(post)}
-                  className='bg-zinc-600 text-white px-4 py-1 ml-2 rounded-sm'
-                >
-                  Deactivate
-                </button>
-                <button
-                  onClick={() => handleDelete(post)}
-                  className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
-                >
-                  Delete
-                </button>
-              </td>
+      <div className='max-md:overflow-x-scroll'>
+        <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
+          <thead>
+            <tr className='bg-gray-200'>
+              <th className='px-4 text-start py-2'>Title</th>
+              <th className='px-4 text-start py-2'>Author Name</th>
+              <th className='px-4 text-start py-2'>Status</th>
+              <th className='px-4 text-start py-2'>Preview</th>
+              <th className='px-4 py-2'>Actions</th>
             </tr>
-          ))}
-        </tbody>
+          </thead>
+          <tbody>
+            {filteredPosts.map((post) => (
+              <tr key={post.id}>
+                <td className='px-4 py-2'>{post.title}</td>
+                <td className='px-4 py-2'>{post.author_email}</td>
+                <td className='px-4 py-2 capitalize'>{post.status}</td>
+                <td className='px-4 py-2'>
+                  <button
+                    onClick={() => handleReviewModal(post)}
+                    className='bg-blue-500 text-white px-4 py-1 rounded-sm'
+                  >
+                    Preview
+                  </button>
+                </td>
+                <td className='px-4 py-2 flex justify-end items-center'>
+                  <button
+                    onClick={() => handleApprovePost(post)}
+                    className={`${
+                      post.status === 'approve'
+                        ? 'bg-green-400 cursor-not-allowed'
+                        : 'bg-green-600'
+                    } w-28 text-white px-4 py-1 rounded-sm`}
+                    disabled={isApprovingId === post.id}
+                  >
+                    {isApprovingId === post.id ? (
+                      <Loader size={24} className='animate-spin' />
+                    ) : post.status === 'approved' ? (
+                      'Approved'
+                    ) : (
+                      'Approve'
+                    )}
+                  </button>
+                  <button
+                    onClick={() => {
+                      setSelectedPost(post)
+                      setIsRejectModalOpen(true)
+                    }}
+                    className={`bg-yellow-500 ${
+                      post.status === 'approve' &&
+                      'opacity-50 cursor-not-allowed'
+                    } text-white px-4 py-1 ml-2 rounded-sm`}
+                  >
+                    Reject
+                  </button>
+                  <button
+                    onClick={() => handleDeactive(post)}
+                    className='bg-zinc-600 text-white px-4 py-1 ml-2 rounded-sm'
+                  >
+                    Deactivate
+                  </button>
+                  <button
+                    onClick={() => handleDelete(post)}
+                    className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
+                  >
+                    Delete
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
 
-        {isRejectModalOpen && (
-          <RejectPostModal
-            isOpen={true}
-            onClose={() => setIsRejectModalOpen(false)}
-            postId={selectedPost.id}
-          />
-        )}
-        {isReviewModalOpen && (
-          <ReviewPostModal
-            isOpen={true}
-            onClose={() => setIsReviewModalOpen(false)}
-            post={selectedPost}
-          />
-        )}
-        {isConfirmModalOpen && (
-          <ConfirmModal
-            isOpen={true}
-            onClose={() => setIsConfirmModalOpen(false)}
-            onConfirm={handleConfirmAction}
-            action={confirmAction}
-          />
-        )}
-      </table>
+          {isRejectModalOpen && (
+            <RejectPostModal
+              isOpen={true}
+              onClose={() => setIsRejectModalOpen(false)}
+              postId={selectedPost.id}
+            />
+          )}
+          {isReviewModalOpen && (
+            <ReviewPostModal
+              isOpen={true}
+              onClose={() => setIsReviewModalOpen(false)}
+              post={selectedPost}
+            />
+          )}
+          {isConfirmModalOpen && (
+            <ConfirmModal
+              isOpen={true}
+              onClose={() => setIsConfirmModalOpen(false)}
+              onConfirm={handleConfirmAction}
+              action={confirmAction}
+            />
+          )}
+        </table>
+      </div>
       <Paggination
         currentPage={currentPage}
         totalPages={totalPages}

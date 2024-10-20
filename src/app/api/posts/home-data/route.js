@@ -27,9 +27,9 @@ export async function GET(request) {
     } else if (status === 'category_1') {
       // Query for posts from a random category 1 with likes and replies count
       const [randomCategory] = await db.query(
-        `SELECT id FROM Categories ORDER BY RAND() LIMIT 1`
+        `SELECT slug FROM Categories ORDER BY RAND() LIMIT 1`
       )
-      const categoryId = randomCategory[0].id
+      const categoryId = randomCategory[0].slug
       ;[posts] = await db.query(
         `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 150) AS content, 
@@ -48,9 +48,9 @@ export async function GET(request) {
     } else if (status === 'category_2') {
       // Query for posts from a random category 2 with likes and replies count
       const [randomCategory] = await db.query(
-        `SELECT id FROM Categories ORDER BY RAND() LIMIT 1`
+        `SELECT slug FROM Categories ORDER BY RAND() LIMIT 1`
       )
-      const categoryId = randomCategory[0].id
+      const categoryId = randomCategory[0].slug
       ;[posts] = await db.query(
         `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 150) AS content, 

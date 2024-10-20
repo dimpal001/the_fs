@@ -45,13 +45,13 @@ const AccountPage = () => {
   }
 
   const s3Client = new S3Client({
-    endpoint: 'https://the-fashion-salad.blr1.digitaloceanspaces.com',
+    endpoint: 'https://blr1.digitaloceanspaces.com',
     forcePathStyle: false,
     region: 'blr1',
     credentials: {
       accessKeyId: 'DO00TK892YLJBW7MV82Y',
-      // secretAccessKey: 'SWPRt+2D3e2fYSp6E8g1zfivrPCi3JkH+w9ggKBG5Sg',
-      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
+      secretAccessKey: 'SWPRt+2D3e2fYSp6E8g1zfivrPCi3JkH+w9ggKBG5Sg',
+      // secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
     },
   })
 
