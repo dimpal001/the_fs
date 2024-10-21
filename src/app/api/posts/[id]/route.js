@@ -1,6 +1,18 @@
 import { NextResponse } from 'next/server'
 import { db } from '../../../../utils/db'
-import { sendBlogPostAlert } from '@/utils/sendBlogPostAlert'
+import { emailQueue } from '../../../../utils/bullQueue'
+
+async function sendBlogPostNotification(slug) {
+  try {
+    const [emails] = await db.query(`SELECT email FROM Subscribers`)
+    const link = `https://www.thefashionsalad.com/blogs/${slug}`
+
+    emailQueue.add({ emails, link })
+    console.log('Email notification sent successfully')
+  } catch (error) {
+    console.error('Failed to send email notification:', error)
+  }
+}
 
 export async function PATCH(request, { params }) {
   const { id } = params
@@ -31,12 +43,9 @@ export async function PATCH(request, { params }) {
 
       console.log('Email sent')
       const [emails] = await db.query(`SELECT email FROM Subscribers`)
-      const link = `http://localhost:3000/blogs/${slug}`
-      console.log(slug)
-      await sendBlogPostAlert(
-        emails.map((subscriber) => subscriber.email),
-        link
-      )
+      const link = `https://www.thefashionsalad.com/blogs/${slug}`
+
+      sendBlogPostNotification(slug)
     }
 
     if (result.affectedRows === 0) {

@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server'
 import { db } from '../../../utils/db'
 import { sendBlogPostAlert } from '@/utils/sendBlogPostAlert'
 import slugify from 'slugify'
+import { emailQueue } from '../../../utils/bullQueue'
 
 export async function POST(request) {
   try {
@@ -225,6 +226,18 @@ export async function GET(request) {
   }
 }
 
+async function sendBlogPostNotification(slug) {
+  try {
+    const [emails] = await db.query(`SELECT email FROM Subscribers`)
+    const link = `https://www.thefashionsalad.com/blogs/${slug}`
+
+    emailQueue.add({ emails, link })
+    console.log('Email notification sent successfully')
+  } catch (error) {
+    console.error('Failed to send email notification:', error)
+  }
+}
+
 export async function PATCH(request) {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
@@ -251,12 +264,7 @@ export async function PATCH(request) {
         return NextResponse.json({ error: 'Post not found' }, { status: 404 })
       }
 
-      if (status === 'approve') {
-        console.log('Email sent')
-        const [emails] = await db.query(`SELECT email FROM Subscribers`)
-        const link = 'http://localhost:300/blogs/'
-        await sendBlogPostAlert(emails, link)
-      }
+      const [slug] = db.query('SELECT slug FROM BlogPosts WHERE id = ?', [id])
 
       return NextResponse.json(
         { message: 'Post updated successfully' },
