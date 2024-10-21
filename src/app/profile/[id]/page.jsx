@@ -143,7 +143,7 @@ const Profile = ({ params }) => {
               <div className='w-[120px] border-4 border-blue-500 h-[120px] rounded-full lg:h-[180px] lg:w-[180px]'>
                 <Image
                   className='rounded-full'
-                  src={'https://picsum.photos/678/624'}
+                  src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${userData?.image_url}`}
                   width={0}
                   height={0}
                   sizes='100vw'

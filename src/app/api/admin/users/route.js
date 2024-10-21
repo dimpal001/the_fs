@@ -31,6 +31,7 @@ export async function GET(request) {
       const [users] = await db.query(
         `SELECT * FROM Users  ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`
       )
+
       return NextResponse.json(
         {
           users,
@@ -53,11 +54,7 @@ export async function GET(request) {
 export async function PATCH(request) {
   try {
     const body = await request.json()
-    const { id, name, oldPassword, newPassword } = body
-
-    console.log(id)
-    console.log(oldPassword)
-    console.log(newPassword)
+    const { id, name, oldPassword, newPassword, image_url } = body
 
     if (!id) {
       return NextResponse.json(
@@ -73,6 +70,13 @@ export async function PATCH(request) {
 
     if (name) {
       await db.query('UPDATE Users SET name = ? WHERE id = ?', [name, id])
+    }
+
+    if (image_url) {
+      await db.query('UPDATE Users SET image_url = ? WHERE id = ?', [
+        image_url,
+        id,
+      ])
     }
 
     if (newPassword) {
@@ -107,6 +111,32 @@ export async function PATCH(request) {
     console.error('Error updating user:', error)
     return NextResponse.json(
       { message: 'Error updating user' },
+      { status: 500 }
+    )
+  }
+}
+
+// Delete user
+export async function DELETE(request) {
+  try {
+    const { searchParams } = new URL(request.url)
+    const id = searchParams.get('id')
+
+    // Delete the user from the database
+    await db.query('DELETE FROM Likes WHERE user_id = ?', [id])
+    const [result] = await db.query(`DELETE FROM Users WHERE id = ?`, [id])
+
+    console.log(result)
+    if (result.affectedRows > 0) {
+      return NextResponse.json(
+        { message: 'User deleted successfully' },
+        { status: 200 }
+      )
+    }
+  } catch (error) {
+    console.error('Error updating user:', error)
+    return NextResponse.json(
+      { message: 'Error deleting user' },
       { status: 500 }
     )
   }

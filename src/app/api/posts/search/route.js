@@ -42,7 +42,7 @@ export async function GET(request) {
     COUNT(r.id) AS replies,
     bp.slug, 
     bp.created_at, 
-    u.name AS author_name
+    u.name AS author_name, u.image_url as author_image
   FROM BlogPosts bp
   LEFT JOIN Likes l ON bp.id = l.blog_post_id
   LEFT JOIN Replies r ON bp.id = r.blog_post_id

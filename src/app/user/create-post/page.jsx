@@ -9,8 +9,7 @@ import axios from 'axios'
 import { useUserContext } from '@/app/context/UserContext'
 import Button from '@/app/Components/Button'
 
-import { PutObjectCommand } from '@aws-sdk/client-s3'
-import { S3 } from '@aws-sdk/client-s3'
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
 const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
 
@@ -25,6 +24,7 @@ const CreatePost = () => {
   const [categories, setCategories] = useState([])
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
   const [tags, setTags] = useState([])
+  const [fileName, setFileName] = useState('')
 
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target
@@ -49,19 +49,23 @@ const CreatePost = () => {
     }
   }
 
-  const s3Client = new S3({
-    endpoint: 'https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com',
+  const s3Client = new S3Client({
+    endpoint: 'https://blr1.digitaloceanspaces.com',
     forcePathStyle: false,
     region: 'blr1',
     credentials: {
-      accessKeyId: 'DO00AREQYJDZ4KNKJ6AT',
-      secretAccessKey: 'SWPRt+2D3e2fYSp6E8g1zfivrPCi3JkH+w9ggKBG5Sg',
+      accessKeyId: 'DO00TK892YLJBW7MV82Y',
+      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
     },
   })
 
+  // Generate the custom file name
+  const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+  const customFileName = `thumbnail-${timestamp}-${fileName}`
+
   const params = {
     Bucket: 'the-fashion-salad',
-    Key: `profile-pictures/${thumbnail?.name}`,
+    Key: `blog-post-images/${customFileName}`,
     Body: thumbnail,
     ACL: 'public-read',
   }
@@ -85,21 +89,14 @@ const CreatePost = () => {
 
   const handleImage = (e) => {
     const file = e.target.files[0]
+    const sanitizedFileName = file.name.replace(/\s+/g, '')
+    setFileName(sanitizedFileName)
     if (file) {
       const reader = new FileReader()
       reader.onloadend = () => {
         setThumbnail(reader.result)
       }
       reader.readAsDataURL(file)
-    }
-  }
-
-  const handleProfileUpload = async () => {
-    try {
-      const data = await s3Client.send(new PutObjectCommand(params))
-      console.log('Return : ', data)
-    } catch (err) {
-      console.log('Error', err)
     }
   }
 
@@ -110,18 +107,29 @@ const CreatePost = () => {
       })
       return
     }
-    if (title === '') {
-      enqueueSnackbar('Title is empty', { variant: 'error' })
+    if (title.length === 0) {
+      enqueueSnackbar('Title should not be empty', { variant: 'error' })
+      return
+    }
+    if (title.length > 120) {
+      enqueueSnackbar('Title is too long to.', { variant: 'error' })
       return
     }
     if (selectedCategoryIds.length === 0) {
       enqueueSnackbar('Select at least one category', { variant: 'error' })
       return
     }
+
+    if (!file) {
+      enqueueSnackbar('Add a thumbnail image', { variant })
+      return
+    }
     if (content === '') {
       enqueueSnackbar('Blog content is empty', { variant: 'error' })
       return
     }
+
+    const data = await s3Client.send(new PutObjectCommand(params))
 
     try {
       const response = await axios.post('/api/posts', {
@@ -131,6 +139,7 @@ const CreatePost = () => {
         status: status,
         category_ids: selectedCategoryIds,
         tags: tags,
+        image_url: customFileName,
       })
 
       enqueueSnackbar(response.data.message, { variant: 'success' })

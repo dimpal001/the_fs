@@ -11,12 +11,18 @@ import React, { useEffect, useState, useRef } from 'react'
 import { Helmet } from 'react-helmet'
 import Loading from '@/app/Components/Loading'
 
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import {
+  DeleteObjectCommand,
+  DeleteObjectsCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3'
 
 const AccountPage = () => {
   const [name, setName] = useState('')
   const [nameError, setNameError] = useState('')
   const [file, setFile] = useState(null)
+  const [fileName, setFileName] = useState(null)
   const [oldPassword, setOldPassword] = useState('')
   const [oldPasswordError, setOldPasswordError] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -42,7 +48,10 @@ const AccountPage = () => {
   }, [user, router])
 
   const handleFileChange = (event) => {
-    setFile(event.target.files[0])
+    const files = event.target.files[0]
+    const sanitizedFileName = files.name.replace(/\s+/g, '')
+    setFile(files)
+    setFileName(sanitizedFileName)
   }
 
   const s3Client = new S3Client({
@@ -51,46 +60,53 @@ const AccountPage = () => {
     region: 'blr1',
     credentials: {
       accessKeyId: 'DO00TK892YLJBW7MV82Y',
-      // secretAccessKey: process.env.SPACES_SECRET,
-      secretAccessKey: 'SWPRt+2D3e2fYSp6E8g1zfivrPCi3JkH+w9ggKBG5Sg',
-      // secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
+      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
     },
   })
 
-  const params = {
+  // Generate the custom file name (profile-{user_name}-{timestamp})
+  const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+  const customFileName = `profile-${
+    user?.name || 'unknown'
+  }-${timestamp}-${fileName}`
+
+  const oldParams = {
     Bucket: 'the-fashion-salad',
-    Key: `profile-pictures/${file?.name}`,
+    Key: `profile-pictures/${fetchUser?.image_url}`,
+    Body: file,
+    ACL: 'public-read',
+  }
+
+  const newParams = {
+    Bucket: 'the-fashion-salad',
+    Key: `profile-pictures/${customFileName}`,
     Body: file,
     ACL: 'public-read',
   }
 
   const handleProfileUpload = async () => {
     try {
-      const data = await s3Client.send(new PutObjectCommand(params))
-      console.log(
-        'Successfully uploaded object: ' + params.Bucket + '/' + params.Key
-      )
-      console.log(data)
+      if (fetchUser?.image_url !== '') {
+        await s3Client.send(new DeleteObjectCommand(oldParams))
+      }
+      const data = await s3Client.send(new PutObjectCommand(newParams))
+
+      const fileUrl = `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${customFileName}`
+
+      const response = await axios.patch('/api/admin/users/', {
+        id: user.id,
+        image_url: customFileName,
+      })
+
+      if (response.status === 200) {
+        enqueueSnackbar('Profile picture updated', {
+          variant: 'success',
+        })
+      }
     } catch (err) {
       console.log('Error', err)
     }
   }
-
-  // const handleProfileUpload = async (event) => {
-  //   event.preventDefault()
-  //   const formData = new FormData()
-  //   formData.append('file', file)
-
-  //   try {
-  //     const response = await axios.post('/api/upload', {
-  //       formData,
-  //     })
-  //     const result = await response.json()
-  //     setMessage(result.message)
-  //   } catch (error) {
-  //     setMessage('Error uploading file')
-  //   }
-  // }
 
   const fetchUserData = async () => {
     try {
@@ -102,8 +118,6 @@ const AccountPage = () => {
       setName(response.data.name)
     } catch (error) {
       enqueueSnackbar(error.response.data.message)
-      // localStorage.removeItem('user')
-      // localStorage.removeItem('token')
       setUser(null)
       router.push('/')
     } finally {

@@ -21,8 +21,6 @@ export async function POST(request) {
       [email]
     )
 
-    console.log(existingSubscriber)
-
     if (existingSubscriber.length > 0) {
       // If subscriber exists, return an error message
       return NextResponse.json(

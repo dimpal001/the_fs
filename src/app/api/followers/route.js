@@ -70,7 +70,7 @@ export async function GET(request) {
   try {
     // Fetch user details excluding password, role, otp, otp_expiration, email
     const [userRows] = await db.query(
-      'SELECT id, name, created_at, updated_at FROM Users WHERE id = ?',
+      'SELECT id, name, image_url, created_at, updated_at FROM Users WHERE id = ?',
       [user_id]
     )
 

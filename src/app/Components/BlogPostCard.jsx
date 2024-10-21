@@ -67,6 +67,7 @@ const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
               name={post?.author_name}
               id={post?.author_id}
               date={post?.created_at}
+              author_image={post?.author_image}
             />
           </div>
           <div

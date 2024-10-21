@@ -6,6 +6,12 @@ import { useRouter } from 'next/navigation'
 import { useUserContext } from '@/app/context/UserContext'
 import { enqueueSnackbar } from 'notistack'
 
+const ContactManagement = dynamic(
+  () => import('../../Components/components/ContactManagement'),
+  {
+    ssr: false,
+  }
+)
 const Sidebar = dynamic(() => import('../../Components/components/Sidebar'), {
   ssr: false,
 })
@@ -92,6 +98,7 @@ const AdminDashboard = () => {
             <TermsAndConditionManagement />
           )}
           {activeSection === 'hero-posts' && <HeroPostManagement />}
+          {activeSection === 'contact' && <ContactManagement />}
         </main>
       </div>
     </div>

@@ -213,7 +213,11 @@ const Blog = ({ params }) => {
                 />
               </div>
               <div className='flex p-2 justify-between items-center'>
-                <ProfileCard name={post?.author_name} id={post?.author_id} />
+                <ProfileCard
+                  name={post?.author_name}
+                  id={post?.author_id}
+                  author_image={post?.author_image}
+                />
                 <div className='flex gap-7 items-center text-sm max-md:text-xs text-neutral-600'>
                   <p>{post?.views} Views</p>
                   <div className='flex gap-1 items-center'>

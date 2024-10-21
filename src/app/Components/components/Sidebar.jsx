@@ -8,6 +8,7 @@ import {
   Lock,
   CheckCircle,
   Star,
+  Mail,
 } from 'lucide-react'
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
@@ -190,6 +191,24 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
                 }`}
               />
               Hero Posts
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => setActiveSection('contact')}
+              className={`px-6 py-3 w-full flex items-center gap-3 text-left ${
+                activeSection === 'contact'
+                  ? 'bg-gray-100 font-semibold text-first'
+                  : 'text-gray-800 hover:bg-gray-200'
+              }`}
+            >
+              <Mail
+                size={20}
+                className={`${
+                  activeSection === 'contact' ? 'text-first' : 'text-gray-800'
+                }`}
+              />
+              Messages
             </button>
           </li>
         </ul>

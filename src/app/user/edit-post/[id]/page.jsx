@@ -8,6 +8,11 @@ import axios from 'axios'
 import JoditEditor from 'jodit-react'
 import { useUserContext } from '@/app/context/UserContext'
 import Button from '@/app/Components/Button'
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3'
 
 const EditPost = () => {
   const { user } = useUserContext()
@@ -18,10 +23,13 @@ const EditPost = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [thumbnail, setThumbnail] = useState(null)
+  const [file, setFile] = useState(null)
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
   const [tags, setTags] = useState([])
+  const [image_url, setImage_url] = useState('')
+  const [fileName, setFileName] = useState('')
 
   const handleCheckboxChange = (event) => {
     const { id, checked } = event.target
@@ -57,6 +65,7 @@ const EditPost = () => {
       setContent(fetchedPost.content)
       setSelectedCategoryIds(fetchedPost.category_ids)
       setTags(fetchedPost.tags || [])
+      setImage_url(fetchedPost.image_url)
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
@@ -80,7 +89,13 @@ const EditPost = () => {
 
   const handleImageUpload = (e) => {
     const file = e.target.files[0]
+    setFile(e.target.files[0])
     if (file) {
+      // Remove spaces from the filename
+      const sanitizedFileName = file.name.replace(/\s+/g, '')
+
+      setFileName(sanitizedFileName)
+
       const reader = new FileReader()
       reader.onloadend = () => {
         setThumbnail(reader.result)
@@ -89,11 +104,59 @@ const EditPost = () => {
     }
   }
 
+  const s3Client = new S3Client({
+    endpoint: 'https://blr1.digitaloceanspaces.com',
+    forcePathStyle: false,
+    region: 'blr1',
+    credentials: {
+      accessKeyId: 'DO00TK892YLJBW7MV82Y',
+      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
+    },
+  })
+
+  // Generate the custom file name
+  const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+  const customFileName = `thumbnail-${timestamp}-${fileName}`
+
+  const oldParams = {
+    Bucket: 'the-fashion-salad',
+    Key: `blog-post-images/${image_url}`,
+    Body: file,
+    ACL: 'public-read',
+  }
+
+  const newParams = {
+    Bucket: 'the-fashion-salad',
+    Key: `blog-post-images/${customFileName}`,
+    Body: file,
+    ACL: 'public-read',
+  }
+
   const handleSubmit = async (status) => {
+    if (title.length === 0) {
+      enqueueSnackbar('Title should not be empty', { variant: 'error' })
+      return
+    }
+    if (title.length > 120) {
+      enqueueSnackbar('Title is too long to.', { variant: 'error' })
+      return
+    }
     if (selectedCategoryIds.length === 0) {
       enqueueSnackbar('Select at least one category', { variant: 'error' })
       return
     }
+
+    if (!thumbnail) {
+      enqueueSnackbar('Add a thumbnail image', { variant })
+      return
+    }
+
+    if (image_url !== '') {
+      await s3Client.send(new DeleteObjectCommand(oldParams))
+    }
+
+    const data = await s3Client.send(new PutObjectCommand(newParams))
+
     try {
       const response = await axios.patch(
         '/api/posts',
@@ -104,6 +167,7 @@ const EditPost = () => {
           status: status,
           category_ids: selectedCategoryIds,
           tags,
+          image_url: thumbnail ? customFileName : image_url,
         },
         {
           params: { id: id },
@@ -252,16 +316,18 @@ const EditPost = () => {
             Post Preview
           </p>
           <p className='font-semibold pb-4 text-3xl'>{title}</p>
-          {thumbnail && (
-            <Image
-              src={thumbnail}
-              alt='Thumbnail preview'
-              className='mb-4 rounded-lg'
-              width={300}
-              height={150}
-              layout='responsive'
-            />
-          )}
+          <Image
+            src={
+              thumbnail
+                ? thumbnail
+                : `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/blog-post-images/${image_url}`
+            }
+            alt='Thumbnail preview'
+            className='mb-4 rounded-lg'
+            width={300}
+            height={150}
+            layout='responsive'
+          />
           <div
             className='prose lg:prose-xl'
             dangerouslySetInnerHTML={{ __html: content }}

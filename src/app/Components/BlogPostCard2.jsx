@@ -54,7 +54,11 @@ const BlogPostCard2 = ({ title, imageUrl, date, onClick, post }) => {
         </p>
         <div className='bg-gray-300 my-3 mt-11 h-[0.5px]'></div>
         <div className='flex justify-between items-center'>
-          <ProfileCard name={post?.author_name} id={post?.author_id} />
+          <ProfileCard
+            name={post?.author_name}
+            id={post?.author_id}
+            author_image={post?.author_image}
+          />
         </div>
       </div>
     </div>

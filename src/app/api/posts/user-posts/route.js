@@ -16,7 +16,7 @@ export async function GET(request) {
       const [posts] = await db.query(
         `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.slug, BlogPosts.image_url, BlogPosts.created_at, BlogPosts.views, BlogPosts.replies,
                 BlogPosts.likes,
-                Users.name as author_name, 
+                Users.name as author_name, Users.image_url as author_image,
                 Users.email as author_email,
                 SUBSTRING(BlogPosts.content, 1, 100) as content 
              FROM BlogPosts 

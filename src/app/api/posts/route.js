@@ -5,7 +5,7 @@ import slugify from 'slugify'
 
 export async function POST(request) {
   try {
-    const { title, content, author_id, category_ids, status, tags } =
+    const { title, content, author_id, category_ids, status, tags, image_url } =
       await request.json()
 
     if (!title || !content) {
@@ -24,7 +24,7 @@ export async function POST(request) {
 
     // Insert the post into the BlogPosts table with the generated slug
     await db.query(
-      'INSERT INTO BlogPosts (title, content, author_id, category_ids, created_at, updated_at, status, tags, slug) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      'INSERT INTO BlogPosts (title, content, author_id, category_ids, created_at, updated_at, status, tags, slug, image_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
       [
         title,
         content,
@@ -35,6 +35,7 @@ export async function POST(request) {
         status,
         tags,
         slug,
+        image_url,
       ]
     )
 
@@ -73,7 +74,7 @@ export async function GET(request) {
 
       const [post] = await db.query(
         `SELECT BlogPosts.*, 
-                Users.name AS author_name, 
+                Users.name AS author_name, Users.image_url as author_image,
                 Users.email AS author_email,
                 COUNT(DISTINCT Replies.id) AS replies, 
                 COUNT(DISTINCT Likes.id) AS likes
@@ -103,7 +104,7 @@ export async function GET(request) {
 
       // Fetch the post along with author information
       const [post] = await db.query(
-        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email
+        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email, Users.image_url as author_image
          FROM BlogPosts
          JOIN Users ON BlogPosts.author_id = Users.id
          WHERE BlogPosts.slug = ?`,
@@ -141,7 +142,7 @@ export async function GET(request) {
     if (userId) {
       console.log(userId)
       const [posts] = await db.query(
-        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email 
+        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email, Users.image_url as author_image
          FROM BlogPosts 
          JOIN Users ON BlogPosts.author_id = Users.id 
          WHERE BlogPosts.author_id = ?`,
@@ -165,7 +166,7 @@ export async function GET(request) {
 
     if (isHeroPost) {
       const [posts] = await db.query(
-        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email
+        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email, Users.image_url as author_image
          FROM BlogPosts
          JOIN Users ON BlogPosts.author_id = Users.id
          WHERE isHeroPost = 1
@@ -180,7 +181,7 @@ export async function GET(request) {
 
       // All posts
       const [posts] = await db.query(
-        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email
+        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email, Users.image_url as author_image
        FROM BlogPosts
        JOIN Users ON BlogPosts.author_id = Users.id
        WHERE BlogPosts.status = ?
@@ -228,8 +229,16 @@ export async function PATCH(request) {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
   const isApprove = searchParams.get('status')
-  const { title, content, category_ids, status, tags, postId, isHeroPost } =
-    await request.json()
+  const {
+    title,
+    content,
+    category_ids,
+    status,
+    tags,
+    postId,
+    isHeroPost,
+    image_url = null,
+  } = await request.json()
 
   try {
     if (isApprove) {
@@ -287,8 +296,8 @@ export async function PATCH(request) {
     }
 
     const result = await db.query(
-      'UPDATE BlogPosts SET title = ?, category_ids = ?, content = ?, status = ?, updated_at = ?, tags = ? WHERE id = ?',
-      [title, category_ids, content, status, new Date(), tags, id]
+      'UPDATE BlogPosts SET title = ?, category_ids = ?, content = ?, status = ?, updated_at = ?, tags = ?, image_url = ? WHERE id = ?',
+      [title, category_ids, content, status, new Date(), tags, image_url, id]
     )
 
     if (result.affectedRows === 0) {
