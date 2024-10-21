@@ -165,9 +165,9 @@ const HomePage = () => {
             />
           </div>
           <div className='lg:w-[42%] h-full max-md:px-6 p-3 flex flex-col gap-6'>
-            <h2 className='text-4xl font-bold'>
+            <h1 className='text-4xl font-bold'>
               Lorem ipsum dolor sit amet consectetur.
-            </h2>
+            </h1>
             <p className='text-stone-600 leading-5'>
               Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi ut
               sapiente recusandae. Eius sed numquam distinctio dolorum facere
@@ -203,9 +203,9 @@ const HomePage = () => {
         {/* Latest blog post section  */}
         <section className='p-10 max-md:p-5'>
           <div className='flex justify-between items-center'>
-            <h1 className='text-6xl max-md:text-3xl font-[900]'>
+            <h2 className='text-6xl max-md:text-3xl font-[900]'>
               Latest Blog Posts
-            </h1>
+            </h2>
             <ArrowRight
               onClick={() => handleSeeMore(categories[0].slug)}
               size={50}

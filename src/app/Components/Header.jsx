@@ -23,6 +23,7 @@ const Header = () => {
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [logoUrl, setLogoUrl] = useState('')
   const { user, setUser } = useUserContext()
   const { setSelectedCategoryId } = useCategoryContext()
   const router = useRouter()
@@ -52,11 +53,22 @@ const Header = () => {
     }
   }
 
+  const handleFetchLogo = async () => {
+    try {
+      const response = await axios.get('/api/admin/logos', {
+        params: { mainLogo: 'logo' },
+      })
+      console.log(response.data[0].url)
+      setLogoUrl(response.data[0].url)
+    } catch (error) {}
+  }
+
   const handleClick = (item) => {
     router.push(`/category/${item?.slug}`)
   }
 
   useEffect(() => {
+    handleFetchLogo()
     handleFetchCategory()
   }, [])
 
@@ -176,15 +188,15 @@ const Header = () => {
             </div>
 
             <Link href={'/'}>
-              <Image
-                className='lg:ms-28 max-md:w-[160px]'
-                src={
-                  'https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
-                }
-                width={250}
-                height={10}
-                alt='The fashion salad'
-              />
+              {logoUrl && (
+                <Image
+                  className='lg:ms-28 max-md:w-[160px]'
+                  src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/${logoUrl}`}
+                  width={250}
+                  height={10}
+                  alt='The fashion salad'
+                />
+              )}
             </Link>
 
             {/* User  */}

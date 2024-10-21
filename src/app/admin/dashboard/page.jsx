@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useUserContext } from '@/app/context/UserContext'
 import { enqueueSnackbar } from 'notistack'
+import ManageLogos from '@/app/Components/components/ManageLogos'
 
 const ContactManagement = dynamic(
   () => import('../../Components/components/ContactManagement'),
@@ -99,6 +100,7 @@ const AdminDashboard = () => {
           )}
           {activeSection === 'hero-posts' && <HeroPostManagement />}
           {activeSection === 'contact' && <ContactManagement />}
+          {activeSection === 'logos' && <ManageLogos />}
         </main>
       </div>
     </div>
