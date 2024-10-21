@@ -22,6 +22,24 @@ const geistMono = localFont({
 })
 
 export default function RootLayout({ children }) {
+  const schemaData = {
+    '@context': 'http://schema.org',
+    '@type': 'WebSite',
+    name: 'The Fashion Salad',
+    description:
+      'Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.',
+    url: 'https://www.thefashionsalad.com',
+    publisher: {
+      '@type': 'Organization',
+      name: 'The Fashion Salad',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png',
+      },
+    },
+    mainEntityOfPage: 'https://www.thefashionsalad.com',
+  }
+
   return (
     <html lang='en'>
       <head>
@@ -40,7 +58,7 @@ export default function RootLayout({ children }) {
           property='og:description'
           content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
         />
-        <meta property='og:url' content='https://yourwebsite.com' />
+        <meta property='og:url' content='https://www.thefashionsalad.com' />
 
         {/* Twitter */}
         <meta name='twitter:card' content='summary_large_image' />
@@ -49,12 +67,21 @@ export default function RootLayout({ children }) {
           name='twitter:description'
           content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
         />
-        <meta name='twitter:image' content='/path-to-default-image.jpg' />
+        <meta
+          name='twitter:image'
+          content='https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
+        />
 
         {/* Canonical link */}
         <link rel='canonical' href='https://www.thefashionsalad.com' />
 
         <title>The Fashion Salad - Fashion blog</title>
+
+        {/* Adding Schema.org Structured Data */}
+        <script
+          type='application/ld+json'
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
