@@ -24,6 +24,38 @@ const geistMono = localFont({
 export default function RootLayout({ children }) {
   return (
     <html lang='en'>
+      <head>
+        <meta charSet='UTF-8' />
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <meta
+          name='description'
+          content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
+        />
+        <meta name='keywords' content='fashion, blog, style, tips, trends' />
+        <meta name='author' content='The Fashion Salad' />
+
+        {/* Open Graph / Facebook */}
+        <meta property='og:title' content='The Fashion Salad - Fashion blog' />
+        <meta
+          property='og:description'
+          content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
+        />
+        <meta property='og:url' content='https://yourwebsite.com' />
+
+        {/* Twitter */}
+        <meta name='twitter:card' content='summary_large_image' />
+        <meta name='twitter:title' content='The Fashion Salad - Fashion blog' />
+        <meta
+          name='twitter:description'
+          content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
+        />
+        <meta name='twitter:image' content='/path-to-default-image.jpg' />
+
+        {/* Canonical link */}
+        <link rel='canonical' href='https://www.thefashionsalad.com' />
+
+        <title>The Fashion Salad - Fashion blog</title>
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

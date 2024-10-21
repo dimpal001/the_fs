@@ -11,7 +11,6 @@ import BlogPostCard4 from './Components/BlogPostCard4'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Loading from './Components/Loading'
-import { useCategoryContext } from './context/CategoryContext'
 import { Helmet } from 'react-helmet'
 import Instagram from './../../public/icons/instagram_icon.svg'
 
@@ -24,7 +23,6 @@ const HomePage = () => {
   const [loadingCategory1, setLoadingCategory1] = useState(false)
   const [loadingCategory2, setLoadingCategory2] = useState(false)
   const [isClient, setIsClient] = useState(false)
-  const { setSelectedCategoryId } = useCategoryContext()
 
   const router = useRouter()
 
@@ -109,14 +107,14 @@ const HomePage = () => {
       {isClient && (
         <div className='overflow-hidden'>
           <Helmet>
-            <title>Fashion Blog - Clothes2Wear</title>
+            <title>The Fashion Salad - Fashion blog</title>
             <meta
               name='description'
               content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
             />
             <meta
               name='keywords'
-              content='fashion, beauty, lifestyle, trends, tips, sustainable fashion, vintage fashion, fashion blog'
+              content='fashion, blogs, fashion blogs, beauty, lifestyle, trends, tips, sustainable fashion, vintage fashion, fashion blog'
             />
           </Helmet>
 
@@ -177,9 +175,9 @@ const HomePage = () => {
           {/* Latest blog post section  */}
           <section className='p-10 max-md:p-5'>
             <div className='flex justify-between items-center'>
-              <h2 className='text-6xl max-md:text-3xl font-[900]'>
+              <h1 className='text-6xl max-md:text-3xl font-[900]'>
                 Latest Blog Posts
-              </h2>
+              </h1>
               <ArrowRight
                 onClick={() => handleSeeMore(categories[0].slug)}
                 size={50}
