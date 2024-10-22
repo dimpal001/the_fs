@@ -52,6 +52,9 @@ export default function RootLayout({ children }) {
         <meta name='keywords' content='fashion, blog, style, tips, trends' />
         <meta name='author' content='The Fashion Salad' />
 
+        {/* Favicon */}
+        <link rel='icon' href='/favicon.ico' sizes='any' />
+
         {/* Open Graph / Facebook */}
         <meta property='og:title' content='The Fashion Salad - Fashion blog' />
         <meta
