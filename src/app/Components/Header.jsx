@@ -104,7 +104,7 @@ const Header = () => {
                             item.name === 'admin blogs' &&
                             user?.role !== 'admin' &&
                             'hidden'
-                          } text-balance hover:text-first uppercase font-extralight`}
+                          } text-balance text-sm hover:text-first uppercase font-extralight`}
                           key={index}
                           name={item.name}
                           onClick={() => {
