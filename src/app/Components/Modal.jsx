@@ -49,8 +49,11 @@ export const Modal = ({ isOpen, children, size }) => {
                 size === '5xl' &&
                 'w-[1000px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
               }
-              ${size === 'full' && 'w-full h-full'}
-               bg-white flex items-center max-md:pb-14`}
+              ${
+                size === 'full' &&
+                'w-full h-full flex items-center max-md:pb-14'
+              }
+               bg-white rounded-2xl p-10`}
           >
             {children}
           </div>
@@ -103,7 +106,7 @@ export const ModalCloseButton = ({ onClick }) => {
 // T CSS
 export const ModalBody = ({ children }) => {
   return (
-    <div className='text-gray-700 w-full h-full max-h-[450px] md:max-h-[500px] overflow-scroll'>
+    <div className='text-gray-700 h-full max-h-[450px] md:max-h-[500px] overflow-scroll'>
       {children}
     </div>
   )
