@@ -75,7 +75,7 @@ const HomePage = () => {
   const handleFetchCategory3Posts = async () => {
     try {
       const response = await axios.get(`/api/posts/category`, {
-        params: { slug: categories[1].slug },
+        params: { slug: categories[2].slug },
       })
       console.log(response.data)
       setCategory3Posts((prev) => [...prev, ...response.data.posts])
@@ -225,7 +225,7 @@ const HomePage = () => {
         {/* Latest blog post section  */}
         <section className='p-10 max-md:p-5'>
           <div className='flex justify-between items-center'>
-            <h2 className='text-6xl max-md:text-3xl font-[900]'>
+            <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
               Latest Blog Posts
             </h2>
             <ArrowRight
@@ -267,7 +267,7 @@ const HomePage = () => {
         {/* Category 1 blog post section  */}
         <section className='p-10 max-md:p-5 lg:-mt-32'>
           <div className='relative'>
-            <h2 className='text-6xl max-md:text-3xl font-[900]'>
+            <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
               {categories[0]?.name}
             </h2>
             <p className='text-neutral-400 max-md:text-sm pt-1'>
@@ -290,7 +290,7 @@ const HomePage = () => {
         {/* Category 2 blog post section  */}
         <section className='p-10 max-md:p-5 -mt-16'>
           <div className='relative'>
-            <h2 className='text-6xl max-md:text-3xl font-[900]'>
+            <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
               {categories[1]?.name}
             </h2>
             <p className='text-neutral-400 max-md:text-sm pt-1'>
@@ -435,14 +435,14 @@ const HomePage = () => {
 
         <section className='p-10 max-md:p-5'>
           <div className='flex justify-between items-center'>
-            <h2 className='text-6xl max-md:text-3xl font-[900]'>
+            <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
               {categories[2]?.name}
             </h2>
           </div>
           <div className='grid max-md:grid-cols-1 grid-cols-3 py-10 gap-14 max-md:gap-5'>
-            {heroPosts &&
-              heroPosts.length > 0 &&
-              heroPosts
+            {category3Posts &&
+              category3Posts.length > 0 &&
+              category3Posts
                 .slice(0, 3)
                 .map((post, index) => (
                   <BlogPostCard
