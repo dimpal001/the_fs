@@ -199,9 +199,9 @@ const HomePage = () => {
               />
             </div>
             <div className='lg:w-[42%] h-full max-md:px-6 p-3 flex flex-col gap-6'>
-              <h1 className='text-4xl font-bold'>
+              <h2 className='text-4xl font-bold'>
                 {heroPosts.length > 0 && heroPosts[0].title}
-              </h1>
+              </h2>
               <p className='text-stone-600 leading-5'>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi
                 ut sapiente recusandae. Eius sed numquam distinctio dolorum
@@ -359,7 +359,11 @@ const HomePage = () => {
               />
               {/* Icon Section */}
               <div className='absolute inset-0 flex justify-center items-center'>
-                <Link target='_blank' href={'https://www.instagram.com'}>
+                <Link
+                  rel='external'
+                  target='_blank'
+                  href={'https://www.instagram.com'}
+                >
                   <Image
                     src={Instagram}
                     width={80}
@@ -375,9 +379,9 @@ const HomePage = () => {
             <div className='flex justify-between'>
               <div>
                 <p className='text-5xl max-md:text-2xl font-semibold'>Our</p>
-                <p className='text-8xl max-md:text-4xl font-bold'>
+                <h1 className='text-8xl max-md:text-4xl font-bold'>
                   Social Diaries
-                </p>
+                </h1>
               </div>
               <div>
                 <ArrowRight size={55} />
@@ -401,6 +405,7 @@ const HomePage = () => {
                 />
                 <div className='absolute inset-0 rounded-xl bgwh flex justify-center items-center'>
                   <Link
+                    rel='external'
                     target='_blank'
                     href={
                       'https://www.facebook.com/profile.php?id=61567652667493'
@@ -432,7 +437,11 @@ const HomePage = () => {
                   alt={'Image'}
                 />
                 <div className='absolute inset-0 bgwh flex justify-center items-center'>
-                  <Link href={'https://www.youtube.com'} target='_blank'>
+                  <Link
+                    rel='external'
+                    href={'https://www.youtube.com'}
+                    target='_blank'
+                  >
                     <Image
                       src={YoutubeImg}
                       width={70}
