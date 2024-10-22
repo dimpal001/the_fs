@@ -1,11 +1,9 @@
 'use client'
 import dynamic from 'next/dynamic'
 
-import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { useUserContext } from '@/app/context/UserContext'
-import { enqueueSnackbar } from 'notistack'
+import { useState } from 'react'
 import ManageLogos from '@/app/Components/components/ManageLogos'
+import useAuth from '@/app/context/useAuth'
 
 const ContactManagement = dynamic(
   () => import('../../Components/components/ContactManagement'),
@@ -59,17 +57,8 @@ const HeroPostManagement = dynamic(
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('users')
   const [showDrawer, setShowDrawer] = useState(true)
-  const router = useRouter()
-  const { user } = useUserContext()
 
-  useEffect(() => {
-    if (!user) {
-      enqueueSnackbar('You are not allowed to enter this page.', {
-        variant: 'error',
-      })
-      router.push('/')
-    }
-  }, [router])
+  useAuth()
 
   return (
     <div className='flex h-screen bg-gray-100'>
