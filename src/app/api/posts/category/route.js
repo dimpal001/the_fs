@@ -26,7 +26,6 @@ export async function GET(request, { params }) {
     }
 
     // Fetch the total number of posts for the category
-    console.log(slug)
     const [[{ totalCount }]] = await db.query(
       `SELECT COUNT(*) AS totalCount FROM BlogPosts ` +
         `WHERE JSON_CONTAINS(BlogPosts.category_ids, ?)`,

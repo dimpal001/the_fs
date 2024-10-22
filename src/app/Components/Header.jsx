@@ -100,7 +100,11 @@ const Header = () => {
                     {categoryList.length > 0 &&
                       categoryList.map((item, index) => (
                         <p
-                          className='cursor-pointer hover:text-first uppercase font-extralight'
+                          className={`cursor-pointer ${
+                            item.name === 'admin blogs' &&
+                            user?.role !== 'admin' &&
+                            'hidden'
+                          } text-balance hover:text-first uppercase font-extralight`}
                           key={index}
                           name={item.name}
                           onClick={() => {

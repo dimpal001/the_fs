@@ -16,19 +16,31 @@ import Instagram from './../../public/icons/instagram_icon.svg'
 
 const HomePage = () => {
   const [latestPosts, setLatestPosts] = useState([])
+  const [heroPosts, setHeroPosts] = useState([])
   const [category1Posts, setCategory1Posts] = useState([])
   const [category2Posts, setCategory2Posts] = useState([])
+  const [category3Posts, setCategory3Posts] = useState([])
   const [loadingLatest, setLoadingLatest] = useState(true)
   const [categories, setCategories] = useState([])
-  const [loadingCategory1, setLoadingCategory1] = useState(false)
-  const [loadingCategory2, setLoadingCategory2] = useState(false)
-  const [isClient, setIsClient] = useState(false)
 
   const router = useRouter()
 
-  const handleFetchLatestPosts = async () => {
+  const handleFetchHeroPosts = async () => {
     try {
       setLoadingLatest(true)
+      const response = await axios.get(`/api/posts/home-data`, {
+        params: { status: 'hero_posts' },
+      })
+      setHeroPosts(response.data)
+      console.log(heroPosts[0])
+    } catch (error) {
+    } finally {
+      setLoadingLatest(false)
+    }
+  }
+
+  const handleFetchLatestPosts = async () => {
+    try {
       const response = await axios.get(`/api/posts/home-data`, {
         params: { status: 'latest' },
       })
@@ -36,36 +48,39 @@ const HomePage = () => {
       setLatestPosts(response.data)
     } catch (error) {
     } finally {
-      setLoadingLatest(false)
     }
   }
 
   const handleFetchCategory1Posts = async () => {
     try {
-      setLoadingCategory1(true)
-      const response = await axios.get(`/api/posts/home-data`, {
-        params: { status: 'category_1' },
+      const response = await axios.get(`/api/posts/category`, {
+        params: { slug: categories[0].slug },
       })
-      console.log(response.data)
-      setCategory1Posts((prev) => [...prev, ...response.data])
-    } catch (error) {
-    } finally {
-      setLoadingCategory1(false)
-    }
+      setCategory1Posts((prev) => [...prev, ...response.data.posts])
+    } catch (error) {}
   }
 
   const handleFetchCategory2Posts = async () => {
     try {
-      setLoadingCategory2(true)
-      const response = await axios.get(`/api/posts/home-data`, {
-        params: { status: 'category_2' },
+      const response = await axios.get(`/api/posts/category`, {
+        params: { slug: categories[1].slug },
       })
       console.log(response.data)
-      setCategory2Posts((prev) => [...prev, ...response.data]) // Append new posts
+      setCategory2Posts((prev) => [...prev, ...response.data.posts])
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' })
-    } finally {
-      setLoadingCategory2(false)
+    }
+  }
+
+  const handleFetchCategory3Posts = async () => {
+    try {
+      const response = await axios.get(`/api/posts/category`, {
+        params: { slug: categories[1].slug },
+      })
+      console.log(response.data)
+      setCategory3Posts((prev) => [...prev, ...response.data.posts])
+    } catch (error) {
+      enqueueSnackbar(error.response.data.message, { variant: 'error' })
     }
   }
 
@@ -79,15 +94,17 @@ const HomePage = () => {
   }
 
   useEffect(() => {
-    setIsClient(true)
+    // setIsClient(true)
+    handleFetchCategories()
+    handleFetchHeroPosts()
     handleFetchLatestPosts()
-
-    setTimeout(() => {
-      handleFetchCategory1Posts()
-      handleFetchCategory2Posts()
-      handleFetchCategories()
-    }, 3000)
   }, [])
+
+  useEffect(() => {
+    handleFetchCategory1Posts()
+    handleFetchCategory2Posts()
+    handleFetchCategory3Posts()
+  }, [categories])
 
   if (loadingLatest) {
     return <Loading />
@@ -147,58 +164,63 @@ const HomePage = () => {
         </Helmet>
 
         {/* New hero section  */}
-        <section className='lg:h-[470px] lg:p-10 relative w-full gap-5 py-7 flex max-md:flex-col items-center'>
-          <div className='lg:w-[28%] max-md:h-[300px] w-full h-full max-md:p-3'>
-            <Image
-              src={'https://picsum.photos/685/979'}
-              width={0}
-              height={0}
-              sizes='100vw'
-              className='rounded-[15px]'
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                cursor: 'pointer',
-              }}
-              alt={'Image'}
-            />
-          </div>
-          <div className='lg:w-[42%] h-full max-md:px-6 p-3 flex flex-col gap-6'>
-            <h1 className='text-4xl font-bold'>
-              Lorem ipsum dolor sit amet consectetur.
-            </h1>
-            <p className='text-stone-600 leading-5'>
-              Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi ut
-              sapiente recusandae. Eius sed numquam distinctio dolorum facere
-              aperiam, praesentium aspernatur a, quam soluta veniam.
-            </p>
-            <p className='text-2xl font-semibold hover:text-first cursor-pointer'>
-              Read More ..
-            </p>
-          </div>
-          <div className='lg:w-[30%] max-md:p-3 h-full flex flex-col gap-3'>
-            <HeroBlogCard
-              imageUrl={`https://picsum.photos/778/374`}
-              delay={0}
-            />
-            <HeroBlogCard
-              imageUrl={`https://picsum.photos/788/374`}
-              delay={1}
-            />
-            <HeroBlogCard
-              imageUrl={`https://picsum.photos/958/374`}
-              delay={2}
-            />
-            <p className='font-semibold text-lg text-end hover:text-first cursor-pointer'>
-              Read More ..
-            </p>
-          </div>
+        {heroPosts.length > 0 && (
+          <section className='lg:h-[470px] lg:p-10 relative w-full gap-5 py-7 flex max-md:flex-col items-center'>
+            <div className='lg:w-[28%] max-md:h-[300px] w-full h-full max-md:p-3'>
+              <Image
+                src={
+                  heroPosts[0].image_url
+                    ? heroPosts[0].image_url
+                    : 'https://picsum.photos/685/979'
+                }
+                width={0}
+                height={0}
+                sizes='100vw'
+                className='rounded-[15px]'
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  cursor: 'pointer',
+                }}
+                alt={'Image'}
+              />
+            </div>
+            <div className='lg:w-[42%] h-full max-md:px-6 p-3 flex flex-col gap-6'>
+              <h1 className='text-4xl font-bold'>
+                {heroPosts.length > 0 && heroPosts[0].title}
+              </h1>
+              <p className='text-stone-600 leading-5'>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi
+                ut sapiente recusandae. Eius sed numquam distinctio dolorum
+                facere aperiam, praesentium aspernatur a, quam soluta veniam.
+              </p>
+              <p className='text-2xl font-semibold hover:text-first cursor-pointer'>
+                Read More ..
+              </p>
+            </div>
+            <div className='lg:w-[30%] max-md:p-3 h-full flex flex-col gap-3'>
+              {heroPosts.length > 0 &&
+                heroPosts
+                  .slice(1, 4)
+                  .map((post, index) => (
+                    <HeroBlogCard
+                      key={index}
+                      imageUrl={`https://picsum.photos/778/374`}
+                      delay={0}
+                      post={post}
+                    />
+                  ))}
+              <p className='font-semibold text-lg text-end hover:text-first cursor-pointer'>
+                Read More ..
+              </p>
+            </div>
 
-          <div className='absolute max-md:hidden top-[20px] right-[270px] z-10 w-[330px] h-[330px] opacity-15 bg-amber-500 rounded-full filter' />
-          <div className='absolute max-md:hidden top-[250px] right-[530px] w-[150px] h-[150px] opacity-15 bg-amber-500 rounded-full filter' />
-          <div className='absolute max-md:hidden top-[350px] left-[390px] z-10 w-[100px] h-[100px] opacity-15 bg-amber-500 rounded-full filter' />
-        </section>
+            <div className='absolute max-md:hidden top-[20px] right-[270px] z-10 w-[330px] h-[330px] opacity-15 bg-amber-500 rounded-full filter' />
+            <div className='absolute max-md:hidden top-[250px] right-[530px] w-[150px] h-[150px] opacity-15 bg-amber-500 rounded-full filter' />
+            <div className='absolute max-md:hidden top-[350px] left-[390px] z-10 w-[100px] h-[100px] opacity-15 bg-amber-500 rounded-full filter' />
+          </section>
+        )}
 
         {/* Latest blog post section  */}
         <section className='p-10 max-md:p-5'>
@@ -246,7 +268,7 @@ const HomePage = () => {
         <section className='p-10 max-md:p-5 lg:-mt-32'>
           <div className='relative'>
             <h2 className='text-6xl max-md:text-3xl font-[900]'>
-              LifeStyle blogs
+              {categories[0]?.name}
             </h2>
             <p className='text-neutral-400 max-md:text-sm pt-1'>
               The Fashion Salad latest update
@@ -255,7 +277,7 @@ const HomePage = () => {
           </div>
           {/* <div className='h-[0.5px] bg-neutral-300 my-10'></div> */}
           <div className='pt-10 lg:p-16'>
-            {category2Posts?.map((post, index) => (
+            {category1Posts?.map((post, index) => (
               <BlogPostCard3
                 key={index}
                 post={post}
@@ -269,7 +291,7 @@ const HomePage = () => {
         <section className='p-10 max-md:p-5 -mt-16'>
           <div className='relative'>
             <h2 className='text-6xl max-md:text-3xl font-[900]'>
-              Food & Drinks blogs
+              {categories[1]?.name}
             </h2>
             <p className='text-neutral-400 max-md:text-sm pt-1'>
               The Fashion Salad latest update
@@ -413,18 +435,14 @@ const HomePage = () => {
 
         <section className='p-10 max-md:p-5'>
           <div className='flex justify-between items-center'>
-            <h2 className='text-6xl max-md:text-3xl font-[900]'>Our best</h2>
-            {/* <ArrowRight
-                onClick={() => handleSeeMore(latestPosts[3].category_ids[0])}
-                size={50}
-                className='cursor-pointer hover:text-first'
-                strokeWidth={2}
-              /> */}
+            <h2 className='text-6xl max-md:text-3xl font-[900]'>
+              {categories[2]?.name}
+            </h2>
           </div>
           <div className='grid max-md:grid-cols-1 grid-cols-3 py-10 gap-14 max-md:gap-5'>
-            {latestPosts &&
-              latestPosts.length > 0 &&
-              latestPosts
+            {heroPosts &&
+              heroPosts.length > 0 &&
+              heroPosts
                 .slice(0, 3)
                 .map((post, index) => (
                   <BlogPostCard

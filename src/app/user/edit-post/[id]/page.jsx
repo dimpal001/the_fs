@@ -31,18 +31,9 @@ const EditPost = () => {
   const [image_url, setImage_url] = useState('')
   const [fileName, setFileName] = useState('')
 
-  const handleCheckboxChange = (event) => {
-    const { id, checked } = event.target
-
-    if (checked) {
-      setSelectedCategoryIds((prev) =>
-        prev.includes(id) ? prev : [...prev, id]
-      )
-    } else {
-      setSelectedCategoryIds((prev) =>
-        prev.filter((categoryId) => categoryId !== id)
-      )
-    }
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value
+    setSelectedCategoryIds([selectedValue])
   }
 
   const handleFetchCategories = async () => {
@@ -197,7 +188,7 @@ const EditPost = () => {
 
   return (
     <div className='p-6 md:p-10 bg-gray-50'>
-      <div className='flex flex-col md:px-12 lg:px-48 gap-6'>
+      <div className='flex flex-col md:px-12 lg:px-48 gap-2'>
         <h1 className='text-3xl font-bold text-center mb-5 text-gray-700'>
           Edit the Post
         </h1>
@@ -213,7 +204,7 @@ const EditPost = () => {
 
         {/* Upload Thumbnail Button */}
         <div className='my-5 flex flex-col'>
-          <label className='text-sm font-medium text-gray-700'>
+          <label className='text-lg font-semibold text-gray-700'>
             Upload Thumbnail
           </label>
           <div className='flex gap-3'>
@@ -243,26 +234,30 @@ const EditPost = () => {
             Select Categories
           </p>
           <div className='flex flex-wrap gap-4 mb-5'>
-            {categories &&
-              categories.map((category, index) => (
-                <div key={index} className='flex items-center gap-2'>
-                  <input
-                    type='checkbox'
-                    name={category.name}
-                    value={selectedCategoryIds}
-                    checked={selectedCategoryIds.includes(category.slug)}
-                    id={category.slug}
-                    onChange={handleCheckboxChange}
-                    className='h-5 w-5 accent-blue-500'
-                  />
-                  <label
-                    className='capitalize text-gray-600'
-                    htmlFor={category.slug}
-                  >
-                    {category.name}
-                  </label>
-                </div>
-              ))}
+            {categories && (
+              <div className='flex max-md:w-full flex-col'>
+                <select
+                  value={selectedCategoryIds[0] || ''}
+                  onChange={handleSelectChange}
+                  className='h-10 border capitalize border-gray-300 rounded-sm p-2'
+                >
+                  <option value=''>Select a category</option>
+                  {categories.map((category) => (
+                    <option
+                      className={`${
+                        category.name === 'admin blogs' &&
+                        user?.role !== 'admin' &&
+                        'hidden'
+                      }`}
+                      key={category.id}
+                      value={category.slug}
+                    >
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </div>
 

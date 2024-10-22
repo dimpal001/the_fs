@@ -98,7 +98,9 @@ export async function GET(request) {
       }
       return NextResponse.json(category[0], { status: 200 })
     } else {
-      const [categories] = await db.query('SELECT * FROM Categories')
+      const [categories] = await db.query(
+        'SELECT * FROM Categories ORDER BY name DESC'
+      )
       return NextResponse.json(categories, { status: 200 })
     }
   } catch (error) {

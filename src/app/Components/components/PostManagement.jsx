@@ -8,6 +8,7 @@ import ConfirmModal from './ConfirmModal'
 import Input from '@/app/Components/Input'
 import Loading from '@/app/Components/Loading'
 import Paggination from './Paggination'
+import { useRouter } from 'next/navigation'
 
 const PostManagement = () => {
   const [loading, setLoading] = useState(true)
@@ -23,6 +24,7 @@ const PostManagement = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState('')
+  const router = useRouter()
 
   const handleFetchPosts = async (page) => {
     setLoading(true)
@@ -210,29 +212,34 @@ const PostManagement = () => {
       </p>
 
       <div className='max-md:overflow-x-scroll'>
-        <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
+        <table className='min-w-full text-sm table-auto bg-white shadow-md rounded-sm'>
           <thead>
             <tr className='bg-gray-200'>
               <th className='px-4 text-start py-2'>Title</th>
               <th className='px-4 text-start py-2'>Author Name</th>
               <th className='px-4 text-start py-2'>Status</th>
-              <th className='px-4 text-start py-2'>Preview</th>
+              <th className='px-4 text-start py-2'>Edit</th>
               <th className='px-4 py-2'>Actions</th>
             </tr>
           </thead>
           <tbody>
             {filteredPosts.map((post) => (
               <tr key={post.id}>
-                <td className='px-4 py-2'>{post.title}</td>
+                <td
+                  onClick={() => handleReviewModal(post)}
+                  className='px-4 hover:text-first cursor-pointer py-2'
+                >
+                  {post.title}
+                </td>
                 <td className='px-4 py-2'>{post.author_email}</td>
                 <td className='px-4 py-2 capitalize'>{post.status}</td>
                 <td className='px-4 py-2'>
                   <button
                     title='Preview'
-                    onClick={() => handleReviewModal(post)}
+                    onClick={() => router.push(`/user/edit-post/${post?.id}`)}
                     className='bg-blue-500 text-white px-4 py-1 rounded-sm'
                   >
-                    Preview
+                    Edit
                   </button>
                 </td>
                 <td className='px-4 py-2 flex justify-end items-center'>
@@ -297,7 +304,8 @@ const PostManagement = () => {
             <ReviewPostModal
               isOpen={true}
               onClose={() => setIsReviewModalOpen(false)}
-              post={selectedPost}
+              // post={selectedPost}
+              id={selectedPost.id}
             />
           )}
           {isConfirmModalOpen && (

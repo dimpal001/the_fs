@@ -150,13 +150,6 @@ export async function GET(request) {
         [userId]
       )
 
-      if (posts.length === 0) {
-        return NextResponse.json(
-          { error: 'No posts found for this user' },
-          { status: 404 }
-        )
-      }
-
       return NextResponse.json(posts, { status: 200 })
     }
 
@@ -205,7 +198,7 @@ export async function GET(request) {
 
     // All posts
     const [posts] = await db.query(
-      `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email
+      `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.slug, BlogPosts.status, BlogPosts.image_url, BlogPosts.category_ids, Users.name as author_name, Users.email as author_email
        FROM BlogPosts
        JOIN Users ON BlogPosts.author_id = Users.id
        ORDER BY BlogPosts.created_at DESC
@@ -223,18 +216,6 @@ export async function GET(request) {
   } catch (error) {
     console.error('Error fetching post:', error)
     return NextResponse.json({ error: 'Error fetching post' }, { status: 500 })
-  }
-}
-
-async function sendBlogPostNotification(slug) {
-  try {
-    const [emails] = await db.query(`SELECT email FROM Subscribers`)
-    const link = `https://www.thefashionsalad.com/blogs/${slug}`
-
-    emailQueue.add({ emails, link })
-    console.log('Email notification sent successfully')
-  } catch (error) {
-    console.error('Failed to send email notification:', error)
   }
 }
 

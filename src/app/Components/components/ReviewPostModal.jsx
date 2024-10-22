@@ -5,10 +5,12 @@ import React, { useEffect, useState } from 'react'
 
 const ReviewPostModal = ({ post, isOpen, onClose, id }) => {
   const [postData, setPostData] = useState(null)
-  const [loading, setLoading] = useState(false) // Added loading state
+  const [categories, setCategories] = useState([])
+  const [loading, setLoading] = useState(false)
+  console.log(id)
 
   const handleFetchBlogPost = async () => {
-    if (!id) return // Check if id is provided
+    if (!id) return
 
     try {
       setLoading(true)
@@ -25,12 +27,20 @@ const ReviewPostModal = ({ post, isOpen, onClose, id }) => {
     }
   }
 
+  const handleFetchCategories = async () => {
+    try {
+      const response = await axios.get('/api/admin/category')
+      setCategories(response.data)
+    } catch (error) {}
+  }
+
   useEffect(() => {
     handleFetchBlogPost()
-  }, [id]) // Added id to dependencies
+    handleFetchCategories()
+  }, [])
 
   if (loading) {
-    return <p>Loading...</p> // Add loading indicator if needed
+    return <p>Loading...</p>
   }
 
   return (
@@ -41,6 +51,22 @@ const ReviewPostModal = ({ post, isOpen, onClose, id }) => {
           <p className='text-4xl font-semibold py-3'>
             {id ? postData?.title : post?.title}
           </p>
+          <div className='mb-3 flex gap-3'>
+            {categories.length > 0 &&
+              categories
+                .filter((category) =>
+                  postData.category_ids.includes(category.slug)
+                )
+                .map((category) => (
+                  <span
+                    className='text-sm capitalize px-3 py-1 text-white bg-gradient-to-br from-blue-600 to-pink-300 rounded-md'
+                    key={category.slug}
+                  >
+                    {category.name}
+                  </span>
+                ))}
+          </div>
+
           <div
             dangerouslySetInnerHTML={{
               __html: id ? postData?.content : post?.content,

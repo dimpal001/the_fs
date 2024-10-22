@@ -26,18 +26,9 @@ const CreatePost = () => {
   const [tags, setTags] = useState([])
   const [fileName, setFileName] = useState('')
 
-  const handleCheckboxChange = (event) => {
-    const { id, checked } = event.target
-
-    if (checked) {
-      setSelectedCategoryIds((prev) =>
-        prev.includes(id) ? prev : [...prev, id]
-      )
-    } else {
-      setSelectedCategoryIds((prev) =>
-        prev.filter((categoryId) => categoryId !== id)
-      )
-    }
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value
+    setSelectedCategoryIds([selectedValue])
   }
 
   const handleFetchCategories = async () => {
@@ -101,6 +92,16 @@ const CreatePost = () => {
   }
 
   const handleSubmit = async (status) => {
+    // if (user.role === 'admin') {
+    //   const adminBlogCategory = categories.find(
+    //     (category) => category.name === 'admin blogs'
+    //   )
+
+    //   selectedCategoryIds.push(adminBlogCategory.slug)
+    //   console.log(selectedCategoryIds)
+    //   return
+    // }
+
     if (user?.name === '' || user?.name === null) {
       enqueueSnackbar('Please add your name before creating a post!', {
         variant: 'error',
@@ -184,7 +185,7 @@ const CreatePost = () => {
 
         {/* Upload Thumbnail Button */}
         <div className='my-5 flex flex-col'>
-          <label className='text-sm font-medium text-gray-700'>
+          <label className='text-lg font-semibold text-gray-700'>
             Upload Thumbnail
           </label>
           <div className='flex gap-3'>
@@ -214,25 +215,30 @@ const CreatePost = () => {
             Select Categories
           </p>
           <div className='flex flex-wrap gap-4 mb-5'>
-            {categories &&
-              categories.map((category, index) => (
-                <div key={index} className='flex items-center gap-2'>
-                  <input
-                    type='checkbox'
-                    name={category.name}
-                    value={selectedCategoryIds}
-                    id={category.slug}
-                    onChange={handleCheckboxChange}
-                    className='h-5 w-5 accent-blue-500'
-                  />
-                  <label
-                    className='capitalize text-gray-600'
-                    htmlFor={category.id}
-                  >
-                    {category.name}
-                  </label>
-                </div>
-              ))}
+            {categories && (
+              <div className='flex flex-col max-md:w-full'>
+                <select
+                  value={selectedCategoryIds[0] || ''}
+                  onChange={handleSelectChange}
+                  className='h-10 max-md:w-full capitalize border border-gray-300 rounded-sm p-2'
+                >
+                  <option value=''>Select a category</option>
+                  {categories.map((category) => (
+                    <option
+                      className={`${
+                        category.name === 'admin blogs' &&
+                        user?.role !== 'admin' &&
+                        'hidden'
+                      }`}
+                      key={category.id}
+                      value={category.slug}
+                    >
+                      {category.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
         </div>
 
