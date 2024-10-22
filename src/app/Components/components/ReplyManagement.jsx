@@ -195,7 +195,7 @@ const ReplyManagement = () => {
 
       {/* Replies Table */}
       <div className='max-md:overflow-x-scroll'>
-        <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
+        <table className='min-w-full text-sm table-auto bg-white shadow-md rounded-sm'>
           <thead>
             <tr className='bg-gray-200'>
               <th className='px-4 py-2 text-start'>Reply</th>
@@ -208,7 +208,7 @@ const ReplyManagement = () => {
           <tbody>
             {filteredReplies.map((reply) => (
               <tr key={reply.id} className='border-b'>
-                <td className='px-4 py-2 w-[550px] flex gap-3 items-center'>
+                <td className='px-4 py-2 w-[350px] flex gap-3 items-center'>
                   {reply.content}{' '}
                   <Eye
                     onClick={() => {

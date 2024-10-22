@@ -10,6 +10,7 @@ import { Edit, EyeIcon, Trash2 } from 'lucide-react'
 import Input from '@/app/Components/Input'
 import ReviewPostModal from '@/app/Components/components/ReviewPostModal'
 import DeleteModal from '@/app/Components/DeleteModal'
+import useAuth from '@/app/context/useAuth'
 
 const MyPosts = () => {
   const [loading, setLoading] = useState(true)
@@ -22,6 +23,8 @@ const MyPosts = () => {
   const [selectedPost, setSelectedPost] = useState(null)
   const { user } = useUserContext()
   const router = useRouter()
+
+  useAuth()
 
   const handleFetchMyPosts = async () => {
     setLoading(true)
