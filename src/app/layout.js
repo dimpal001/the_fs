@@ -59,6 +59,15 @@ export default function RootLayout({ children }) {
           content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
         />
         <meta property='og:url' content='https://www.thefashionsalad.com' />
+        <meta property='og:type' content='website' />
+        <meta
+          property='og:image'
+          content='https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
+        />
+        <meta property='og:site_name' content='The Fashion Salad' />
+        <meta property='og:locale' content='en_US' />
+        <meta property='og:image:width' content='1200' />
+        <meta property='og:image:height' content='630' />
 
         {/* Twitter */}
         <meta name='twitter:card' content='summary_large_image' />
@@ -83,6 +92,7 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
       </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

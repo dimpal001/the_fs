@@ -13,6 +13,9 @@ import { useRouter } from 'next/navigation'
 import Loading from './Components/Loading'
 import { Helmet } from 'react-helmet'
 import Instagram from './../../public/icons/instagram_icon.svg'
+import FacebookImg from './../../public/icons/facebook.svg'
+import YoutubeImg from './../../public/icons/youtube.svg'
+import Link from 'next/link'
 
 const HomePage = () => {
   const [latestPosts, setLatestPosts] = useState([])
@@ -143,6 +146,15 @@ const HomePage = () => {
             content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
           />
           <meta property='og:url' content='https://www.thefashionsalad.com' />
+          <meta property='og:type' content='website' />
+          <meta
+            property='og:image'
+            content='https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
+          />
+          <meta property='og:site_name' content='The Fashion Salad' />
+          <meta property='og:locale' content='en_US' />
+          <meta property='og:image:width' content='1200' />
+          <meta property='og:image:height' content='630' />
 
           {/* Twitter */}
           <meta name='twitter:card' content='summary_large_image' />
@@ -330,7 +342,7 @@ const HomePage = () => {
         {/* Instagram section  */}
         <section className='flex lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10'>
           <div className='lg:w-1/3'>
-            <div className='w-full relative h-[420px] max-md:h-[370px]'>
+            <div className='w-full group relative h-[420px] max-md:h-[370px]'>
               <Image
                 src={'https://picsum.photos/745/749'}
                 width={0}
@@ -347,7 +359,15 @@ const HomePage = () => {
               />
               {/* Icon Section */}
               <div className='absolute inset-0 flex justify-center items-center'>
-                <Image src={Instagram} width={80} height={80} alt='Instagram' />
+                <Link target='_blank' href={'https://www.instagram.com'}>
+                  <Image
+                    src={Instagram}
+                    width={80}
+                    height={80}
+                    alt='Instagram'
+                    className='group-hover:scale-110 transition-all duration-500'
+                  />
+                </Link>
               </div>
             </div>
           </div>
@@ -363,14 +383,14 @@ const HomePage = () => {
                 <ArrowRight size={55} />
               </div>
             </div>
-            <div className='grid grid-cols-4 justify-between max-md:mt-10 max-md:grid-cols-1 gap-5'>
-              <div className='lg:w-[210px] w-full h-[230px]'>
+            <div className='grid grid-cols-2 justify-between max-md:mt-10 max-md:grid-cols-1 gap-5'>
+              <div className='relative group w-full h-[230px]'>
                 <Image
                   src={'https://picsum.photos/775/749'}
                   width={0}
                   height={0}
                   sizes='100vw'
-                  className='rounded-2xl'
+                  className='rounded-2xl opacity-40 '
                   style={{
                     width: '100%',
                     height: '100%',
@@ -379,14 +399,30 @@ const HomePage = () => {
                   }}
                   alt={'Image'}
                 />
+                <div className='absolute inset-0 rounded-xl bgwh flex justify-center items-center'>
+                  <Link
+                    target='_blank'
+                    href={
+                      'https://www.facebook.com/profile.php?id=61567652667493'
+                    }
+                  >
+                    <Image
+                      src={FacebookImg}
+                      width={70}
+                      height={70}
+                      className='bg-white rounded-xl group-hover:scale-110 transition-all duration-500'
+                      alt='Instagram'
+                    />
+                  </Link>
+                </div>
               </div>
-              <div className='lg:w-[210px] w-full h-[230px]'>
+              <div className='relative group w-full h-[230px]'>
                 <Image
-                  src={'https://picsum.photos/775/879'}
+                  src={'https://picsum.photos/714/749'}
                   width={0}
                   height={0}
                   sizes='100vw'
-                  className='rounded-2xl'
+                  className='rounded-2xl opacity-40'
                   style={{
                     width: '100%',
                     height: '100%',
@@ -395,38 +431,17 @@ const HomePage = () => {
                   }}
                   alt={'Image'}
                 />
-              </div>
-              <div className='lg:w-[210px] w-full h-[230px]'>
-                <Image
-                  src={'https://picsum.photos/775/259'}
-                  width={0}
-                  height={0}
-                  sizes='100vw'
-                  className='rounded-2xl'
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    cursor: 'pointer',
-                  }}
-                  alt={'Image'}
-                />
-              </div>
-              <div className='lg:w-[210px] w-full h-[230px]'>
-                <Image
-                  src={'https://picsum.photos/782/749'}
-                  width={0}
-                  height={0}
-                  sizes='100vw'
-                  className='rounded-2xl'
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    cursor: 'pointer',
-                  }}
-                  alt={'Image'}
-                />
+                <div className='absolute inset-0 bgwh flex justify-center items-center'>
+                  <Link href={'https://www.youtube.com'} target='_blank'>
+                    <Image
+                      src={YoutubeImg}
+                      width={70}
+                      height={70}
+                      className='rounded-xl group-hover:scale-110 transition-all duration-500'
+                      alt='Youtube'
+                    />
+                  </Link>
+                </div>
               </div>
             </div>
             <div className='absolute top-[20px]  right-[240px] z-10 w-[300px] h-[300px] opacity-15 bg-gradient-to-tr from-amber-300 to-red-800 rounded-full filter' />
