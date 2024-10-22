@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '../../../../utils/db'
+import jwt from 'jsonwebtoken'
 
 // New Logo
 export async function POST(request) {
@@ -48,6 +49,21 @@ export async function GET(request) {
       return NextResponse.json(logo, { status: 200 })
     }
 
+    // Authentication
+    const token = request.cookies.get('token')
+    console.log(token)
+    if (!token) {
+      return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+    }
+    const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+
+    if (decoded.role !== 'admin') {
+      return NextResponse.json(
+        { message: 'Unauthorized access!.' },
+        { status: 403 }
+      )
+    }
+
     // Fetch all logos
     const [logos] = await db.query('SELECT * FROM Logos')
 
@@ -64,6 +80,20 @@ export async function GET(request) {
 
 // Activate a Logo
 export async function PATCH(request) {
+  // Authentication
+  const token = request.cookies.get('token')
+  if (!token) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+
+  if (decoded.role !== 'admin') {
+    return NextResponse.json(
+      { message: 'Unauthorized access!.' },
+      { status: 403 }
+    )
+  }
+
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
 

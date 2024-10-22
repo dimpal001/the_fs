@@ -29,17 +29,10 @@ const ContactManagement = () => {
 
   const handleFetchMessages = async (page) => {
     try {
-      const response = await axios.get(
-        '/api/admin/contact',
-        {
-          params: { page: page },
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`,
-          },
-        }
-      )
+      const response = await axios.get('/api/admin/contact', {
+        params: { page: page },
+        // withCredentials: true,
+      })
       setMessages(response.data.messages)
       setCurrentPage(response.data.current_page)
       setTotalPages(response.data.total_pages)

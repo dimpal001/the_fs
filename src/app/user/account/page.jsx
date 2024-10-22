@@ -7,16 +7,18 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState, useRef } from 'react'
+import UserImg from '../../assets/user.svg'
 
 import { Helmet } from 'react-helmet'
 import Loading from '@/app/Components/Loading'
 
 import {
   DeleteObjectCommand,
-  DeleteObjectsCommand,
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3'
+import useAuth from '@/app/context/useAuth'
+import Image from 'next/image'
 
 const AccountPage = () => {
   const [name, setName] = useState('')
@@ -28,6 +30,7 @@ const AccountPage = () => {
   const [newPassword, setNewPassword] = useState('')
   const [newPasswordError, setNewPasswordError] = useState('')
   const [updating, setUpdating] = useState(false)
+  const [uploading, setUploading] = useState(false)
   const [changing, setChanging] = useState(false)
   const [fetching, setFetching] = useState(false)
   const [posts, setPosts] = useState([])
@@ -36,16 +39,11 @@ const AccountPage = () => {
   const router = useRouter()
   const postsSectionRef = useRef(null)
 
+  useAuth()
+
   useEffect(() => {
-    if (!user) {
-      router.push('/')
-      enqueueSnackbar('You are not allowed to enter this page.', {
-        variant: 'error',
-      })
-    } else {
-      fetchUserData()
-    }
-  }, [user, router])
+    fetchUserData()
+  }, [router])
 
   const handleFileChange = (event) => {
     const files = event.target.files[0]
@@ -86,6 +84,7 @@ const AccountPage = () => {
 
   const handleProfileUpload = async () => {
     try {
+      setUploading(true)
       if (fetchUser?.image_url !== '') {
         await s3Client.send(new DeleteObjectCommand(oldParams))
       }
@@ -94,7 +93,7 @@ const AccountPage = () => {
       const fileUrl = `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${customFileName}`
 
       const response = await axios.patch('/api/admin/users/', {
-        id: user.id,
+        id: user?.id,
         image_url: customFileName,
       })
 
@@ -103,8 +102,11 @@ const AccountPage = () => {
           variant: 'success',
         })
       }
+      fetchUserData()
     } catch (err) {
       console.log('Error', err)
+    } finally {
+      setUploading(false)
     }
   }
 
@@ -112,7 +114,8 @@ const AccountPage = () => {
     try {
       setFetching(true)
       const response = await axios.get('/api/admin/users/', {
-        params: { id: user.id },
+        params: { id: user?.id },
+        withCredentials: true,
       })
       setFetchUser(response.data)
       setName(response.data.name)
@@ -193,7 +196,7 @@ const AccountPage = () => {
       try {
         setUpdating(true)
         const response = await axios.patch('/api/admin/users/', {
-          id: user.id,
+          id: user?.id,
           name: name,
         })
 
@@ -221,7 +224,7 @@ const AccountPage = () => {
       try {
         setChanging(true)
         const response = await axios.patch('/api/admin/users/', {
-          id: user.id,
+          id: user?.id,
           oldPassword: oldPassword,
           newPassword: newPassword,
         })
@@ -296,13 +299,41 @@ const AccountPage = () => {
                 />
               </div>
 
-              <div className='flex max-md:flex-col mt-5 items-start lg:items-end gap-5'>
-                <div className='flex flex-col gap-3'>
-                  <label className='text-gray-700'>Profile Picture</label>
-                  <Input type='file' onChange={handleFileChange} />
-                </div>
+              <div className='flex justify-start max-md:flex-col mt-5 items-start lg:items-end gap-5'>
+                <div>
+                  <div className='flex flex-col gap-3 mb-2'>
+                    <label className='text-gray-700'>Profile Picture</label>
+                    <Input type='file' onChange={handleFileChange} />
+                  </div>
 
-                <Button onClick={handleProfileUpload} label='Update Profile' />
+                  <Button
+                    loading={uploading}
+                    onClick={handleProfileUpload}
+                    label='Upload Profile'
+                  />
+                </div>
+                <div>
+                  <div className='w-[120px] border-4 border-blue-500 h-[120px] rounded-full lg:h-[180px] lg:w-[180px]'>
+                    <Image
+                      className='rounded-full'
+                      src={
+                        fetchUser?.image_url
+                          ? `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${fetchUser?.image_url}`
+                          : UserImg
+                      }
+                      width={0}
+                      height={0}
+                      sizes='100vw'
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        cursor: 'pointer',
+                      }}
+                      alt={'User Profile'}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
             <div className='bg-gray-100 md:w-1/3 shadow-md rounded-sm p-14 mb-6'>

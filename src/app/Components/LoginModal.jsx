@@ -69,24 +69,29 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
           password,
         })
 
-        if (response.data.user[0].is_active === 0) {
+        if (response.data.user.is_active === 0) {
           setIsDeactivated(true)
           return
         }
 
-        localStorage.setItem('token', JSON.stringify(response.data.token))
-        localStorage.setItem('user', JSON.stringify(response.data.user[0]))
-        setUser(response.data.user[0])
+        localStorage.setItem('user', JSON.stringify(response.data.user))
+
+        setUser(response.data.user)
         router.push('/')
         onClose()
+        enqueueSnackbar('Login successfull.', { variant: 'success' })
       } catch (error) {
-        enqueueSnackbar(error.response.data.message, { variant: 'error' })
+        const errorMessage =
+          error?.response?.data?.message ||
+          'Something went wrong. Please try again later.'
+        enqueueSnackbar(errorMessage, { variant: 'error' })
       } finally {
         setSubmitting(false)
       }
     }
   }
 
+  // OTP Validation
   const sendOtpValidation = () => {
     let valid = true
 

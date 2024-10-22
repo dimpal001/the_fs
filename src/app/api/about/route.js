@@ -1,7 +1,21 @@
 import { NextResponse } from 'next/server'
 import { db } from '../../../utils/db'
+import jwt from 'jsonwebtoken'
 
 export async function PATCH(request) {
+  // Authentication
+  const token = request.cookies.get('token')
+  if (!token) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+
+  if (decoded.role !== 'admin') {
+    return NextResponse.json(
+      { message: 'Unauthorized access!.' },
+      { status: 403 }
+    )
+  }
   try {
     const { data } = await request.json()
 

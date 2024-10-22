@@ -120,16 +120,19 @@ const CreatePost = () => {
       return
     }
 
-    if (!file) {
+    if (!thumbnail) {
       enqueueSnackbar('Add a thumbnail image', { variant })
       return
     }
+
     if (content === '') {
       enqueueSnackbar('Blog content is empty', { variant: 'error' })
       return
     }
 
-    const data = await s3Client.send(new PutObjectCommand(params))
+    if (thumbnail) {
+      const data = await s3Client.send(new PutObjectCommand(params))
+    }
 
     try {
       const response = await axios.post('/api/posts', {

@@ -58,7 +58,6 @@ const Header = () => {
       const response = await axios.get('/api/admin/logos', {
         params: { mainLogo: 'logo' },
       })
-      console.log(response.data[0].url)
       setLogoUrl(response.data[0].url)
     } catch (error) {}
   }
@@ -76,7 +75,7 @@ const Header = () => {
     <div>
       {isShow && (
         <div>
-          <div className='lg:p-1 p-5 flex lg:px-16 lg:py-9 shadow-pink-200 shadow-md justify-between items-center'>
+          <div className='lg:p-1 p-5 flex lg:px-16 lg:py-6 shadow-pink-200 shadow-md justify-between items-center'>
             {/* Categories  */}
             <div>
               <Menu

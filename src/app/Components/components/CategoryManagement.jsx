@@ -44,7 +44,7 @@ const CategoryManagement = () => {
       })
 
       setCategories(response.data.allCategories)
-      setFilteredCategories(response.data.allCategories) // Update filtered categories
+      setFilteredCategories(response.data.allCategories)
       setNewCategory('')
       setSelectedCategory({})
     } catch (error) {

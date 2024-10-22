@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { db } from '../../../../utils/db'
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
 
 // Get all users or a specific user by ID
 export async function GET(request) {
@@ -13,6 +14,12 @@ export async function GET(request) {
     const offset = (page - 1) * limit
 
     if (id) {
+      // Authentication
+      const token = request.cookies.get('token')
+      if (!token) {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+      }
+
       const [users] = await db.query('SELECT * FROM Users WHERE id = ?', [id])
       if (users.length === 0) {
         return NextResponse.json(
@@ -22,6 +29,20 @@ export async function GET(request) {
       }
       return NextResponse.json(users[0], { status: 200 })
     } else {
+      // Authentication
+      const token = request.cookies.get('token')
+      if (!token) {
+        return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+      }
+      const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+
+      if (decoded.role !== 'admin') {
+        return NextResponse.json(
+          { message: 'Unauthorized access!.' },
+          { status: 403 }
+        )
+      }
+
       // Count total users
       const [[{ totalUsers }]] = await db.query(
         `SELECT COUNT(*) as totalUsers FROM Users`
@@ -52,6 +73,11 @@ export async function GET(request) {
 
 // Update user details
 export async function PATCH(request) {
+  // Authentication
+  const token = request.cookies.get('token')
+  if (!token) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const body = await request.json()
     const { id, name, oldPassword, newPassword, image_url } = body
@@ -118,6 +144,20 @@ export async function PATCH(request) {
 
 // Delete user
 export async function DELETE(request) {
+  // Authentication
+  const token = request.cookies.get('token')
+  if (!token) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+
+  if (decoded.role !== 'admin') {
+    return NextResponse.json(
+      { message: 'Unauthorized access!.' },
+      { status: 403 }
+    )
+  }
+
   try {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')

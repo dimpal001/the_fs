@@ -17,7 +17,7 @@ import { useState } from 'react'
 
 const Sidebar = ({ activeSection, setActiveSection }) => {
   const [expandedSections, setExpandedSections] = useState({
-    users: false,
+    users: true,
     blogPosts: false,
     policies: false,
   })

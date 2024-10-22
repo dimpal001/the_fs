@@ -57,6 +57,7 @@ const ManageLogos = () => {
       enqueueSnackbar('Please upload a valid image file (PNG, JPG, or WEBP)', {
         variant: 'error',
       })
+      setFile(null)
     }
   }
 
@@ -168,11 +169,11 @@ const ManageLogos = () => {
           {logos.map((logo) => (
             <div
               key={logo.id}
-              className='p-2 rounded-2xl flex items-center justify-between bg-white'
+              className='p-2 rounded-sm flex items-center justify-between bg-white'
             >
               <div className='w-[150px]'>
                 <Image
-                  className='rounded-2xl'
+                  className='rounded-sm shadow-md'
                   src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/${logo.url}`}
                   width={150}
                   height={150}
@@ -192,7 +193,7 @@ const ManageLogos = () => {
                   }}
                   className={`p-2 px-5 ${
                     activating && 'opacity-60'
-                  } rounded-xl bg-first text-white`}
+                  } rounded-sm bg-first text-white`}
                 >
                   {activating ? 'Activating...' : 'Activate'}
                 </button>
@@ -205,7 +206,7 @@ const ManageLogos = () => {
                 }}
                 className={`p-2 px-5 ${
                   deleting && 'opacity-60'
-                } rounded-xl bg-red-600 text-white`}
+                } rounded-sm bg-red-600 text-white`}
               >
                 {deleting ? 'Deleting...' : 'Delete'}
               </button>
@@ -213,7 +214,7 @@ const ManageLogos = () => {
           ))}
         </div>
         <div className='lg:w-1/3 w-full'>
-          <div className='bg-white rounded-2xl p-4 flex flex-col gap-6'>
+          <div className='bg-white rounded-sm p-4 flex flex-col gap-6'>
             <div>
               <label
                 className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
@@ -223,7 +224,7 @@ const ManageLogos = () => {
               </label>
               <input
                 onChange={handleFileChange}
-                className='block w-full p-2 mb-5 text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'
+                className='block w-full p-2 mb-5 text-sm text-gray-900 border border-gray-300 rounded-sm cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'
                 id='default_size'
                 type='file'
               />
@@ -238,7 +239,7 @@ const ManageLogos = () => {
             )}
             <button
               onClick={handleUploadLogo}
-              className='p-2 w-full px-5 rounded-xl bg-blue-600 text-white'
+              className='p-2 w-full px-5 rounded-sm bg-blue-600 text-white'
               disabled={uploading}
             >
               {uploading ? 'Uploading...' : 'Upload'}

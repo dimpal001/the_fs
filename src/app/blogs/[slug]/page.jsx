@@ -130,9 +130,12 @@ const Blog = ({ params }) => {
   // Fetch related posts based on category IDs
   const fetchRelatedPosts = async (categoryId) => {
     try {
-      const response = await axios.get(`/api/posts/related`, {
-        params: { category_id: categoryId },
-      })
+      const response = await axios.get(
+        `/api/posts/related/?category_id=${categoryId}`,
+        {
+          params: { category_id: categoryId },
+        }
+      )
       setRelatedPosts(response.data)
     } catch (error) {
       console.error('Error fetching related posts:', error)
@@ -271,7 +274,7 @@ const Blog = ({ params }) => {
             </div>
           </div>
         )}
-        {notfound && <DataNotFound />}
+        {notfound && !post && <DataNotFound />}
       </div>
     </div>
   )

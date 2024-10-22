@@ -1,9 +1,24 @@
 import { NextResponse } from 'next/server'
 import { db } from '../../../../utils/db'
 import slugify from 'slugify'
+import jwt from 'jsonwebtoken'
 
 // Create a new category
 export async function POST(request) {
+  // Authentication
+  const token = request.cookies.get('token')
+  if (!token) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+
+  if (decoded.role !== 'admin') {
+    return NextResponse.json(
+      { message: 'Unauthorized access!.' },
+      { status: 403 }
+    )
+  }
+
   try {
     const { name } = await request.json()
 
@@ -97,6 +112,19 @@ export async function GET(request) {
 
 // Update a category by ID
 export async function PATCH(request) {
+  // Authentication
+  const token = request.cookies.get('token')
+  if (!token) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+
+  if (decoded.role !== 'admin') {
+    return NextResponse.json(
+      { message: 'Unauthorized access!.' },
+      { status: 403 }
+    )
+  }
   try {
     const body = await request.json()
     const { id, name } = body
@@ -152,6 +180,19 @@ export async function PATCH(request) {
 
 // Delete a category by ID
 export async function DELETE(request) {
+  // Authentication
+  const token = request.cookies.get('token')
+  if (!token) {
+    return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
+  }
+  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+
+  if (decoded.role !== 'admin') {
+    return NextResponse.json(
+      { message: 'Unauthorized access!.' },
+      { status: 403 }
+    )
+  }
   try {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
