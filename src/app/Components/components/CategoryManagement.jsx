@@ -199,12 +199,14 @@ const CategoryManagement = () => {
                   <td className='px-4 py-2 capitalize'>{category.name}</td>
                   <td className='px-4 py-2 flex justify-end'>
                     <button
+                      title='Edit'
                       className='bg-blue-500 text-white px-4 py-1 rounded-sm'
                       onClick={() => handleEdit(category)}
                     >
                       Edit
                     </button>
                     <button
+                      title='Delete'
                       onClick={() => handleDelete(category)}
                       className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
                     >

@@ -8,6 +8,7 @@ import { useUserContext } from '@/app/context/UserContext'
 import { enqueueSnackbar } from 'notistack'
 import BlogPostCard4 from '@/app/Components/BlogPostCard4'
 import { useRouter } from 'next/navigation'
+import ImageModal from '@/app/Components/ImageModal'
 
 const Profile = ({ params }) => {
   const [userData, setUserData] = useState(null)
@@ -18,6 +19,8 @@ const Profile = ({ params }) => {
   const [followers, setFollowers] = useState(null)
   const [noOfPosts, setNoOfPosts] = useState(null)
   const [isFollowing, setIsFollowing] = useState(false)
+  const [imageModalOpen, setImageModalOpen] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPage, setTotalPage] = useState(null)
 
@@ -140,7 +143,15 @@ const Profile = ({ params }) => {
           <div className='lg:-mt-32 -mt-16'>
             {/* Image  */}
             <div className='flex justify-center'>
-              <div className='w-[120px] border-4 border-blue-500 h-[120px] rounded-full lg:h-[180px] lg:w-[180px]'>
+              <div
+                onClick={() => {
+                  setImageUrl(
+                    `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${userData?.image_url}`
+                  )
+                  setImageModalOpen(true)
+                }}
+                className='w-[120px] border-4 border-blue-500 h-[120px] rounded-full lg:h-[180px] lg:w-[180px]'
+              >
                 <Image
                   className='rounded-full'
                   src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${userData?.image_url}`}
@@ -175,6 +186,7 @@ const Profile = ({ params }) => {
             <div className='flex justify-center gap-5 p-3'>
               {user?.id !== userData.id && (
                 <button
+                  title='Follow'
                   onClick={isFollowing ? handleUnfollow : handleFollow}
                   className='p-2 max-md:text-sm px-6 font-semibold rounded-full bg-gradient-to-br from-pink-600 to-blue-700 text-white text-lg'
                 >
@@ -183,6 +195,7 @@ const Profile = ({ params }) => {
                 </button>
               )}
               <button
+                title='Show Posts'
                 onClick={handleFetchPosts}
                 className='p-2 max-md:text-sm px-6 font-semibold rounded-full bg-first text-white text-lg'
               >
@@ -196,6 +209,15 @@ const Profile = ({ params }) => {
           <div></div>
         </div>
       </div>
+
+      {imageModalOpen && (
+        <ImageModal
+          isOpen={true}
+          onClose={() => setImageModalOpen(false)}
+          imageUrl={imageUrl}
+        />
+      )}
+
       <div className='container mx-auto py-10 p-5'>
         {fetchingPosts && <Loading />}
         <div

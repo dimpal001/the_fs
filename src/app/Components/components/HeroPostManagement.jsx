@@ -148,6 +148,7 @@ const HeroPostManagement = () => {
                   <td className='px-4 py-2 capitalize'>{post.status}</td>
                   <td className='px-4 py-2 flex justify-end items-center'>
                     <button
+                      title='Remove'
                       className={`bg-red-600 text-white px-4 py-1 ml-2 rounded-sm`}
                       onClick={() => handleAddToHero(post.id, 0)}
                     >
@@ -193,6 +194,7 @@ const HeroPostManagement = () => {
                 <td className='px-4 py-2 capitalize'>{post.status}</td>
                 <td className='px-4 py-2 flex justify-end items-center'>
                   <button
+                    title='Add to Hero Post'
                     className={`bg-first text-white px-4 py-1 ml-2 rounded-sm`}
                     onClick={() => handleAddToHero(post.id, 1)}
                   >

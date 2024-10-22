@@ -149,6 +149,7 @@ const SubscriberManagement = () => {
                     <td className='px-4 py-2'>{subscriber.email}</td>
                     <td className='px-4 py-2 flex justify-end'>
                       <button
+                        title='Delete'
                         onClick={() => handleDelete(subscriber)}
                         className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
                       >

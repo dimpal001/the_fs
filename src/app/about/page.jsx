@@ -33,9 +33,11 @@ const AboutPage = () => {
   }
 
   return (
-    <div className='p-5 container mx-auto lg:px-32'>
-      <h1 className='text-4xl font-bold mb-4'>About Us</h1>
-      <p>
+    <div className='p-5 container mx-auto lg:px-56'>
+      <h1 className='text-4xl lg:text-6xl py-4 font-bold mb-4 text-center'>
+        About Us
+      </h1>
+      <p className='leading-[35px] tracking-wide'>
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </p>
     </div>

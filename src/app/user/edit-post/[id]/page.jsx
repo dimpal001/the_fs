@@ -227,6 +227,7 @@ const EditPost = () => {
             {/* Remove Thumbnail Button */}
             {thumbnail && (
               <button
+                title='Remove Thumbnail'
                 onClick={() => setThumbnail(null)} // Clear the thumbnail state
                 className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
               >
@@ -282,6 +283,7 @@ const EditPost = () => {
               >
                 <span>{tag}</span>
                 <button
+                  title='Remove'
                   onClick={() => handleRemoveTag(tag)}
                   className='text-red-500 hover:text-red-700'
                 >

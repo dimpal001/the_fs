@@ -11,6 +11,7 @@ const Paggination = ({
       {totalPages > 0 && (
         <div className='flex justify-end items-center mt-3'>
           <button
+            title='Previous'
             onClick={handlePreviousPage}
             className='rounded-sm border-first border hover:bg-first hover:text-white text-first px-2 py-1 w-24'
           >
@@ -20,6 +21,7 @@ const Paggination = ({
             {currentPage} of {totalPages}
           </p>
           <button
+            title='Next'
             onClick={handleNextPage}
             className='rounded-sm border-first border hover:bg-first hover:text-white text-first px-2 py-1 w-24'
           >

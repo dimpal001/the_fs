@@ -145,6 +145,7 @@ const ContactManagement = () => {
                 </td>
                 <td className='px-4 py-2 text-end'>
                   <button
+                    title='Delete'
                     onClick={() => {
                       setSelectedId(message.id)
                       setDeleteModalOpen(true)

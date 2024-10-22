@@ -96,3 +96,35 @@ export async function GET(request) {
     )
   }
 }
+
+// Delete Subscriber
+
+export async function DELETE(request) {
+  const { searchParams } = new URL(request.url)
+  const id = searchParams.get('id')
+  try {
+    if (!id) {
+      return NextResponse.json(
+        { message: 'Subscriber ID is required' },
+        { status: 400 }
+      )
+    }
+
+    const [result] = await db.query('DELETE FROM Subscribers WHERE id = ?', [
+      id,
+    ])
+
+    if (result.affectedRows > 0) {
+      return NextResponse.json(
+        { message: 'Subscriber has been deleted' },
+        { status: 200 }
+      )
+    }
+  } catch (error) {
+    console.log(error)
+    return NextResponse.json(
+      { message: 'Error deleting subscriber.' },
+      { status: 500 }
+    )
+  }
+}

@@ -131,6 +131,7 @@ const Page = () => {
               </label>
             </div>
             <button
+              title='Submit'
               type='submit'
               disabled={isSubmitting}
               className={`px-7 py-3 rounded-2xl bg-gradient-to-br from-blue-600 to-first text-white font-semibold disabled:opacity-50`}

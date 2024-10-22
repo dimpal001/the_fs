@@ -232,6 +232,7 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
               label={'Login'}
             />
             <button
+              title='Forgot Password'
               className='text-sm text-blue-600'
               onClick={toggleForgotPassword}
             >
@@ -270,6 +271,7 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
               label={'Send OTP'}
             />
             <button
+              title='Back to Login'
               className='text-sm text-blue-600'
               onClick={toggleForgotPassword}
             >
@@ -316,6 +318,7 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
               label={'Reset Password'}
             />
             <button
+              title='Back to Login'
               className='text-sm text-blue-600'
               onClick={toggleForgotPassword}
             >

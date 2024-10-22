@@ -233,12 +233,14 @@ const ReplyManagement = () => {
                 </td>
                 <td className='px-4 py-2 text-end'>
                   <button
+                    title='Post'
                     onClick={() => handleReviewPost(reply.blog_post_id)}
                     className='bg-blue-500 text-white px-4 py-1 mr-2 rounded-sm'
                   >
                     Post
                   </button>
                   <button
+                    title='Approve'
                     onClick={() => handleApproveReply(reply)}
                     className={`${
                       reply.status === 'approved' &&
@@ -248,6 +250,7 @@ const ReplyManagement = () => {
                     Approve
                   </button>
                   <button
+                    title='Delete'
                     onClick={() => openDeleteModal(reply)}
                     className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
                   >
@@ -272,6 +275,7 @@ const ReplyManagement = () => {
           onClose={() => setIsModalOpen(false)}
           button={
             <button
+              title='Delete'
               onClick={handleDeleteReply}
               className='bg-red-500 text-white px-4 py-1 rounded-sm'
             >

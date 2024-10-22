@@ -41,6 +41,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           {/* Users Section */}
           <li>
             <button
+              title='Users'
               onClick={() => toggleSection('users')}
               className='px-6 py-3 w-full flex items-center justify-between text-left text-gray-800 hover:bg-gray-200'
             >
@@ -58,6 +59,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
               <ul className='ml-8 mt-2'>
                 <li>
                   <button
+                    title='Users'
                     onClick={() => setActiveSection('users')}
                     className={`px-6 flex items-center gap-2 py-2 w-full text-left ${
                       activeSection === 'users'
@@ -78,6 +80,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
                 </li>
                 <li>
                   <button
+                    title='Subscribers'
                     onClick={() => setActiveSection('subscribers')}
                     className={`px-6 flex items-center gap-2 py-2 w-full text-left ${
                       activeSection === 'subscribers'
@@ -103,6 +106,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           {/* Blog Posts Section */}
           <li>
             <button
+              title='Blog Posts'
               onClick={() => toggleSection('blogPosts')}
               className='px-6 py-3 w-full flex items-center justify-between text-left text-gray-800 hover:bg-gray-200'
             >
@@ -120,6 +124,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
               <ul className='ml-8 mt-2'>
                 <li>
                   <button
+                    title='Categories'
                     onClick={() => setActiveSection('categories')}
                     className={`px-6 flex items-center gap-2 py-2 w-full text-left ${
                       activeSection === 'categories'
@@ -140,6 +145,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
                 </li>
                 <li>
                   <button
+                    title='Posts'
                     onClick={() => setActiveSection('posts')}
                     className={`px-6 flex items-center gap-2 py-2 w-full text-left ${
                       activeSection === 'posts'
@@ -160,6 +166,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
                 </li>
                 <li>
                   <button
+                    title='Hero Posts'
                     onClick={() => setActiveSection('hero-posts')}
                     className={`px-6 py-2 w-full flex items-center gap-2 text-left ${
                       activeSection === 'hero-posts'
@@ -180,6 +187,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
                 </li>
                 <li>
                   <button
+                    title='Replies'
                     onClick={() => setActiveSection('replies')}
                     className={`px-6 flex items-center gap-2 py-2 w-full text-left ${
                       activeSection === 'replies'
@@ -205,6 +213,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           {/* Policies Section */}
           <li>
             <button
+              title='Plicies'
               onClick={() => toggleSection('policies')}
               className='px-6 py-3 w-full flex items-center justify-between text-left text-gray-800 hover:bg-gray-200'
             >
@@ -222,6 +231,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
               <ul className='ml-8 mt-2'>
                 <li>
                   <button
+                    title='Privacy Policy'
                     onClick={() => setActiveSection('privacy-policy')}
                     className={`px-6 flex items-center gap-2 py-2 w-full text-left ${
                       activeSection === 'privacy-policy'
@@ -242,6 +252,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
                 </li>
                 <li>
                   <button
+                    title='Terms and Condition'
                     onClick={() => setActiveSection('terms-and-condition')}
                     className={`px-6 flex items-center gap-2 py-2 w-full text-left ${
                       activeSection === 'terms-and-condition'
@@ -262,6 +273,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
                 </li>
                 <li>
                   <button
+                    title='About us'
                     onClick={() => setActiveSection('about-us')}
                     className={`px-6 flex items-center gap-2 py-2 w-full text-left ${
                       activeSection === 'about-us'
@@ -287,6 +299,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           {/* Messages Section */}
           <li>
             <button
+              title='Contact'
               onClick={() => setActiveSection('contact')}
               className={`px-6 py-3 w-full flex items-center gap-3 text-left ${
                 activeSection === 'contact'
@@ -307,6 +320,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
           {/* Logo Section */}
           <li>
             <button
+              title='Logo'
               onClick={() => setActiveSection('logos')}
               className={`px-6 py-3 w-full flex items-center gap-3 text-left ${
                 activeSection === 'logos'

@@ -13,7 +13,7 @@ const Footer = () => {
       <div className='container mx-auto px-6'>
         <div className='flex flex-col gap-5 md:flex-row justify-between'>
           <div className='mb-6 md:mb-0'>
-            <h5 className='text-lg font-semibold mb-4'>About Us</h5>
+            <h4 className='text-lg font-semibold mb-4'>About Us</h4>
             <p className='text-gray-400'>
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo
               quisquam qui nisi quod cupiditate quasi.
@@ -49,7 +49,7 @@ const Footer = () => {
             </ul>
           </div>
           <div className='mb-6 md:mb-0'>
-            <h5 className='text-lg font-semibold mb-4'>Follow Us</h5>
+            <h6 className='text-lg font-semibold mb-4'>Follow Us</h6>
             <div className='flex space-x-4'>
               <InstagramIcon round size={45} />
               <FacebookIcon round size={45} />

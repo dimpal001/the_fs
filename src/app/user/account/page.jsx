@@ -437,12 +437,15 @@ const PostCard = ({ post }) => {
       </div>
       <div className='flex gap-3'>
         <button
+          title='Edit'
           onClick={handleClickEdit}
           className='text-blue-500 hover:underline'
         >
           Edit
         </button>
-        <button className='text-red-500 hover:underline'>Delete</button>
+        <button title='Delete' className='text-red-500 hover:underline'>
+          Delete
+        </button>
       </div>
     </div>
   )

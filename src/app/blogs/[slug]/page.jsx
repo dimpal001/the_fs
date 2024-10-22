@@ -18,6 +18,7 @@ import Avatar from '@/app/Components/Avatar'
 import Replies from '@/app/Components/Replies'
 import HeroBlogCard from '@/app/Components/HeroBlogCard'
 import DataNotFound from '@/app/Components/DataNotFound'
+import ImageModal from '@/app/Components/ImageModal'
 
 const Blog = ({ params }) => {
   const { setSelectedCategoryId } = useCategoryContext()
@@ -25,6 +26,7 @@ const Blog = ({ params }) => {
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
   const [notfound, setNotfound] = useState(false)
+  const [imageModalOpen, setImageModalOpen] = useState(false)
   const [replies, setReplies] = useState([])
   const [relatedPosts, setRelatedPosts] = useState([])
   const [categories, setCategories] = useState([])
@@ -199,7 +201,12 @@ const Blog = ({ params }) => {
         {post && (
           <div className='lg:flex lg:gap-10 lg:p-10 p-5 lg:px-20'>
             <div className='lg:w-2/3'>
-              <div className='w-full h-[200px] rounded-xl lg:h-[350px]'>
+              <div
+                onClick={() => {
+                  setImageModalOpen(true)
+                }}
+                className='w-full h-[200px] rounded-xl lg:h-[350px]'
+              >
                 <Image
                   className='rounded-xl'
                   src={'https://picsum.photos/651/207'}
@@ -275,6 +282,13 @@ const Blog = ({ params }) => {
           </div>
         )}
         {notfound && !post && <DataNotFound />}
+        {imageModalOpen && (
+          <ImageModal
+            isOpen={true}
+            onClose={() => setImageModalOpen(false)}
+            imageUrl={''}
+          />
+        )}
       </div>
     </div>
   )

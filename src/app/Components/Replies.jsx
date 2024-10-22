@@ -91,6 +91,7 @@ const Replies = ({ replies, postId }) => {
           </div>
           <p className='text-xs'>{reply.content}</p>
           <button
+            title='Reply'
             className='text-blue-600 text-xs mt-2'
             onClick={(event) => handleReplyToReply(reply.id, event)}
           >
@@ -164,6 +165,7 @@ const Replies = ({ replies, postId }) => {
 
                 {/* Reply button */}
                 <button
+                  title='Reply'
                   className='text-blue-600 text-xs mt-2'
                   onClick={(event) => handleReplyToReply(reply.id, event)}
                 >
@@ -224,6 +226,7 @@ const Replies = ({ replies, postId }) => {
           />
           <div className='flex justify-end mt-3'>
             <button
+              title='Send'
               className='p-2 text-sm text-white rounded-md px-4 bg-first'
               onClick={() => handleSubmitReply('reply')}
             >

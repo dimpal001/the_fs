@@ -187,6 +187,7 @@ const ManageLogos = () => {
                 <p className='text-sm text-green-700'>Activated</p>
               ) : (
                 <button
+                  title='Activate'
                   disabled={activating}
                   onClick={() => {
                     handleActive(logo.id)
@@ -199,6 +200,7 @@ const ManageLogos = () => {
                 </button>
               )}
               <button
+                title='Delete'
                 disabled={deleting}
                 onClick={() => {
                   setSelectedLogo(logo)
@@ -238,6 +240,7 @@ const ManageLogos = () => {
               <p className='text-sm text-gray-500'>Selected File: {fileName}</p> // Show file name
             )}
             <button
+              title='Upload'
               onClick={handleUploadLogo}
               className='p-2 w-full px-5 rounded-sm bg-blue-600 text-white'
               disabled={uploading}

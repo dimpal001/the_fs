@@ -201,6 +201,7 @@ const UserManagement = () => {
                 <td className='px-4 py-2 text-end'>
                   {user.is_active ? (
                     <button
+                      title='Deactivate'
                       onClick={() => handleDeactivate(user)}
                       className='bg-gray-600 text-white px-4 py-1 rounded-sm'
                     >
@@ -208,6 +209,7 @@ const UserManagement = () => {
                     </button>
                   ) : (
                     <button
+                      title='Activate'
                       onClick={() => handleActivate(user)}
                       className='bg-green-600 text-white px-4 py-1 ml-2 rounded-sm'
                     >
@@ -215,6 +217,7 @@ const UserManagement = () => {
                     </button>
                   )}
                   <button
+                    title='Delete'
                     onClick={() => {
                       setSelectedId(user.id)
                       setDeleteModalOpen(true)

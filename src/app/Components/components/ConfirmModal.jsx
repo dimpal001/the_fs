@@ -23,6 +23,7 @@ const ConfirmModal = ({ isOpen, onClose, action, button, onConfirm }) => {
         {button && button}
         {action && (
           <button
+            title='Confirm'
             onClick={onConfirm}
             className='bg-red-500 capitalize text-white px-4 py-1 rounded-sm'
           >

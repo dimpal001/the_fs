@@ -48,6 +48,7 @@ const SubscribeCard = ({ isSmall }) => {
               placeholder='Enter your email...'
             />
             <button
+              title='Send'
               onClick={handleSubscribe}
               className='bg-first p-1 rounded-lg'
             >
@@ -81,6 +82,7 @@ const SubscribeCard = ({ isSmall }) => {
               placeholder='Enter your email...'
             />
             <button
+              title='Send'
               onClick={handleSubscribe}
               className='bg-first p-1 rounded-lg'
             >

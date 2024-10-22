@@ -228,6 +228,7 @@ const PostManagement = () => {
                 <td className='px-4 py-2 capitalize'>{post.status}</td>
                 <td className='px-4 py-2'>
                   <button
+                    title='Preview'
                     onClick={() => handleReviewModal(post)}
                     className='bg-blue-500 text-white px-4 py-1 rounded-sm'
                   >
@@ -236,6 +237,7 @@ const PostManagement = () => {
                 </td>
                 <td className='px-4 py-2 flex justify-end items-center'>
                   <button
+                    title='Approve'
                     onClick={() => handleApprovePost(post)}
                     className={`${
                       post.status === 'approve'
@@ -253,6 +255,7 @@ const PostManagement = () => {
                     )}
                   </button>
                   <button
+                    title='Reject'
                     onClick={() => {
                       setSelectedPost(post)
                       setIsRejectModalOpen(true)
@@ -265,12 +268,14 @@ const PostManagement = () => {
                     Reject
                   </button>
                   <button
+                    title='Deactivate'
                     onClick={() => handleDeactive(post)}
                     className='bg-zinc-600 text-white px-4 py-1 ml-2 rounded-sm'
                   >
                     Deactivate
                   </button>
                   <button
+                    title='Delete'
                     onClick={() => handleDelete(post)}
                     className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
                   >

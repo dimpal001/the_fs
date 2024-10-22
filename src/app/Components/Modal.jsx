@@ -50,7 +50,7 @@ export const Modal = ({ isOpen, children, size }) => {
                 'w-[1000px] max-sm:w-[95%] overflow-scroll max-sm:m-auto'
               }
               ${size === 'full' && 'w-full h-full'}
-               bg-white rounded-2xl p-10`}
+               bg-white flex items-center max-md:pb-14`}
           >
             {children}
           </div>
@@ -78,6 +78,7 @@ export const ModalHeader = ({ children }) => {
 export const ModalCloseButton = ({ onClick }) => {
   return (
     <button
+      title='Close'
       className='absolute top-0 right-0 m-2 p-2 text-gray-500 hover:text-gray-700'
       onClick={onClick}
     >
@@ -102,7 +103,7 @@ export const ModalCloseButton = ({ onClick }) => {
 // T CSS
 export const ModalBody = ({ children }) => {
   return (
-    <div className='text-gray-700 max-h-[450px] md:max-h-[500px] overflow-scroll'>
+    <div className='text-gray-700 w-full h-full max-h-[450px] md:max-h-[500px] overflow-scroll'>
       {children}
     </div>
   )
@@ -153,7 +154,11 @@ export const Menu = ({ children, isOpen, onClose }) => {
           boxShadow: '2px 0 5px rgba(0,0,0,0.5)',
         }}
       >
-        <button onClick={onClose} className='absolute top-2 right-2'>
+        <button
+          title='Close'
+          onClick={onClose}
+          className='absolute top-2 right-2'
+        >
           Close
         </button>
         {children}

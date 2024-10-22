@@ -115,6 +115,7 @@ const SearchContent = ({ router }) => {
                 className='w-[350px] md:w-[500px] py-4 focus:outline-none'
               />
               <button
+                title='Search'
                 onClick={(e) => fetchSearchPosts(currentPage, e)}
                 className=''
               >

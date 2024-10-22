@@ -150,6 +150,7 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
               label={'Register now'}
             />
             <button
+              title='Back to Login'
               className='text-sm text-blue-600'
               onClick={() => {
                 onClose()

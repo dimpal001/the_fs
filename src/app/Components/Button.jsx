@@ -25,6 +25,7 @@ const Button = ({
 
   return (
     <button
+      title={label}
       onClick={!disabled && !loading ? onClick : undefined}
       className={`border capitalize rounded-sm flex justify-center ${
         (loading || disabled) && 'cursor-not-allowed opacity-65'
