@@ -247,7 +247,7 @@ const AccountPage = () => {
             <title>Profile</title>
           </Helmet>
           {/* General Information */}
-          <div className='bg-gray-100 rounded-sm lg:p-14 p-5 mb-6'>
+          <div className='bg-gray-100 shadow-md rounded-sm lg:p-14 p-10 mb-6'>
             <h2 className='text-2xl font-bold mb-4'>General Information</h2>
             <div className='flex justify-between max-md:flex-col gap-5'>
               <InfoCard
@@ -275,9 +275,9 @@ const AccountPage = () => {
             </div>
           </div>
           {/* Account Info Section */}
-          <div className='flex max-sm:flex-col w-full gap-10'>
+          <div className='flex bg-gray-100 shadow-md mb-6 max-sm:flex-col w-full lg:p-14 p-10 gap-10'>
             {/* General Information */}
-            <div className='bg-gray-100 md:w-2/3 shadow-md rounded-sm p-14 mb-6'>
+            <div className=' md:w-2/3 rounded-sm mb-6'>
               <h2 className='text-2xl font-bold mb-4'>Account Information</h2>
 
               <div className='space-y-5'>
@@ -336,7 +336,7 @@ const AccountPage = () => {
                 </div>
               </div>
             </div>
-            <div className='bg-gray-100 md:w-1/3 shadow-md rounded-sm p-14 mb-6'>
+            <div className=' md:w-1/3 rounded-sm mb-6'>
               <h2 className='text-2xl font-bold mb-4'>Change Password</h2>
 
               <div className='space-y-5'>
@@ -374,7 +374,7 @@ const AccountPage = () => {
           </div>
           {/* Posts Management Section */}
           <div
-            className='bg-gray-100 shadow-md rounded-lg p-14'
+            className='bg-gray-100 shadow-md rounded-lg lg:p-14 p-10'
             ref={postsSectionRef}
           >
             <h2 className='text-2xl font-bold mb-4'>Manage Your Posts</h2>
@@ -406,7 +406,7 @@ const InfoCard = ({ label, data, bg }) => {
   return (
     <div className={`px-10 text-white py-6 flex flex-col rounded-3xl ${bg}`}>
       <p className='text-sm'>{label}</p>
-      <p className='text-3xl pt-1 font-semibold'>{data}</p>
+      <p className='text-3xl max-md:text-xl pt-1 font-semibold'>{data}</p>
     </div>
   )
 }

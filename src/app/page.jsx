@@ -177,7 +177,7 @@ const HomePage = () => {
 
         {/* New hero section  */}
         {heroPosts.length > 0 && (
-          <section className='lg:h-[470px] lg:p-10 relative w-full gap-5 py-7 flex max-md:flex-col items-center'>
+          <section className='lg:h-[470px] lg:p-16 relative w-full gap-5 py-7 flex max-md:flex-col items-center'>
             <div className='lg:w-[28%] max-md:h-[300px] w-full h-full max-md:p-3'>
               <Image
                 src={
@@ -199,9 +199,9 @@ const HomePage = () => {
               />
             </div>
             <div className='lg:w-[42%] h-full max-md:px-6 p-3 flex flex-col gap-6'>
-              <h2 className='text-4xl font-bold'>
+              <h1 className='text-4xl font-bold'>
                 {heroPosts.length > 0 && heroPosts[0].title}
-              </h2>
+              </h1>
               <p className='text-stone-600 leading-5'>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi
                 ut sapiente recusandae. Eius sed numquam distinctio dolorum
@@ -211,7 +211,7 @@ const HomePage = () => {
                 Read More ..
               </p>
             </div>
-            <div className='lg:w-[30%] max-md:p-3 h-full flex flex-col gap-3'>
+            <div className='lg:w-[30%] w-full max-md:p-3 max-md:px-6 h-full flex flex-col gap-3'>
               {heroPosts.length > 0 &&
                 heroPosts
                   .slice(1, 4)
@@ -235,7 +235,7 @@ const HomePage = () => {
         )}
 
         {/* Latest blog post section  */}
-        <section className='p-10 max-md:p-5'>
+        <section className='p-10 lg:p-16 max-md:p-5'>
           <div className='flex justify-between items-center'>
             <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
               Latest Blog Posts
@@ -262,7 +262,7 @@ const HomePage = () => {
         </section>
 
         {/* Latest blog post with Subscribe box section  */}
-        <section className='grid max-md:grid-cols-1 grid-cols-3 max-md:p-5 p-10 pt-10 gap-14'>
+        <section className='grid max-md:grid-cols-1 grid-cols-3 max-md:p-5 p-10 lg:p-16 pt-10 gap-14'>
           <SubscribeCard />
           {latestPosts &&
             latestPosts.length > 0 &&
@@ -277,18 +277,18 @@ const HomePage = () => {
         </section>
 
         {/* Category 1 blog post section  */}
-        <section className='p-10 max-md:p-5 lg:-mt-32'>
+        <section className='p-10 lg:p-16 max-md:p-5 lg:-mt-24'>
           <div className='relative'>
-            <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
+            <h3 className='text-6xl capitalize max-md:text-3xl font-[900]'>
               {categories[0]?.name}
-            </h2>
+            </h3>
             <p className='text-neutral-400 max-md:text-sm pt-1'>
               The Fashion Salad latest update
             </p>
             <div className='absolute -top-20 -left-20 z-10 w-[190px] h-[190px] opacity-15 bg-gradient-to-b from-amber-400 to-amber-800 rounded-full filter' />
           </div>
           {/* <div className='h-[0.5px] bg-neutral-300 my-10'></div> */}
-          <div className='pt-10 lg:p-16'>
+          <div className='pt-10'>
             {category1Posts?.map((post, index) => (
               <BlogPostCard3
                 key={index}
@@ -300,11 +300,11 @@ const HomePage = () => {
         </section>
 
         {/* Category 2 blog post section  */}
-        <section className='p-10 max-md:p-5 -mt-16'>
+        <section className='p-10 lg:p-16 max-md:p-5 -mt-16'>
           <div className='relative'>
-            <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
+            <h4 className='text-6xl capitalize max-md:text-3xl font-[900]'>
               {categories[1]?.name}
-            </h2>
+            </h4>
             <p className='text-neutral-400 max-md:text-sm pt-1'>
               The Fashion Salad latest update
             </p>
@@ -340,7 +340,7 @@ const HomePage = () => {
         </section>
 
         {/* Instagram section  */}
-        <section className='flex lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10'>
+        <section className='flex lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10 lg:p-16'>
           <div className='lg:w-1/3'>
             <div className='w-full group relative h-[420px] max-md:h-[370px]'>
               <Image
@@ -359,7 +359,7 @@ const HomePage = () => {
               />
               {/* Icon Section */}
               <div className='absolute inset-0 flex justify-center items-center'>
-                <Link
+                <a
                   rel='external'
                   target='_blank'
                   href={'https://www.instagram.com'}
@@ -371,7 +371,7 @@ const HomePage = () => {
                     alt='Instagram'
                     className='group-hover:scale-110 transition-all duration-500'
                   />
-                </Link>
+                </a>
               </div>
             </div>
           </div>
@@ -379,9 +379,9 @@ const HomePage = () => {
             <div className='flex justify-between'>
               <div>
                 <p className='text-5xl max-md:text-2xl font-semibold'>Our</p>
-                <h1 className='text-8xl max-md:text-4xl font-bold'>
+                <h5 className='text-8xl max-md:text-4xl font-bold'>
                   Social Diaries
-                </h1>
+                </h5>
               </div>
               <div>
                 <ArrowRight size={55} />
@@ -404,7 +404,7 @@ const HomePage = () => {
                   alt={'Image'}
                 />
                 <div className='absolute inset-0 rounded-xl bgwh flex justify-center items-center'>
-                  <Link
+                  <a
                     rel='external'
                     target='_blank'
                     href={
@@ -418,7 +418,7 @@ const HomePage = () => {
                       className='bg-white rounded-xl group-hover:scale-110 transition-all duration-500'
                       alt='Instagram'
                     />
-                  </Link>
+                  </a>
                 </div>
               </div>
               <div className='relative group w-full h-[230px]'>
@@ -437,7 +437,7 @@ const HomePage = () => {
                   alt={'Image'}
                 />
                 <div className='absolute inset-0 bgwh flex justify-center items-center'>
-                  <Link
+                  <a
                     rel='external'
                     href={'https://www.youtube.com'}
                     target='_blank'
@@ -449,7 +449,7 @@ const HomePage = () => {
                       className='rounded-xl group-hover:scale-110 transition-all duration-500'
                       alt='Youtube'
                     />
-                  </Link>
+                  </a>
                 </div>
               </div>
             </div>
@@ -457,11 +457,11 @@ const HomePage = () => {
           </div>
         </section>
 
-        <section className='p-10 max-md:p-5'>
+        <section className='p-10 lg:p-16 max-md:p-5'>
           <div className='flex justify-between items-center'>
-            <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
+            <h6 className='text-6xl capitalize max-md:text-3xl font-[900]'>
               {categories[2]?.name}
-            </h2>
+            </h6>
           </div>
           <div className='grid max-md:grid-cols-1 grid-cols-3 py-10 gap-14 max-md:gap-5'>
             {category3Posts &&

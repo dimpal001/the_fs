@@ -51,10 +51,19 @@ const Footer = () => {
           <div className='mb-6 md:mb-0'>
             <h6 className='text-lg font-semibold mb-4'>Follow Us</h6>
             <div className='flex space-x-4'>
-              <InstagramIcon round size={45} />
-              <FacebookIcon round size={45} />
-              <WhatsappIcon round size={45} />
-              <TwitterIcon round size={45} />
+              <a target='_blank' href={'https://www.instagram.com'}>
+                <InstagramIcon round size={45} />
+              </a>
+              <a target='_blank' href={'https://www.facebook.com'}>
+                <FacebookIcon round size={45} />
+              </a>
+              <a target='_blank' href={'https://www.whatsapp.com'}>
+                <WhatsappIcon round size={45} />
+              </a>
+
+              <a target='_blank' href={'https://www.x.com'}>
+                <TwitterIcon round size={45} />
+              </a>
             </div>
           </div>
         </div>
