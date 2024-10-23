@@ -20,7 +20,6 @@ const AboutUsManagement = () => {
   const handleFetchAbout = async () => {
     try {
       const response = await axios.get('/api/about')
-      console.log(response.data)
       setContent(response.data)
     } catch (error) {
       enqueueSnackbar('Failed to fetch about content.', { variant: 'error' })

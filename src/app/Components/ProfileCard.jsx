@@ -12,7 +12,7 @@ const ProfileCard = ({ name, id, date, author_image }) => {
     <div className='flex gap-3 max-md:gap-1 cursor-pointer items-center'>
       <div onClick={handleClick} className='rounded-full w-[40px] h-[40px]'>
         <Image
-          className='rounded-full'
+          className='rounded-full w-full h-full object-cover cursor-pointer'
           src={
             author_image
               ? `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${author_image}`
@@ -21,13 +21,7 @@ const ProfileCard = ({ name, id, date, author_image }) => {
           width={0}
           height={0}
           sizes='100vw'
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            cursor: 'pointer',
-          }}
-          alt={name}
+          alt={name || 'The fashion salad'}
         />
       </div>
       <div>

@@ -140,7 +140,6 @@ const ManageLogos = () => {
         ACL: 'public-read',
       }
 
-      console.log(selectedLogo)
       const data = await s3Client.send(new DeleteObjectCommand(params))
       const response = await axios.delete('/api/admin/logos', {
         params: { id: selectedLogo.id },

@@ -10,17 +10,11 @@ const ImageModal = ({ isOpen, onClose, imageUrl }) => {
         <div className='w-full h-full flex justify-center items-center'>
           <div className='max-md:w-full lg:h-full'>
             <Image
-              className=''
+              className='w-full h-full object-cover cursor-pointer'
               src={imageUrl ? imageUrl : 'https://picsum.photos/803/647'}
               width={0}
               height={0}
               sizes='100vw'
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                cursor: 'pointer',
-              }}
               alt={'Image'}
             />
           </div>

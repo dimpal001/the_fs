@@ -7,7 +7,6 @@ const ReviewPostModal = ({ post, isOpen, onClose, id }) => {
   const [postData, setPostData] = useState(null)
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(false)
-  console.log(id)
 
   const handleFetchBlogPost = async () => {
     if (!id) return

@@ -19,8 +19,6 @@ export async function PATCH(request) {
   try {
     const { data } = await request.json()
 
-    console.log(data)
-
     await db.query('UPDATE AboutUs SET content = ? WHERE id = 1', [data])
 
     return NextResponse.json({ message: 'About us updated' }, { status: 200 })

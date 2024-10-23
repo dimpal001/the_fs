@@ -11,7 +11,7 @@ import {
   Mail,
   ChevronDown,
   ChevronUp,
-  Image,
+  FileImage,
 } from 'lucide-react'
 import { useState } from 'react'
 
@@ -328,7 +328,7 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
                   : 'text-gray-800 hover:bg-gray-200'
               }`}
             >
-              <Image
+              <FileImage
                 size={20}
                 className={`${
                   activeSection === 'logos' ? 'text-first' : 'text-gray-800'

@@ -29,14 +29,8 @@ const BlogPostCard2 = ({ title, imageUrl, date, onClick, post }) => {
           width={0}
           height={0}
           sizes='100vw'
-          className='rounded-t-[12px]'
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            cursor: 'pointer',
-          }}
-          alt={title}
+          className='rounded-t-[12px] w-full h-full object-cover cursor-pointer'
+          alt={title || 'The fashion salad'}
         />
       </div>
       <div className='p-3 max-md:w-full max-md:flex flex-col'>

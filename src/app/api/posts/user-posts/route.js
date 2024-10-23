@@ -25,8 +25,6 @@ export async function GET(request) {
         [id, status]
       )
 
-      console.log(posts)
-
       const totalPages = Math.ceil(posts / limit)
 
       return NextResponse.json(

@@ -56,7 +56,6 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
     if (validation()) {
       try {
         setSubmitting(true)
-        console.log(email, password)
         const response = await axios.post(`/api/auth/register`, {
           email,
           password,
@@ -64,7 +63,6 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
         setIsTypeOtp(true)
         enqueueSnackbar(response.data.message, { variant: 'success' })
       } catch (error) {
-        console.log(error)
         enqueueSnackbar(error.response.data.message, { variant: 'error' })
       } finally {
         setSubmitting(false)

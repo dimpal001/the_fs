@@ -16,6 +16,7 @@ import Instagram from './../../public/icons/instagram_icon.svg'
 import FacebookImg from './../../public/icons/facebook.svg'
 import YoutubeImg from './../../public/icons/youtube.svg'
 import Link from 'next/link'
+import SocialDiadies from './Components/SocialDiadies'
 
 const HomePage = () => {
   const [latestPosts, setLatestPosts] = useState([])
@@ -35,7 +36,6 @@ const HomePage = () => {
         params: { status: 'hero_posts' },
       })
       setHeroPosts(response.data)
-      console.log(heroPosts[0])
     } catch (error) {
     } finally {
       setLoadingLatest(false)
@@ -47,7 +47,6 @@ const HomePage = () => {
       const response = await axios.get(`/api/posts/home-data`, {
         params: { status: 'latest' },
       })
-      console.log(response.data)
       setLatestPosts(response.data)
     } catch (error) {
     } finally {
@@ -68,7 +67,6 @@ const HomePage = () => {
       const response = await axios.get(`/api/posts/category`, {
         params: { slug: categories[1].slug },
       })
-      console.log(response.data)
       setCategory2Posts((prev) => [...prev, ...response.data.posts])
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' })
@@ -80,7 +78,6 @@ const HomePage = () => {
       const response = await axios.get(`/api/posts/category`, {
         params: { slug: categories[2].slug },
       })
-      console.log(response.data)
       setCategory3Posts((prev) => [...prev, ...response.data.posts])
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' })
@@ -129,7 +126,7 @@ const HomePage = () => {
           <title>The Fashion Salad - Fashion blog</title>
           <meta
             name='description'
-            content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
+            content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
           />
           <meta
             name='keywords'
@@ -143,7 +140,7 @@ const HomePage = () => {
           />
           <meta
             property='og:description'
-            content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
+            content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
           />
           <meta property='og:url' content='https://www.thefashionsalad.com' />
           <meta property='og:type' content='website' />
@@ -164,7 +161,7 @@ const HomePage = () => {
           />
           <meta
             name='twitter:description'
-            content='Discover the latest fashion trends and tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, and lifestyle.'
+            content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
           />
           <meta
             name='twitter:image'
@@ -186,18 +183,12 @@ const HomePage = () => {
                 src={
                   heroPosts[0].image_url
                     ? heroPosts[0].image_url
-                    : 'https://picsum.photos/685/979'
+                    : 'https://picsum.photos/745/300'
                 }
                 width={0}
                 height={0}
                 sizes='100vw'
-                className='rounded-[15px]'
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  cursor: 'pointer',
-                }}
+                className='rounded-[15px] w-full h-full object-cover cursor-pointer'
                 alt={'Image'}
               />
             </div>
@@ -265,7 +256,7 @@ const HomePage = () => {
               latestPosts.slice(0, 2).map((post, index) => (
                 <BlogPostCard
                   key={post.id} // Add a key prop for unique identification
-                  imageUrl={`https://picsum.photos/778/9${index}7`}
+                  imageUrl={`https://picsum.photos/778/3${index}7`}
                   date={new Date().toDateString()}
                   post={post}
                 />
@@ -284,7 +275,7 @@ const HomePage = () => {
             latestPosts.slice(0, 2).map((post, index) => (
               <BlogPostCard4
                 key={post.id} // Add a key prop for unique identification
-                imageUrl={`https://picsum.photos/778/5${index}4`}
+                imageUrl={`https://picsum.photos/778/3${index}4`}
                 date={new Date().toDateString()}
                 post={post}
               />
@@ -310,7 +301,7 @@ const HomePage = () => {
               <BlogPostCard3
                 key={index}
                 post={post}
-                imageUrl={`https://picsum.photos/778/3${index}8`}
+                imageUrl={`https://picsum.photos/878/3${index}8`}
               />
             ))}
           </div>
@@ -336,7 +327,7 @@ const HomePage = () => {
               <BlogPostCard3
                 key={index}
                 post={post}
-                imageUrl={`https://picsum.photos/778/3${index}4`}
+                imageUrl={`https://picsum.photos/858/3${index}4`}
               />
             ))}
             <div className='grid max-md:grid-cols-1 grid-cols-3 gap-5'>
@@ -361,122 +352,9 @@ const HomePage = () => {
         {/* Instagram section  */}
         <section
           id='social-diaries'
-          className='flex lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10 lg:p-16'
+          className='flex w-full lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10 lg:p-16'
         >
-          <div className='lg:w-1/3'>
-            <div className='w-full group relative h-[420px] max-md:h-[370px]'>
-              <Image
-                src={'https://picsum.photos/745/749'}
-                width={0}
-                height={0}
-                sizes='100vw'
-                className='rounded-2xl opacity-40'
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  cursor: 'pointer',
-                }}
-                alt={'Image'}
-              />
-              {/* Icon Section */}
-              <div className='absolute inset-0 flex justify-center items-center'>
-                <a
-                  rel='external'
-                  target='_blank'
-                  href={'https://www.instagram.com'}
-                >
-                  <Image
-                    src={Instagram}
-                    width={80}
-                    height={80}
-                    alt='Instagram'
-                    className='group-hover:scale-110 transition-all duration-500'
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-          <div className='lg:w-2/3 flex flex-col relative justify-between'>
-            <div className='flex justify-between'>
-              <div>
-                <p className='text-5xl max-md:text-2xl font-semibold'>Our</p>
-                <h5 className='text-8xl max-md:text-4xl font-bold'>
-                  Social Diaries
-                </h5>
-              </div>
-              <div>
-                <ArrowRight size={55} />
-              </div>
-            </div>
-            <div className='grid grid-cols-2 justify-between max-md:mt-10 max-md:grid-cols-1 gap-5'>
-              <div className='relative group w-full h-[230px]'>
-                <Image
-                  src={'https://picsum.photos/775/749'}
-                  width={0}
-                  height={0}
-                  sizes='100vw'
-                  className='rounded-2xl opacity-40 '
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    cursor: 'pointer',
-                  }}
-                  alt={'Image'}
-                />
-                <div className='absolute inset-0 rounded-xl bgwh flex justify-center items-center'>
-                  <a
-                    rel='external'
-                    target='_blank'
-                    href={
-                      'https://www.facebook.com/profile.php?id=61567652667493'
-                    }
-                  >
-                    <Image
-                      src={FacebookImg}
-                      width={70}
-                      height={70}
-                      className='bg-white rounded-xl group-hover:scale-110 transition-all duration-500'
-                      alt='Instagram'
-                    />
-                  </a>
-                </div>
-              </div>
-              <div className='relative group w-full h-[230px]'>
-                <Image
-                  src={'https://picsum.photos/714/749'}
-                  width={0}
-                  height={0}
-                  sizes='100vw'
-                  className='rounded-2xl opacity-40'
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    cursor: 'pointer',
-                  }}
-                  alt={'Image'}
-                />
-                <div className='absolute inset-0 bgwh flex justify-center items-center'>
-                  <a
-                    rel='external'
-                    href={'https://www.youtube.com'}
-                    target='_blank'
-                  >
-                    <Image
-                      src={YoutubeImg}
-                      width={70}
-                      height={70}
-                      className='rounded-xl group-hover:scale-110 transition-all duration-500'
-                      alt='Youtube'
-                    />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className='absolute top-[20px]  right-[240px] z-10 w-[300px] h-[300px] opacity-15 bg-gradient-to-tr from-amber-300 to-red-800 rounded-full filter' />
-          </div>
+          <SocialDiadies />
         </section>
 
         <section className='p-10 lg:p-16 max-md:p-5'>
@@ -495,7 +373,7 @@ const HomePage = () => {
                 .map((post, index) => (
                   <BlogPostCard
                     key={post.id}
-                    imageUrl={`https://picsum.photos/548/5${index}1`}
+                    imageUrl={`https://picsum.photos/548/3${index}1`}
                     date={new Date().toDateString()}
                     post={post}
                   />

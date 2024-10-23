@@ -30,7 +30,6 @@ const Navbar = () => {
   const handleFetchCategory = async () => {
     try {
       const response = await axios.get('/api/admin/category')
-      console.log(response.data)
       setCategoryList(response.data)
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' })

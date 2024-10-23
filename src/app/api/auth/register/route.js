@@ -12,10 +12,6 @@ export async function POST(request) {
   try {
     const { email, password, role = 'guest' } = await request.json()
 
-    console.log('API Call:', request.method)
-    console.log('Email:', email)
-    console.log('Password:', password)
-
     const hashedPassword = await hash(password, 10)
 
     // Check if the user exists
@@ -38,10 +34,6 @@ export async function POST(request) {
       // If the user is not verified, update the existing data
       const otp = generateOTP()
       const expirationTime = new Date(Date.now() + 10 * 60 * 1000)
-
-      if (users.length > 0) {
-        console.log(users)
-      }
 
       await db.query(
         'UPDATE Users SET password = ?, role = ?, otp = ?, otp_expiration = ? WHERE email = ?',

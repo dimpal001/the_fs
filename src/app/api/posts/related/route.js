@@ -5,7 +5,6 @@ import { db } from '../../../../utils/db'
 export async function GET(request) {
   const { searchParams } = new URL(request.url)
   const category_id = searchParams.get('category_id')
-  console.log(category_id)
 
   if (!category_id) {
     return NextResponse.json(

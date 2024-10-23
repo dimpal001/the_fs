@@ -20,8 +20,6 @@ export async function PATCH(request) {
   try {
     const { data } = await request.json()
 
-    console.log(data)
-
     await db.query('UPDATE TermsAndCondition SET content = ? WHERE id = 1', [
       data,
     ])

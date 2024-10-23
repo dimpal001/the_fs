@@ -198,7 +198,6 @@ export async function DELETE(request) {
   try {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
-    console.log(searchParams)
 
     if (!id) {
       return NextResponse.json(
@@ -208,7 +207,6 @@ export async function DELETE(request) {
     }
 
     const [result] = await db.query('DELETE FROM Categories WHERE id = ?', [id])
-    console.log(result)
 
     // Check if a row was affected
     if (result.affectedRows === 1) {
@@ -223,7 +221,6 @@ export async function DELETE(request) {
       )
     }
   } catch (error) {
-    console.log(error)
     return NextResponse.json(
       { message: 'Error deleting category' },
       { status: 500 }

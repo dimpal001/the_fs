@@ -92,16 +92,6 @@ const CreatePost = () => {
   }
 
   const handleSubmit = async (status) => {
-    // if (user.role === 'admin') {
-    //   const adminBlogCategory = categories.find(
-    //     (category) => category.name === 'admin blogs'
-    //   )
-
-    //   selectedCategoryIds.push(adminBlogCategory.slug)
-    //   console.log(selectedCategoryIds)
-    //   return
-    // }
-
     if (user?.name === '' || user?.name === null) {
       enqueueSnackbar('Please add your name before creating a post!', {
         variant: 'error',

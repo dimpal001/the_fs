@@ -31,7 +31,6 @@ export async function POST(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.log(error)
     return NextResponse.json(
       { message: 'Error resetting password' },
       { status: 500 }

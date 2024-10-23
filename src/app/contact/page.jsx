@@ -78,17 +78,11 @@ const Page = () => {
             </p>
             <div className='rounded-full lg:w-[500px] w-full'>
               <Image
-                className='rounded-full'
+                className='rounded-full w-full h-full object-cover cursor-pointer'
                 src={ContactImg}
                 width={0}
                 height={0}
                 sizes='100vw'
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  cursor: 'pointer',
-                }}
                 alt='Contact Image'
               />
             </div>

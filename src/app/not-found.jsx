@@ -41,17 +41,11 @@ const ErrorPage = ({ label }) => {
       <div className='min-h-[400px] flex flex-col gap-1 justify-center items-center'>
         <div className='rounded-2xl max-lg:w-[250px] mb-10 lg:w-[370px]'>
           <Image
-            className='rounded-t-2xl'
+            className='rounded-t-2xl w-full h-full object-cover cursor-pointer'
             src={ErrorImg}
             width={0}
             height={0}
             sizes='100vw'
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              cursor: 'pointer',
-            }}
             alt={'Error page'}
           />
         </div>

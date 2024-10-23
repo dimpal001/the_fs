@@ -169,7 +169,6 @@ const Blog = ({ params }) => {
 
       router.push(`/category/${formattedTitle}`)
     } else {
-      console.log('Category not found')
     }
   }
 
@@ -208,18 +207,12 @@ const Blog = ({ params }) => {
                 className='w-full h-[200px] rounded-xl lg:h-[350px]'
               >
                 <Image
-                  className='rounded-xl'
+                  className='rounded-xl w-full h-full object-cover cursor-pointer'
                   src={'https://picsum.photos/651/207'}
                   width={0}
                   height={0}
                   sizes='100vw'
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    cursor: 'pointer',
-                  }}
-                  alt={'hh'}
+                  alt={post?.title || 'Blog title'}
                 />
               </div>
               <div className='flex p-2 justify-between items-center'>

@@ -8,7 +8,6 @@ async function sendBlogPostNotification(slug) {
     const link = `https://www.thefashionsalad.com/blogs/${slug}`
 
     emailQueue.add({ emails, link })
-    console.log('Email notification sent successfully')
   } catch (error) {
     console.error('Failed to send email notification:', error)
   }
@@ -35,13 +34,11 @@ export async function PATCH(request, { params }) {
       .trim()
 
     if (status === 'approve') {
-      console.log('Email sent')
       const [rows] = await db.query('SELECT slug FROM BlogPosts WHERE id = ?', [
         id,
       ])
       const slug = rows[0]?.slug
 
-      console.log('Email sent')
       const [emails] = await db.query(`SELECT email FROM Subscribers`)
       const link = `https://www.thefashionsalad.com/blogs/${slug}`
 

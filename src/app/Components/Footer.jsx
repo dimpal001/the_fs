@@ -7,8 +7,6 @@ import {
   TwitterIcon,
   WhatsappIcon,
 } from 'next-share'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
 
 const Footer = () => {
   return (
@@ -22,7 +20,7 @@ const Footer = () => {
               We provide the latest in fashion trends and tips. Stay up-to-date
               with our blog for new fashion advice and inspirations.
             </p>
-            <div className='w-full flex mt-3'>
+            <div className='w-full flex mt-3 min-h-[150px]'>
               <SubscribeCard isSmall={true} />
             </div>
           </div>
@@ -44,7 +42,7 @@ const Footer = () => {
               <li>
                 <Link
                   target='_blank'
-                  href='www.clothes2wear.in'
+                  href='https://www.clothes2wear.in'
                   className='hover:text-gray-400'
                 >
                   Shop
@@ -76,9 +74,9 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Quick Links Section */}
+          {/* On the Page Section */}
           <div className='lg:w-1/3 lg:ps-20 mb-6 md:mb-0'>
-            <h5 className='text-lg font-semibold mb-4'>On the page</h5>
+            <h5 className='text-lg font-semibold mb-4'>On the Page</h5>
             <ul className='space-y-2'>
               <li>
                 <Link href='/' className='hover:text-gray-400'>
@@ -122,7 +120,7 @@ const Footer = () => {
                 href='https://www.instagram.com'
                 aria-label='Follow us on Instagram'
                 rel='noopener noreferrer'
-                className='hover:text-gray-400'
+                className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
               >
                 <InstagramIcon round size={45} />
               </a>
@@ -131,7 +129,7 @@ const Footer = () => {
                 href='https://www.facebook.com'
                 aria-label='Follow us on Facebook'
                 rel='noopener noreferrer'
-                className='hover:text-gray-400'
+                className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
               >
                 <FacebookIcon round size={45} />
               </a>
@@ -140,7 +138,7 @@ const Footer = () => {
                 href='https://www.whatsapp.com'
                 aria-label='Follow us on WhatsApp'
                 rel='noopener noreferrer'
-                className='hover:text-gray-400'
+                className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
               >
                 <WhatsappIcon round size={45} />
               </a>
@@ -149,16 +147,16 @@ const Footer = () => {
                 href='https://www.x.com'
                 aria-label='Follow us on Twitter'
                 rel='noopener noreferrer'
-                className='hover:text-gray-400'
+                className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
               >
                 <TwitterIcon round size={45} />
               </a>
               <a
                 target='_blank'
                 href='https://in.pinterest.com/'
-                aria-label='Follow us on Twitter'
+                aria-label='Follow us on Pinterest'
                 rel='noopener noreferrer'
-                className='hover:text-gray-400'
+                className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
               >
                 <PinterestIcon round size={45} />
               </a>

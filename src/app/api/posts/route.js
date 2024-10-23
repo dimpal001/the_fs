@@ -141,7 +141,6 @@ export async function GET(request) {
 
     // User posts
     if (userId) {
-      console.log(userId)
       const [posts] = await db.query(
         `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email, Users.image_url as author_image
          FROM BlogPosts 

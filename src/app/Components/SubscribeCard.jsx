@@ -18,7 +18,6 @@ const SubscribeCard = ({ isSmall }) => {
     }
 
     try {
-      console.log(email)
       setSubmitting(true)
       const response = await axios.post('/api/subscribers/', {
         email: email,

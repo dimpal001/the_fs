@@ -162,43 +162,45 @@ const Header = () => {
                 className='text-neutral-600 cursor-pointer'
                 size={25}
               />
-              <DynamicMenu button={<CircleUserRound />}>
-                {user?.role === 'admin' && (
+              {user && (
+                <DynamicMenu button={<CircleUserRound />}>
+                  {user.role === 'admin' && (
+                    <ClickItem
+                      label={'Dashboard'}
+                      onClick={() => {
+                        router.push('/admin/dashboard')
+                      }}
+                    />
+                  )}
                   <ClickItem
-                    label={'Dashboard'}
+                    label={'Profile'}
                     onClick={() => {
-                      router.push('/admin/dashboard')
+                      setIsMenuOpen(false)
+                      router.push(`/profile/${user?.id}`)
                     }}
                   />
-                )}
-                <ClickItem
-                  label={'Profile'}
-                  onClick={() => {
-                    setIsMenuOpen(false)
-                    router.push(`/profile/${user?.id}`)
-                  }}
-                />
-                <ClickItem
-                  label={'Account'}
-                  onClick={() => {
-                    router.push('/user/account')
-                  }}
-                />
-                <ClickItem
-                  label={'Posts'}
-                  onClick={() => {
-                    router.push('/user/my-posts')
-                  }}
-                />
-                <ClickItem
-                  label={'Logout'}
-                  onClick={() => {
-                    localStorage.removeItem('user')
-                    setUser(null)
-                    router.push('/')
-                  }}
-                />
-              </DynamicMenu>
+                  <ClickItem
+                    label={'Account'}
+                    onClick={() => {
+                      router.push('/user/account')
+                    }}
+                  />
+                  <ClickItem
+                    label={'Posts'}
+                    onClick={() => {
+                      router.push('/user/my-posts')
+                    }}
+                  />
+                  <ClickItem
+                    label={'Logout'}
+                    onClick={() => {
+                      localStorage.removeItem('user')
+                      setUser(null)
+                      router.push('/')
+                    }}
+                  />
+                </DynamicMenu>
+              )}
             </div>
 
             <div className='flex max-md:hidden items-center gap-4'>

@@ -128,9 +128,7 @@ const sendSubscriptionEmail = async (email) => {
     }
 
     await transporter.sendMail(mailOptions)
-  } catch (error) {
-    console.log(error)
-  }
+  } catch (error) {}
 }
 
 module.exports = { sendSubscriptionEmail }

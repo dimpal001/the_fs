@@ -104,7 +104,6 @@ const AccountPage = () => {
       }
       fetchUserData()
     } catch (err) {
-      console.log('Error', err)
     } finally {
       setUploading(false)
     }
@@ -315,7 +314,7 @@ const AccountPage = () => {
                 <div>
                   <div className='w-[120px] border-4 border-blue-500 h-[120px] rounded-full lg:h-[180px] lg:w-[180px]'>
                     <Image
-                      className='rounded-full'
+                      className='rounded-full w-full h-full object-cover cursor-pointer'
                       src={
                         fetchUser?.image_url
                           ? `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${fetchUser?.image_url}`
@@ -324,12 +323,6 @@ const AccountPage = () => {
                       width={0}
                       height={0}
                       sizes='100vw'
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        objectFit: 'cover',
-                        cursor: 'pointer',
-                      }}
                       alt={'User Profile'}
                     />
                   </div>

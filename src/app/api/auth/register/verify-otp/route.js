@@ -5,11 +5,8 @@ import { NextResponse } from 'next/server'
 export async function POST(request) {
   try {
     const body = await request.json()
-    console.log('Request body:', body)
 
     const { email, userInputOTP } = body
-    console.log(email)
-    console.log(userInputOTP)
 
     const [user] = await db.query('SELECT * FROM Users WHERE email = ?', [
       email,

@@ -25,7 +25,6 @@ const UserManagement = () => {
   const [totalPages, setTotalPages] = useState('')
 
   const handleFetchUsers = async (page) => {
-    console.log('Fetching users')
     try {
       const response = await axios.get(
         '/api/admin/users',

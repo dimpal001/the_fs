@@ -4,7 +4,6 @@ import { db } from '../../../../utils/db'
 export async function GET(request, { params }) {
   const { searchParams } = new URL(request.url)
   const slug = searchParams.get('slug') // Fetch slug from the query params
-  console.log(slug)
 
   const page = parseInt(searchParams.get('page') || '1', 10)
   const limit = parseInt(searchParams.get('limit') || '9', 10)

@@ -23,13 +23,7 @@ const HeroBlogCard = ({ imageUrl, delay, post }) => {
           width={0}
           height={0}
           sizes='100vw'
-          className='rounded-md'
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            cursor: 'pointer',
-          }}
+          className='rounded-md w-full h-full object-cover cursor-pointer'
           alt={'Image'}
         />
       </div>

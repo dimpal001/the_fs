@@ -166,7 +166,6 @@ export async function DELETE(request) {
     await db.query('DELETE FROM Likes WHERE user_id = ?', [id])
     const [result] = await db.query(`DELETE FROM Users WHERE id = ?`, [id])
 
-    console.log(result)
     if (result.affectedRows > 0) {
       return NextResponse.json(
         { message: 'User deleted successfully' },

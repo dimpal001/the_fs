@@ -121,7 +121,6 @@ export async function DELETE(request) {
       )
     }
   } catch (error) {
-    console.log(error)
     return NextResponse.json(
       { message: 'Error deleting subscriber.' },
       { status: 500 }

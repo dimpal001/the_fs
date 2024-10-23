@@ -8,8 +8,6 @@ export async function PATCH(request, { params }) {
     const body = await request.json()
     const { is_active } = body
 
-    console.log(is_active)
-
     const result = await db.query(
       'UPDATE Users SET is_active = ? WHERE id  = ?',
       [is_active, id]

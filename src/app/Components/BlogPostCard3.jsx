@@ -24,19 +24,13 @@ const BlogPostCard3 = ({ title, imageUrl, post, onClick }) => {
         className='lg:h-[200px] rounded-2xl lg:w-[340px] w-full max-md:h-[150px] h-[100px] cursor-pointer'
       >
         <Image
-          className='rounded-2xl'
+          className='rounded-2xl w-full h-full object-cover cursor-pointer'
           onClick={onClick}
           src={imageUrl}
           width={0}
           height={0}
           sizes='100vw'
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            cursor: 'pointer',
-          }}
-          alt={title}
+          alt={title || 'The fashion salad'}
         />
       </div>
 

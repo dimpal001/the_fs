@@ -12,7 +12,6 @@ export const DynamicMenu = ({ button, children }) => {
     setIsOpen(!isOpen)
   }
 
-  // Close menu when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -36,7 +35,6 @@ export const DynamicMenu = ({ button, children }) => {
     }
   }, [isOpen])
 
-  // Update menu position relative to the button
   useEffect(() => {
     if (buttonRef.current) {
       const buttonRect = buttonRef.current.getBoundingClientRect()
@@ -47,36 +45,36 @@ export const DynamicMenu = ({ button, children }) => {
     }
   }, [isOpen])
 
-  // Function to handle item click and close the menu
   const handleItemClick = (callback) => {
     if (callback) {
-      callback() // Execute the item's function if provided
+      callback()
     }
-    setIsOpen(false) // Close the menu
+    setIsOpen(false)
   }
 
   return (
     <div className='relative'>
-      {/* Dynamic Button */}
       <div
         ref={buttonRef}
         className={`cursor-pointer ${!user && 'hidden'}`}
         onClick={toggleMenu}
       >
-        {button}
+        {React.isValidElement(button) ? button : null}
       </div>
 
-      {/* Menu */}
       {isOpen && (
         <div
           ref={menuRef}
           className='absolute z-30 top-7 w-32 right-7 border bg-white shadow-md rounded-md p-4'
         >
-          {React.Children.map(children, (child) =>
-            React.cloneElement(child, {
-              onClick: () => handleItemClick(child.props.onClick), // Pass the item's onClick
-            })
-          )}
+          {React.Children.map(children, (child) => {
+            if (React.isValidElement(child)) {
+              return React.cloneElement(child, {
+                onClick: () => handleItemClick(child.props.onClick),
+              })
+            }
+            return null // Ignore invalid children
+          })}
         </div>
       )}
     </div>

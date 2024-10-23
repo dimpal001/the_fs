@@ -7,7 +7,6 @@ emailQueue.process(async (job) => {
   try {
     const { emails, link } = job.data
     await sendBlogPostAlert(emails, link)
-    console.log('Email notification sent in the background')
   } catch (error) {
     console.error('Failed to send email notification:', error)
   }
