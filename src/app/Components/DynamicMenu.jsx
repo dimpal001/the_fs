@@ -58,11 +58,13 @@ export const DynamicMenu = ({ button, children }) => {
   return (
     <div className='relative'>
       {/* Dynamic Button */}
-      {user && (
-        <div ref={buttonRef} className='cursor-pointer' onClick={toggleMenu}>
-          {button}
-        </div>
-      )}
+      <div
+        ref={buttonRef}
+        className={`cursor-pointer ${!user && 'hidden'}`}
+        onClick={toggleMenu}
+      >
+        {button}
+      </div>
 
       {/* Menu */}
       {isOpen && (
