@@ -20,7 +20,7 @@ const Footer = () => {
               We provide the latest in fashion trends and tips. Stay up-to-date
               with our blog for new fashion advice and inspirations.
             </p>
-            <div className='w-full flex mt-3 min-h-[150px]'>
+            <div className='w-full flex mt-3'>
               <SubscribeCard isSmall={true} />
             </div>
           </div>
