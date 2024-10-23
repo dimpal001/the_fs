@@ -92,6 +92,50 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
+            <ul className='space-y-2 hidden'>
+              <li>
+                <Link href='/' className='hover:text-gray-400'>
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link href='/about' className='hover:text-gray-400'>
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link
+                  target='_blank'
+                  href='www.clothes2wear.in'
+                  className='hover:text-gray-400'
+                >
+                  Shop
+                </Link>
+              </li>
+              <li>
+                <Link href='/privacy-policy' className='hover:text-gray-400'>
+                  Privacy Policy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href='/terms-and-condition'
+                  className='hover:text-gray-400'
+                >
+                  Terms & Condition
+                </Link>
+              </li>
+              <li>
+                <Link href='/contact' className='hover:text-gray-400'>
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link href='/faq' className='hover:text-gray-400'>
+                  FAQ
+                </Link>
+              </li>
+            </ul>
           </div>
 
           {/* Categories  */}
