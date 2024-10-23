@@ -16,6 +16,7 @@ import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
 import Image from 'next/image'
 import Link from 'next/link'
+import useAuth from '../context/useAuth'
 
 const Header = () => {
   const [isRegisterModalOpen, setIsRegisterModalOpen] = useState(false)
@@ -26,6 +27,8 @@ const Header = () => {
   const { user, setUser } = useUserContext()
   const { setSelectedCategoryId } = useCategoryContext()
   const router = useRouter()
+
+  useAuth()
 
   const toggleDrawer = () => {
     setIsDrawerOpen((prevState) => !prevState)
