@@ -16,6 +16,7 @@ import Instagram from './../../public/icons/instagram_icon.svg'
 import FacebookImg from './../../public/icons/facebook.svg'
 import YoutubeImg from './../../public/icons/youtube.svg'
 import Link from 'next/link'
+import useAuth from './context/useAuth'
 
 const HomePage = () => {
   const [latestPosts, setLatestPosts] = useState([])
@@ -25,6 +26,8 @@ const HomePage = () => {
   const [category3Posts, setCategory3Posts] = useState([])
   const [loadingLatest, setLoadingLatest] = useState(true)
   const [categories, setCategories] = useState([])
+
+  useAuth()
 
   const router = useRouter()
 
