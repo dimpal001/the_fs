@@ -1,7 +1,6 @@
 'use client'
 
-import { CircleUserRound, Menu, Search, SearchCheck, X } from 'lucide-react'
-import Button from './Button'
+import { CircleUserRound, Menu, Search, X } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import RegisterModal from './RegisterModal'
 import LoginModal from './LoginModal'
