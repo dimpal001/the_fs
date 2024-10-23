@@ -45,6 +45,14 @@ export const DynamicMenu = ({ button, children }) => {
     }
   }, [isOpen])
 
+  // Function to handle item click and close the menu
+  const handleItemClick = (callback) => {
+    if (callback) {
+      callback() // Execute the item's function if provided
+    }
+    setIsOpen(false) // Close the menu
+  }
+
   return (
     <div className='relative'>
       {/* Dynamic Button */}
@@ -58,7 +66,11 @@ export const DynamicMenu = ({ button, children }) => {
           ref={menuRef}
           className='absolute z-30 top-7 w-32 right-7 border bg-white shadow-md rounded-md p-4'
         >
-          {children}
+          {React.Children.map(children, (child) =>
+            React.cloneElement(child, {
+              onClick: () => handleItemClick(child.props.onClick), // Pass the item's onClick
+            })
+          )}
         </div>
       )}
     </div>

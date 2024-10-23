@@ -78,11 +78,13 @@ const Header = () => {
           <div className='lg:p-1 p-5 flex lg:px-16 lg:py-6 shadow-pink-200 shadow-md justify-between items-center'>
             {/* Categories  */}
             <div>
-              <Menu
-                size={40}
-                className='cursor-pointer'
-                onClick={() => setIsMenuOpen(true)}
-              />
+              <div className='flex items-center gap-2'>
+                <Menu
+                  size={30}
+                  className='cursor-pointer'
+                  onClick={() => setIsMenuOpen(true)}
+                />
+              </div>
               <Drawer
                 open={isMenuOpen}
                 onClose={() => setIsMenuOpen(false)}
@@ -116,12 +118,6 @@ const Header = () => {
                         </p>
                       ))}
                     <div className='flex flex-col lg:hidden gap-4'>
-                      <SearchBox
-                        onClick={() => {
-                          router.push('/search')
-                          setIsMenuOpen(false)
-                        }}
-                      />
                       <CreatePost
                         setIsLoginModalOpen={setIsLoginModalOpen}
                         setIsMenuOpen={setIsMenuOpen}
@@ -141,49 +137,6 @@ const Header = () => {
                           <CircleUserRound className='font-semibold group-hover:text-first' />
                         </div>
                       )}
-                      {user && (
-                        <DynamicMenu button={<CircleUserRound />}>
-                          {user.role === 'admin' && (
-                            <ClickItem
-                              label={'Dashboard'}
-                              onClick={() => {
-                                setIsMenuOpen(false)
-                                router.push('/admin/dashboard')
-                              }}
-                            />
-                          )}
-                          <ClickItem
-                            label={'Profile'}
-                            onClick={() => {
-                              toggleDrawer()
-                              router.push(`/profile/${user?.id}`)
-                            }}
-                          />
-                          <ClickItem
-                            label={'Account'}
-                            onClick={() => {
-                              setIsMenuOpen(false)
-                              router.push('/user/account')
-                            }}
-                          />
-                          <ClickItem
-                            label={'Posts'}
-                            onClick={() => {
-                              setIsMenuOpen(false)
-                              router.push('/user/my-posts')
-                            }}
-                          />
-                          <ClickItem
-                            label={'Logout'}
-                            onClick={() => {
-                              setIsMenuOpen(false)
-                              localStorage.removeItem('user')
-                              setUser(null)
-                              router.push('/')
-                            }}
-                          />
-                        </DynamicMenu>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -193,7 +146,10 @@ const Header = () => {
             <Link href={'/'}>
               {logoUrl && (
                 <Image
-                  className='lg:ms-28 max-md:w-[160px]'
+                  className='lg:ms-28 max-md:w-[160px] max-md:-mt-4'
+                  // src={
+                  //   'https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/logo-20241022T042118571Z-TheFashionSalad(3).png'
+                  // }
                   src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/${logoUrl}`}
                   width={250}
                   height={10}
@@ -203,6 +159,53 @@ const Header = () => {
             </Link>
 
             {/* User  */}
+            <div className='flex lg:hidden items-center gap-3'>
+              <Search
+                onClick={() => router.push('/search')}
+                className='text-neutral-600 cursor-pointer'
+                size={25}
+              />
+              {user && (
+                <DynamicMenu button={<CircleUserRound />}>
+                  {user.role === 'admin' && (
+                    <ClickItem
+                      label={'Dashboard'}
+                      onClick={() => {
+                        router.push('/admin/dashboard')
+                      }}
+                    />
+                  )}
+                  <ClickItem
+                    label={'Profile'}
+                    onClick={() => {
+                      setIsMenuOpen(false)
+                      router.push(`/profile/${user?.id}`)
+                    }}
+                  />
+                  <ClickItem
+                    label={'Account'}
+                    onClick={() => {
+                      router.push('/user/account')
+                    }}
+                  />
+                  <ClickItem
+                    label={'Posts'}
+                    onClick={() => {
+                      router.push('/user/my-posts')
+                    }}
+                  />
+                  <ClickItem
+                    label={'Logout'}
+                    onClick={() => {
+                      localStorage.removeItem('user')
+                      setUser(null)
+                      router.push('/')
+                    }}
+                  />
+                </DynamicMenu>
+              )}
+            </div>
+
             <div className='flex max-md:hidden items-center gap-4'>
               <SearchBox
                 onClick={() => {

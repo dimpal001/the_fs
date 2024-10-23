@@ -78,7 +78,7 @@ const Footer = () => {
 
           {/* Quick Links Section */}
           <div className='lg:w-1/3 lg:ps-20 mb-6 md:mb-0'>
-            <h5 className='text-lg font-semibold mb-4'>Quick Links</h5>
+            <h5 className='text-lg font-semibold mb-4'>On the page</h5>
             <ul className='space-y-2'>
               <li>
                 <Link href='/' className='hover:text-gray-400'>
