@@ -8,10 +8,12 @@ import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { enqueueSnackbar } from 'notistack'
 import Button from '@/app/Components/Button'
+import { useRouter } from 'next/navigation'
 
 const UserProfileModal = ({ isOpen, onClose, id }) => {
   const [userDetails, setUserDetails] = useState(null)
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
 
   const fetchUserDetails = async () => {
     setLoading(true)
@@ -65,7 +67,11 @@ const UserProfileModal = ({ isOpen, onClose, id }) => {
                   </div>
                 </div>
               </div>
-              <div className='flex justify-end'>
+              <div className='flex justify-end gap-2'>
+                <Button
+                  onClick={() => router.push(`/profile/${userDetails?.id}`)}
+                  label={'Visit Profile'}
+                />
                 <Button label={'Close'} onClick={onClose} variant={'error'} />
               </div>
             </div>

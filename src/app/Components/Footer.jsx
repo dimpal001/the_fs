@@ -40,15 +40,6 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <Link
-                  target='_blank'
-                  href='https://www.clothes2wear.in'
-                  className='hover:text-gray-400'
-                >
-                  Shop
-                </Link>
-              </li>
-              <li>
                 <Link href='/privacy-policy' className='hover:text-gray-400'>
                   Privacy Policy
                 </Link>

@@ -171,7 +171,7 @@ const UserManagement = () => {
             <tr className='bg-gray-200'>
               <th className='px-4 py-2 text-start'>Email</th>
               <th className='px-4 py-2 text-start'>Name</th>
-              <th className='px-4 py-2 text-start'>Created at</th>
+              <th className='px-4 py-2 text-start'>Joined</th>
               <th className='px-4 py-2 text-start'>Role</th>
               <th className='px-4 py-2 text-start'></th>
               <th className='px-4 py-2 text-end'>Actions</th>
@@ -180,7 +180,15 @@ const UserManagement = () => {
           <tbody>
             {filteredUsers.map((user) => (
               <tr key={user.id} className='hover:bg-gray-100'>
-                <td className='px-4 py-2'>{user.email}</td>
+                <td
+                  onClick={() => {
+                    setIsUserModalOpen(true)
+                    setSelectedId(user.id)
+                  }}
+                  className='px-4 py-2 hover:text-first hover:underline cursor-pointer'
+                >
+                  {user.email}
+                </td>
                 <td
                   onClick={() => {
                     setIsUserModalOpen(true)
