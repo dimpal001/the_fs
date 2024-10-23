@@ -11,7 +11,6 @@ import { usePathname, useRouter } from 'next/navigation'
 import CreatePost from './CreatePost'
 import { enqueueSnackbar } from 'notistack'
 import axios from 'axios'
-import { useCategoryContext } from '../context/CategoryContext'
 import Drawer from 'react-modern-drawer'
 import 'react-modern-drawer/dist/index.css'
 import Image from 'next/image'
@@ -24,7 +23,6 @@ const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [logoUrl, setLogoUrl] = useState('')
   const { user, setUser } = useUserContext()
-  const { setSelectedCategoryId } = useCategoryContext()
   const router = useRouter()
 
   const toggleDrawer = () => {
@@ -164,45 +162,43 @@ const Header = () => {
                 className='text-neutral-600 cursor-pointer'
                 size={25}
               />
-              {user && (
-                <DynamicMenu button={<CircleUserRound />}>
-                  {user.role === 'admin' && (
-                    <ClickItem
-                      label={'Dashboard'}
-                      onClick={() => {
-                        router.push('/admin/dashboard')
-                      }}
-                    />
-                  )}
+              <DynamicMenu button={<CircleUserRound />}>
+                {user?.role === 'admin' && (
                   <ClickItem
-                    label={'Profile'}
+                    label={'Dashboard'}
                     onClick={() => {
-                      setIsMenuOpen(false)
-                      router.push(`/profile/${user?.id}`)
+                      router.push('/admin/dashboard')
                     }}
                   />
-                  <ClickItem
-                    label={'Account'}
-                    onClick={() => {
-                      router.push('/user/account')
-                    }}
-                  />
-                  <ClickItem
-                    label={'Posts'}
-                    onClick={() => {
-                      router.push('/user/my-posts')
-                    }}
-                  />
-                  <ClickItem
-                    label={'Logout'}
-                    onClick={() => {
-                      localStorage.removeItem('user')
-                      setUser(null)
-                      router.push('/')
-                    }}
-                  />
-                </DynamicMenu>
-              )}
+                )}
+                <ClickItem
+                  label={'Profile'}
+                  onClick={() => {
+                    setIsMenuOpen(false)
+                    router.push(`/profile/${user?.id}`)
+                  }}
+                />
+                <ClickItem
+                  label={'Account'}
+                  onClick={() => {
+                    router.push('/user/account')
+                  }}
+                />
+                <ClickItem
+                  label={'Posts'}
+                  onClick={() => {
+                    router.push('/user/my-posts')
+                  }}
+                />
+                <ClickItem
+                  label={'Logout'}
+                  onClick={() => {
+                    localStorage.removeItem('user')
+                    setUser(null)
+                    router.push('/')
+                  }}
+                />
+              </DynamicMenu>
             </div>
 
             <div className='flex max-md:hidden items-center gap-4'>

@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { useUserContext } from '../context/UserContext'
 
 export const DynamicMenu = ({ button, children }) => {
   const [isOpen, setIsOpen] = useState(false)
   const menuRef = useRef(null)
   const buttonRef = useRef(null)
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 })
+  const { user } = useUserContext()
 
   const toggleMenu = () => {
     setIsOpen(!isOpen)
@@ -56,9 +58,11 @@ export const DynamicMenu = ({ button, children }) => {
   return (
     <div className='relative'>
       {/* Dynamic Button */}
-      <div ref={buttonRef} className='cursor-pointer' onClick={toggleMenu}>
-        {button}
-      </div>
+      {user && (
+        <div ref={buttonRef} className='cursor-pointer' onClick={toggleMenu}>
+          {button}
+        </div>
+      )}
 
       {/* Menu */}
       {isOpen && (
