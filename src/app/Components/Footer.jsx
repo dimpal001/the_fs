@@ -11,24 +11,6 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 const Footer = () => {
-  const [categories, setCategories] = useState([])
-
-  const handleFetchCategories = async () => {
-    try {
-      const response = await axios.get('/api/admin/category')
-      const filteredCategories = response.data.filter(
-        (category) => category.name.toLowerCase() !== 'admin blogs'
-      )
-      setCategories(filteredCategories)
-    } catch (error) {
-      enqueueSnackbar('Failed fetching categories', { variant: 'error' })
-    }
-  }
-
-  useEffect(() => {
-    handleFetchCategories()
-  }, [])
-
   return (
     <footer className='bg-gray-800 mt-10 text-white py-10'>
       <div className='container text-sm mx-auto px-6'>
@@ -92,70 +74,44 @@ const Footer = () => {
                 </Link>
               </li>
             </ul>
-            <ul className='space-y-2 hidden'>
+          </div>
+
+          {/* Quick Links Section */}
+          <div className='lg:w-1/3 lg:ps-20 mb-6 md:mb-0'>
+            <h5 className='text-lg font-semibold mb-4'>Quick Links</h5>
+            <ul className='space-y-2'>
               <li>
                 <Link href='/' className='hover:text-gray-400'>
-                  Home
+                  Login
                 </Link>
               </li>
               <li>
-                <Link href='/about' className='hover:text-gray-400'>
-                  About Us
+                <Link href='/' className='hover:text-gray-400'>
+                  Join Us
                 </Link>
               </li>
               <li>
-                <Link
-                  target='_blank'
-                  href='www.clothes2wear.in'
-                  className='hover:text-gray-400'
-                >
-                  Shop
+                <Link href='/#subscribe' className='hover:text-gray-400'>
+                  Subscribe
                 </Link>
               </li>
               <li>
-                <Link href='/privacy-policy' className='hover:text-gray-400'>
-                  Privacy Policy
+                <Link href='/#latest-posts' className='hover:text-gray-400'>
+                  Latest Posts
                 </Link>
               </li>
               <li>
-                <Link
-                  href='/terms-and-condition'
-                  className='hover:text-gray-400'
-                >
-                  Terms & Condition
+                <Link href='/#our-best' className='hover:text-gray-400'>
+                  Our Best
                 </Link>
               </li>
               <li>
-                <Link href='/contact' className='hover:text-gray-400'>
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href='/faq' className='hover:text-gray-400'>
-                  FAQ
+                <Link href='/#social-diaries' className='hover:text-gray-400'>
+                  Social Diaries
                 </Link>
               </li>
             </ul>
           </div>
-
-          {/* Categories  */}
-          {categories.length > 0 && (
-            <div className='lg:w-1/3 lg:ps-20 mb-6 md:mb-0'>
-              <h5 className='text-lg font-semibold mb-4'>Categories</h5>
-              <ul className='space-y-2'>
-                {categories?.map((category, index) => (
-                  <li key={index}>
-                    <Link
-                      href={`/category/${category.slug}`}
-                      className='hover:text-gray-400 capitalize'
-                    >
-                      {category?.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
 
           {/* Follow Us Section */}
           <div className='lg:w-1/3 mb-6 md:mb-0'>

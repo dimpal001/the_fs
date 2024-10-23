@@ -177,7 +177,10 @@ const HomePage = () => {
 
         {/* New hero section  */}
         {heroPosts.length > 0 && (
-          <section className='lg:h-[470px] lg:p-16 relative w-full gap-5 py-7 flex max-md:flex-col items-center'>
+          <section
+            id='our-best'
+            className='lg:h-[470px] lg:p-16 relative w-full gap-5 py-7 flex max-md:flex-col items-center'
+          >
             <div className='lg:w-[28%] max-md:h-[300px] w-full h-full max-md:p-3'>
               <Image
                 src={
@@ -241,7 +244,7 @@ const HomePage = () => {
         )}
 
         {/* Latest blog post section  */}
-        <section className='p-10 lg:p-16 max-md:p-5'>
+        <section id='latest-posts' className='p-10 lg:p-16 max-md:p-5'>
           <div className='flex justify-between items-center'>
             <Link href={`/category/${latestPosts[0]?.category_ids[0]}`}>
               <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
@@ -271,7 +274,10 @@ const HomePage = () => {
         </section>
 
         {/* Latest blog post with Subscribe box section  */}
-        <section className='grid max-md:grid-cols-1 grid-cols-3 max-md:p-5 p-10 lg:p-16 pt-10 gap-14'>
+        <section
+          id='subscribe'
+          className='grid max-md:grid-cols-1 grid-cols-3 max-md:p-5 p-10 lg:p-16 pt-10 gap-14'
+        >
           <SubscribeCard />
           {latestPosts &&
             latestPosts.length > 0 &&
@@ -353,7 +359,10 @@ const HomePage = () => {
         </section>
 
         {/* Instagram section  */}
-        <section className='flex lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10 lg:p-16'>
+        <section
+          id='social-diaries'
+          className='flex lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10 lg:p-16'
+        >
           <div className='lg:w-1/3'>
             <div className='w-full group relative h-[420px] max-md:h-[370px]'>
               <Image
