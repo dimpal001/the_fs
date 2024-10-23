@@ -43,12 +43,12 @@ const BlogPostCard2 = ({ title, imageUrl, date, onClick, post }) => {
         <span className='text-xs text-gray-500'>
           {new Date(post?.created_at).toDateString()}
         </span>
-        <h2
+        <h3
           onClick={handlePostClick}
           className='text-xl hover:text-first cursor-pointer font-semibold text-gray-800 mb-2'
         >
           {post?.title}
-        </h2>
+        </h3>
         <p className='text-sm text-zinc-600'>
           {stripHtml(post?.content.slice(0, 300))}
         </p>

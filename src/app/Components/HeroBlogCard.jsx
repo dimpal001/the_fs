@@ -34,12 +34,12 @@ const HeroBlogCard = ({ imageUrl, delay, post }) => {
         />
       </div>
       <div>
-        <p
+        <h3
           onClick={handleClick}
           className='font-semibold cursor-pointer hover:text-first text-lg leading-[20px] pb-1'
         >
           {post?.title || 'Lorem ipsum dolor sit amet consectetur.'}
-        </p>
+        </h3>
         <p className='text-xs'>
           {stripHtml(post?.content) ||
             'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis earum eveniet accusantium.'}

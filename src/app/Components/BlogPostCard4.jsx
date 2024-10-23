@@ -49,12 +49,12 @@ const BlogPostCard4 = ({ title, imageUrl, post, onClick }) => {
         </p>
 
         {/* Title  */}
-        <h2
+        <h3
           onClick={handleClick}
           className='text-lg hover:text-first cursor-pointer lg:py-3 lg:text-xl font-semibold'
         >
           {post?.title}
-        </h2>
+        </h3>
 
         {/* Content  */}
         <p className='text-base text-gray-600'>{stripHtml(post?.content)}...</p>

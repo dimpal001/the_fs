@@ -199,9 +199,9 @@ const HomePage = () => {
               />
             </div>
             <div className='lg:w-[42%] h-full max-md:px-6 p-3 flex flex-col gap-6'>
-              <h1 className='text-4xl font-bold'>
+              <h2 className='text-4xl font-bold'>
                 {heroPosts.length > 0 && heroPosts[0].title}
-              </h1>
+              </h2>
               <p className='text-stone-600 leading-5'>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi
                 ut sapiente recusandae. Eius sed numquam distinctio dolorum

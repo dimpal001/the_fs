@@ -46,12 +46,12 @@ const BlogPostCard3 = ({ title, imageUrl, post, onClick }) => {
         <p className='text-sm text-neutral-500'>
           {new Date(post?.created_at).toDateString()}
         </p>{' '}
-        <h2
+        <h3
           onClick={handleClick}
           className='text-lg cursor-pointer lg:py-3 lg:text-4xl font-semibold'
         >
           {post?.title}
-        </h2>
+        </h3>
         <p className='text-neutral-500'>{stripHtml(post?.content)}</p>
         {/* Author Details */}
         <div className='flex mt-12 justify-between items-center'>

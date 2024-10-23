@@ -97,8 +97,11 @@ export default function RootLayout({ children }) {
       </head>
 
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}
       >
+        <h1 className='absolute bottom-0 text-center left-0 text-sm py-4 text-neutral-400 pb-5 right-0 z-20'>
+          © 2024 The Fashion Salad. All Rights Reserved.
+        </h1>
         <SnackbarProvider
           anchorOrigin={{
             vertical: 'top',

@@ -71,7 +71,7 @@ const Footer = () => {
       <div className='border-t border-gray-700 mt-8 pt-4'>
         <div className='container mx-auto text-center'>
           <p className='text-sm text-gray-400'>
-            © 2024 The Fashion Salad. All Rights Reserved.
+            {/* © 2024 The Fashion Salad. All Rights Reserved. */}
           </p>
         </div>
       </div>
