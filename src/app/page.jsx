@@ -199,17 +199,21 @@ const HomePage = () => {
               />
             </div>
             <div className='lg:w-[42%] h-full max-md:px-6 p-3 flex flex-col gap-6'>
-              <h2 className='text-4xl font-bold'>
-                {heroPosts.length > 0 && heroPosts[0].title}
-              </h2>
+              <Link href={`/blogs/${heroPosts[0]?.slug}`}>
+                <h2 className='text-4xl font-bold'>
+                  {heroPosts.length > 0 && heroPosts[0].title}
+                </h2>
+              </Link>
               <p className='text-stone-600 leading-5'>
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi
                 ut sapiente recusandae. Eius sed numquam distinctio dolorum
                 facere aperiam, praesentium aspernatur a, quam soluta veniam.
               </p>
-              <p className='text-2xl font-semibold hover:text-first cursor-pointer'>
-                Read More ..
-              </p>
+              <Link href={`/blogs/${heroPosts[0]?.slug}`}>
+                <p className='text-2xl font-semibold hover:text-first cursor-pointer'>
+                  Read More ..
+                </p>
+              </Link>
             </div>
             <div className='lg:w-[30%] w-full max-md:p-3 max-md:px-6 h-full flex flex-col gap-3'>
               {heroPosts.length > 0 &&
@@ -223,9 +227,11 @@ const HomePage = () => {
                       post={post}
                     />
                   ))}
-              <p className='font-semibold text-lg text-end hover:text-first cursor-pointer'>
-                Read More ..
-              </p>
+              <Link href={`/category/${heroPosts[0].category_ids[0]}`}>
+                <p className='font-semibold text-lg text-end hover:text-first cursor-pointer'>
+                  Read More ..
+                </p>
+              </Link>
             </div>
 
             <div className='absolute max-md:hidden top-[20px] right-[270px] z-10 w-[330px] h-[330px] opacity-15 bg-amber-500 rounded-full filter' />
@@ -237,15 +243,18 @@ const HomePage = () => {
         {/* Latest blog post section  */}
         <section className='p-10 lg:p-16 max-md:p-5'>
           <div className='flex justify-between items-center'>
-            <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
-              Latest Blog Posts
-            </h2>
-            <ArrowRight
-              onClick={() => handleSeeMore(categories[0].slug)}
-              size={50}
-              className='cursor-pointer hover:text-first'
-              strokeWidth={2}
-            />
+            <Link href={`/category/${latestPosts[0]?.category_ids[0]}`}>
+              <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
+                Latest Blog Posts
+              </h2>
+            </Link>
+            <Link href={`/category/${latestPosts[0]?.category_ids[0]}`}>
+              <ArrowRight
+                size={50}
+                className='cursor-pointer hover:text-first'
+                strokeWidth={2}
+              />
+            </Link>
           </div>
           <div className='grid max-md:grid-cols-1 grid-cols-2 py-10 gap-28 max-md:gap-10'>
             {latestPosts &&
@@ -279,9 +288,11 @@ const HomePage = () => {
         {/* Category 1 blog post section  */}
         <section className='p-10 lg:p-16 max-md:p-5 lg:-mt-24'>
           <div className='relative'>
-            <h3 className='text-6xl capitalize max-md:text-3xl font-[900]'>
-              {categories[0]?.name}
-            </h3>
+            <Link href={`/category/${category1Posts[0]?.category_ids[0]}`}>
+              <h3 className='text-6xl capitalize max-md:text-3xl font-[900]'>
+                {categories[0]?.name}
+              </h3>
+            </Link>
             <p className='text-neutral-400 max-md:text-sm pt-1'>
               The Fashion Salad latest update
             </p>
@@ -302,9 +313,11 @@ const HomePage = () => {
         {/* Category 2 blog post section  */}
         <section className='p-10 lg:p-16 max-md:p-5 -mt-16'>
           <div className='relative'>
-            <h4 className='text-6xl capitalize max-md:text-3xl font-[900]'>
-              {categories[1]?.name}
-            </h4>
+            <Link href={`/category/${category2Posts[0]?.category_ids[0]}`}>
+              <h4 className='text-6xl capitalize max-md:text-3xl font-[900]'>
+                {categories[1]?.name}
+              </h4>
+            </Link>
             <p className='text-neutral-400 max-md:text-sm pt-1'>
               The Fashion Salad latest update
             </p>
@@ -459,9 +472,11 @@ const HomePage = () => {
 
         <section className='p-10 lg:p-16 max-md:p-5'>
           <div className='flex justify-between items-center'>
-            <h6 className='text-6xl capitalize max-md:text-3xl font-[900]'>
-              {categories[2]?.name}
-            </h6>
+            <Link href={`/category/${category3Posts[0]?.category_ids[0]}`}>
+              <h6 className='text-6xl capitalize max-md:text-3xl font-[900]'>
+                {categories[2]?.name}
+              </h6>
+            </Link>
           </div>
           <div className='grid max-md:grid-cols-1 grid-cols-3 py-10 gap-14 max-md:gap-5'>
             {category3Posts &&
