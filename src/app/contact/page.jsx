@@ -59,8 +59,8 @@ const Page = () => {
   }
 
   return (
-    <div className='min-h-[600px] p-10 flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-white from-10% to-90% w-full'>
-      <div className='bg-white w-full md:w-[80%] rounded-3xl p-10'>
+    <div className='min-h-[600px] lg:p-10 p-5 flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-white from-10% to-90% w-full'>
+      <div className='bg-white w-full md:w-[80%] shadow-md rounded-3xl p-10'>
         <div className='flex max-md:flex-col gap-7 max-md:gap-14'>
           <div className='lg:w-1/2 w-full flex flex-col justify-between'>
             <h1 className='text-5xl max-md:text-3xl mb-3 font-bold'>
@@ -142,7 +142,7 @@ const Page = () => {
             </form>
           </div>
         </div>
-        <div className='text-sm text-center pt-5'>
+        <div className='text-sm max-md:text-xs flex flex-col gap-2 text-center pt-5 max-md:pt-10'>
           <p>
             Follow us on our social media channels:{' '}
             <strong>Facebook, Instagram, Twitter (X), Pinterest</strong> and
