@@ -2,7 +2,7 @@ export const FacebookIcon = () => {
   return (
     <svg
       width='200px'
-      className='lg:p-4 p-1 lg:w-[92px] w-[55px]'
+      className='lg:p-[16px] p-1 lg:w-[92px] w-[55px]'
       viewBox='126.445 2.281 589 589'
       xmlns='http://www.w3.org/2000/svg'
       fill='#000000'
@@ -64,7 +64,7 @@ export const FlipboardIcon = () => {
     <svg
       width='200px'
       version='1.1'
-      className='lg:w-[70px] w-[58px]'
+      className='lg:w-[70px] w-[58px] lg:mt-[12px]'
       id='Layer_1'
       xmlns='http://www.w3.org/2000/svg'
       xmlnsXlink='http://www.w3.org/1999/xlink'
@@ -113,7 +113,7 @@ export const TwitterIcon = () => {
   return (
     <svg
       width='200px'
-      className='lg:p-4 p-1 lg:w-[90px] w-[55px]'
+      className='lg:p-4 p-1 lg:mt-[3px] lg:w-[90px] w-[55px]'
       viewBox='126.444 2.281 589 589'
       xmlns='http://www.w3.org/2000/svg'
       fill='#000000'
@@ -138,7 +138,7 @@ export const TwitterIcon = () => {
 export const PinterestIcon = () => {
   return (
     <svg
-      className='lg:p-4 p-1 lg:w-[90px] w-[55px] lg:mr-2'
+      className='lg:p-4 p-1 lg:w-[90px] lg:mt-[2px] w-[55px] lg:mr-2'
       width='200px'
       version='1.1'
       id='Capa_1'
