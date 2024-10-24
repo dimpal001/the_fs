@@ -147,7 +147,7 @@ const CustomEditor = ({ value, onChange, images }) => {
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'p-3 lg:float-left max-md:w-full',
+          class: 'p-3 mx-auto max-md:w-full',
         },
         inline: true,
       }),
@@ -191,7 +191,7 @@ const CustomEditor = ({ value, onChange, images }) => {
       <EditorContent
         editor={editor}
         className='min-h-[150px] editor-content mt-2 bg-white border border-dotted border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                   resize-none text-sm text-gray-800 placeholder-gray-400'
+                   resize-none text-justify leading-[35px] text-sm text-gray-800 placeholder-gray-400'
       />
     </div>
   )
