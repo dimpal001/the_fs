@@ -212,7 +212,7 @@ const CreatePost = () => {
         status: status,
         category_ids: selectedCategoryIds,
         tags: tags,
-        image_url: customFileName,
+        image_url: fileName,
       })
 
       enqueueSnackbar(response.data.message, { variant: 'success' })
