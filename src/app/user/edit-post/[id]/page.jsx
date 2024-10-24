@@ -208,6 +208,16 @@ const EditPost = () => {
       }
     }
 
+    if (file) {
+      const params = {
+        Bucket: 'the-fashion-salad',
+        Key: `blog-post-images/${image_url}`,
+        // Body: file,
+        ACL: 'public-read',
+      }
+      const data = await s3Client.send(new DeleteObjectCommand(params))
+    }
+
     updateImagesBasedOnContent()
 
     try {
