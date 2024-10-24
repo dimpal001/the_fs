@@ -295,12 +295,17 @@ export async function PATCH(request) {
       strict: true,
     })}-${timeSuffix}`
 
+    console.log(existingPost)
+
     // Determine if the title has changed
-    let newSlug = existingPost.slug
-    if (title !== existingPost.title) {
+    let newSlug = existingPost[0].slug
+    console.log(newSlug)
+    if (title !== existingPost[0].title) {
       const timeSuffix = Date.now().toString().slice(-4)
       newSlug = `${slugify(title, { lower: true, strict: true })}-${timeSuffix}`
+      console.log(newSlug)
     }
+    console.log(newSlug)
 
     // Update the blog post with the new or existing slug
     const result = await db.query(

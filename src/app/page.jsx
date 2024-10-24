@@ -232,7 +232,10 @@ const HomePage = () => {
         )}
 
         {/* Latest blog post section  */}
-        <section id='latest-posts' className='p-10 lg:p-16 max-md:p-5'>
+        <section
+          id='latest-posts'
+          className='p-10 lg:-mt-16 lg:p-16 max-md:p-5'
+        >
           <div className='flex justify-between items-center'>
             <Link href={`/category/${latestPosts[0]?.category_ids[0]}`}>
               <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
