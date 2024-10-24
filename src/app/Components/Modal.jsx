@@ -51,7 +51,7 @@ export const Modal = ({ isOpen, children, size }) => {
               }
               ${
                 size === 'full' &&
-                'w-full h-full flex items-center max-md:pb-14'
+                'w-full h-full rounded-none flex items-center max-md:pb-14'
               }
                bg-white rounded-2xl p-10`}
           >

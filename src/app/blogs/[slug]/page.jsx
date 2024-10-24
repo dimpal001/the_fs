@@ -280,7 +280,7 @@ const Blog = ({ params }) => {
           <ImageModal
             isOpen={true}
             onClose={() => setImageModalOpen(false)}
-            imageUrl={''}
+            imageUrl={post?.image_url}
           />
         )}
       </div>
