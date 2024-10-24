@@ -237,7 +237,7 @@ const CreatePost = () => {
   }
 
   return (
-    <div className='p-6 md:p-10 bg-gray-50 flex max-lg:flex-col gap-3'>
+    <div className='p-3 md:p-10 bg-gray-50 flex max-lg:flex-col gap-3'>
       <div className='flex border shadow-md p-5 bg-white rounded-xl flex-col gap-3 lg:w-1/2 w-full'>
         <h1 className='text-2xl font-bold text-center mb-5 text-gray-700'>
           Create a New Post
@@ -365,7 +365,7 @@ const CreatePost = () => {
           Post Preview
         </p>
         <p className='font-semibold pb-4 text-3xl'>{title}</p>
-        {thumbnail && (
+        {/* {thumbnail && (
           <Image
             src={thumbnail}
             alt='Thumbnail preview'
@@ -374,7 +374,7 @@ const CreatePost = () => {
             height={150}
             layout='responsive'
           />
-        )}
+        )} */}
         <p>
           {images.length > 0 &&
             images.map((item, index) => <span key={index}>{item}</span>)}

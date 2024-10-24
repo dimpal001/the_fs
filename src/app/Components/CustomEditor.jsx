@@ -55,7 +55,7 @@ const MenuBar = ({ editor, images }) => {
   }
 
   return (
-    <div className='flex gap-2 border border-dotted p-2 bg-gray-100'>
+    <div className='flex sticky top-0 z-20 gap-3 border border-dotted p-2 bg-first text-white'>
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         className={`p-1 rounded-md ${
@@ -147,7 +147,7 @@ const CustomEditor = ({ value, onChange, images }) => {
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'my-3',
+          class: 'p-3 lg:float-left max-md:w-full',
         },
         inline: true,
       }),
