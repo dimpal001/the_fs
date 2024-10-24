@@ -54,7 +54,7 @@ const ReviewPostModal = ({ post, isOpen, onClose, id }) => {
             {categories.length > 0 &&
               categories
                 .filter((category) =>
-                  postData.category_ids.includes(category.slug)
+                  postData?.category_ids?.includes(category.slug)
                 )
                 .map((category) => (
                   <span

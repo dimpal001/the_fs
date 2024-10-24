@@ -10,7 +10,7 @@ export async function GET(request) {
     if (status === 'latest') {
       // Query for the latest posts with likes and replies count
       ;[posts] = await db.query(
-        `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.slug, BlogPosts.views,
+        `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.image_url, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 250) AS content, 
                 BlogPosts.category_ids, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
                 COUNT(DISTINCT Replies.id) AS replies,
@@ -31,7 +31,7 @@ export async function GET(request) {
       )
       const categoryId = randomCategory[0].slug
       ;[posts] = await db.query(
-        `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.slug, BlogPosts.views,
+        `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.image_url, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 150) AS content, 
                 BlogPosts.category_ids, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
                 COUNT(DISTINCT Replies.id) AS replies,
@@ -52,7 +52,7 @@ export async function GET(request) {
       )
       const categoryId = randomCategory[0].slug
       ;[posts] = await db.query(
-        `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.slug, BlogPosts.views,
+        `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.image_url, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 150) AS content, 
                 BlogPosts.category_ids, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
                 COUNT(DISTINCT Replies.id) AS replies,
@@ -69,7 +69,7 @@ export async function GET(request) {
     } else if (status === 'hero_posts') {
       // Query for hero posts with likes and replies count
       ;[posts] = await db.query(
-        `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.slug, BlogPosts.views,
+        `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.image_url, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 150) AS content, 
                 BlogPosts.category_ids, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
                 COUNT(DISTINCT Replies.id) AS replies,

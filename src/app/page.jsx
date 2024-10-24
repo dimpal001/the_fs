@@ -17,6 +17,7 @@ import FacebookImg from './../../public/icons/facebook.svg'
 import YoutubeImg from './../../public/icons/youtube.svg'
 import Link from 'next/link'
 import SocialDiadies from './Components/SocialDiadies'
+import { blogUrl } from './Components/url'
 
 const HomePage = () => {
   const [latestPosts, setLatestPosts] = useState([])
@@ -180,11 +181,7 @@ const HomePage = () => {
           >
             <div className='lg:w-[28%] max-md:h-[300px] w-full h-full max-md:p-3'>
               <Image
-                src={
-                  heroPosts[0].image_url
-                    ? heroPosts[0].image_url
-                    : 'https://picsum.photos/745/300'
-                }
+                src={blogUrl + heroPosts[0].image_url}
                 width={0}
                 height={0}
                 sizes='100vw'
@@ -272,7 +269,7 @@ const HomePage = () => {
           <SubscribeCard />
           {latestPosts &&
             latestPosts.length > 0 &&
-            latestPosts.slice(0, 2).map((post, index) => (
+            latestPosts.slice(2, -1).map((post, index) => (
               <BlogPostCard4
                 key={post.id} // Add a key prop for unique identification
                 imageUrl={`https://picsum.photos/778/3${index}4`}

@@ -3,6 +3,7 @@ import { useBlogContext } from '../context/BlogContext'
 import Image from 'next/image'
 import ProfileCard from './ProfileCard'
 import { ChevronsRight } from 'lucide-react'
+import { blogUrl } from './url'
 
 const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
   const { setSelectedPostId } = useBlogContext()
@@ -27,7 +28,7 @@ const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
         <Image
           className='rounded-t-2xl w-full h-full object-cover cursor-pointer'
           onClick={onClick}
-          src={imageUrl}
+          src={blogUrl + post?.image_url}
           width={0}
           height={0}
           sizes='100vw'

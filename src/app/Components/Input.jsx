@@ -1,4 +1,12 @@
-const Input = ({ lefIcon, placeholder, type, onChange, value, error }) => {
+const Input = ({
+  lefIcon,
+  placeholder,
+  type,
+  onChange,
+  value,
+  error,
+  onKeyDown,
+}) => {
   return (
     <div className='flex w-full flex-col'>
       <div
@@ -8,6 +16,7 @@ const Input = ({ lefIcon, placeholder, type, onChange, value, error }) => {
       >
         {lefIcon && <span className='ml-2'>{lefIcon}</span>}
         <input
+          onKeyDown={onKeyDown}
           type={type ? type : 'text'}
           onChange={onChange}
           value={value}

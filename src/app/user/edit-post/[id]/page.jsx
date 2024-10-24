@@ -5,7 +5,6 @@ import { useParams, useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 import Image from 'next/image'
 import axios from 'axios'
-import JoditEditor from 'jodit-react'
 import { useUserContext } from '@/app/context/UserContext'
 import Button from '@/app/Components/Button'
 import {
@@ -13,6 +12,8 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3'
+import Input from '@/app/Components/Input'
+import CustomEditor from '@/app/Components/CustomEditor'
 
 const EditPost = () => {
   const { user } = useUserContext()
@@ -30,10 +31,62 @@ const EditPost = () => {
   const [tags, setTags] = useState([])
   const [image_url, setImage_url] = useState('')
   const [fileName, setFileName] = useState('')
+  const [images, setImages] = useState([])
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value
     setSelectedCategoryIds([selectedValue])
+  }
+
+  const s3Client = new S3Client({
+    endpoint: 'https://blr1.digitaloceanspaces.com',
+    forcePathStyle: false,
+    region: 'blr1',
+    credentials: {
+      accessKeyId: 'DO00TK892YLJBW7MV82Y',
+      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
+    },
+  })
+
+  // Function to extract image URLs from HTML content
+  const extractImageFilenames = (htmlContent) => {
+    const regex = /src="([^"]+\.(jpg|jpeg|png|gif|svg))"/g
+    const filenames = []
+    let match
+
+    while ((match = regex.exec(htmlContent)) !== null) {
+      const url = match[1] // The full URL
+      const filename = url.substring(url.lastIndexOf('/') + 1)
+      filenames.push(filename)
+    }
+
+    return filenames
+  }
+
+  const updateImagesBasedOnContent = () => {
+    const imageFilenamesInContent = extractImageFilenames(content)
+
+    const imagesToDelete = images.filter(
+      (image) => !imageFilenamesInContent.includes(image)
+    )
+
+    imagesToDelete.forEach((image) => {
+      deleteImageFromCDN(image)
+    })
+  }
+
+  const deleteImageFromCDN = async (image) => {
+    const deleteParams = {
+      Bucket: 'the-fashion-salad',
+      Key: `blog-post-images/${image}`,
+      // Body: thumbnail,
+      ACL: 'public-read',
+    }
+    try {
+      const data = await s3Client.send(new DeleteObjectCommand(deleteParams))
+    } catch (error) {
+      console.error(`Failed to delete ${image} from CDN:`, error)
+    }
   }
 
   const handleFetchCategories = async () => {
@@ -57,6 +110,10 @@ const EditPost = () => {
       setSelectedCategoryIds(fetchedPost.category_ids)
       setTags(fetchedPost.tags || [])
       setImage_url(fetchedPost.image_url)
+
+      const fileNames = extractImageFilenames(content)
+
+      setImages(fileNames)
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
@@ -78,52 +135,59 @@ const EditPost = () => {
     }
   }, [user, router])
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0]
-    setFile(e.target.files[0])
-    if (file) {
-      // Remove spaces from the filename
-      const sanitizedFileName = file.name.replace(/\s+/g, '')
+  const handleImage = async (event) => {
+    const files = event.target.files[0]
 
-      setFileName(sanitizedFileName)
+    if (!files) return
 
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setThumbnail(reader.result)
-      }
-      reader.readAsDataURL(file)
+    const sanitizedFileName = files.name.replace(/\s+/g, '')
+    const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+    const customFileName = `thumbnail-${timestamp}-${sanitizedFileName}`
+
+    setFile(files)
+    setFileName(customFileName)
+
+    handleThumbnailUpload(files, customFileName)
+  }
+
+  const handleThumbnailUpload = async (file, customFileName) => {
+    if (!file || !customFileName) return
+
+    console.log('Uploading')
+
+    const params = {
+      Bucket: 'the-fashion-salad',
+      Key: `blog-post-images/${customFileName}`,
+      Body: file,
+      ACL: 'public-read',
+    }
+
+    const data = await s3Client.send(new PutObjectCommand(params))
+
+    try {
+      console.log('Upload successful')
+    } catch (error) {
+      console.error('Error uploading thumbnail:', error)
     }
   }
 
-  const s3Client = new S3Client({
-    endpoint: 'https://blr1.digitaloceanspaces.com',
-    forcePathStyle: false,
-    region: 'blr1',
-    credentials: {
-      accessKeyId: 'DO00TK892YLJBW7MV82Y',
-      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
-    },
-  })
+  const handleThumbnailDelete = async () => {
+    console.log(fileName)
 
-  // Generate the custom file name
-  const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
-  const customFileName = `thumbnail-${timestamp}-${fileName}`
-
-  const oldParams = {
-    Bucket: 'the-fashion-salad',
-    Key: `blog-post-images/${image_url}`,
-    Body: file,
-    ACL: 'public-read',
-  }
-
-  const newParams = {
-    Bucket: 'the-fashion-salad',
-    Key: `blog-post-images/${customFileName}`,
-    Body: file,
-    ACL: 'public-read',
+    const params = {
+      Bucket: 'the-fashion-salad',
+      Key: `blog-post-images/${fileName}`,
+      // Body: file,
+      ACL: 'public-read',
+    }
+    try {
+      const data = await s3Client.send(new DeleteObjectCommand(params))
+      setFile(null)
+    } catch (error) {}
   }
 
   const handleSubmit = async (status) => {
+    console.log(file, image_url)
     if (title.length === 0) {
       enqueueSnackbar('Title should not be empty', { variant: 'error' })
       return
@@ -137,16 +201,14 @@ const EditPost = () => {
       return
     }
 
-    if (!thumbnail) {
-      enqueueSnackbar('Add a thumbnail image', { variant })
-      return
+    if (!file) {
+      if (!image_url) {
+        enqueueSnackbar('Add a thumbnail image', { variant: 'error' })
+        return
+      }
     }
 
-    if (image_url !== '') {
-      await s3Client.send(new DeleteObjectCommand(oldParams))
-    }
-
-    const data = await s3Client.send(new PutObjectCommand(newParams))
+    updateImagesBasedOnContent()
 
     try {
       const response = await axios.patch(
@@ -158,7 +220,7 @@ const EditPost = () => {
           status: status,
           category_ids: selectedCategoryIds,
           tags,
-          image_url: thumbnail ? customFileName : image_url,
+          image_url: file ? fileName : image_url,
         },
         {
           params: { id: id },
@@ -187,87 +249,95 @@ const EditPost = () => {
   }
 
   return (
-    <div className='p-6 md:p-10 bg-gray-50'>
-      <div className='flex flex-col md:px-12 lg:px-48 gap-2'>
-        <h1 className='text-3xl font-bold text-center mb-5 text-gray-700'>
-          Edit the Post
+    <div className='p-6 md:p-10 bg-gray-50 flex max-lg:flex-col gap-3'>
+      <div className='flex border shadow-md p-5 bg-white rounded-xl flex-col gap-3 lg:w-1/2 w-full'>
+        <h1 className='text-2xl font-bold text-center mb-5 text-gray-700'>
+          Edit Post
         </h1>
 
         {/* Title Input */}
-        <input
+        <Input
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          type='text'
-          className='text-3xl w-full py-4 font-semibold focus:outline-none px-3 border-b-2 border-gray-300 focus:border-blue-500'
           placeholder='Your title...'
+          onChange={(e) => setTitle(e.target.value)}
         />
 
-        {/* Upload Thumbnail Button */}
-        <div className='my-5 flex flex-col'>
-          <label className='text-lg font-semibold text-gray-700'>
-            Upload Thumbnail
-          </label>
-          <div className='flex gap-3'>
-            <input
-              id='image'
-              type='file'
-              accept='image/*'
-              onChange={handleImageUpload}
-              className='border border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4 cursor-pointer hover:border-blue-400 transition duration-150'
-            />
-            {/* Remove Thumbnail Button */}
-            {thumbnail && (
-              <button
-                title='Remove Thumbnail'
-                onClick={() => setThumbnail(null)} // Clear the thumbnail state
-                className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
-              >
-                Remove Thumbnail
-              </button>
-            )}
+        <div className='flex gap-5'>
+          {/* Upload Thumbnail Button */}
+          <div className='flex gap-1 flex-col'>
+            <label className='text-sm text-gray-700'>Upload Thumbnail</label>
+            <div className='flex gap-3'>
+              <Input
+                type='file'
+                // accept='image/*'
+                onChange={handleImage}
+                // className='border border-dotted border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4 cursor-pointer hover:border-blue-400 transition duration-150'
+              />
+              {/* Remove Thumbnail Button */}
+              {file && (
+                <button
+                  title='Remove Thumbnail'
+                  onClick={handleThumbnailDelete} // Clear the thumbnail state
+                  className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
+                >
+                  Remove Thumbnail
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Categories Selection */}
+          <div className='flex flex-col gap-1 w-full'>
+            <p className='text-sm text-gray-700'>Select Categories</p>
+            <div className='flex flex-wrap gap-4 w-full'>
+              {categories && (
+                <div className='flex w-full flex-col'>
+                  <select
+                    value={selectedCategoryIds[0] || ''}
+                    onChange={handleSelectChange}
+                    className='max-md:w-full p-3 border-dotted capitalize border bg-white rounded-sm w-full'
+                  >
+                    <option value=''>Select a category</option>
+                    {categories.map((category) => (
+                      <option
+                        className={`${
+                          category.name === 'admin blogs' &&
+                          user?.role !== 'admin' &&
+                          'hidden'
+                        }`}
+                        key={category.id}
+                        value={category.slug}
+                      >
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-
-        {/* Categories Selection */}
-        <div>
-          <p className='text-lg font-semibold text-gray-700'>
-            Select Categories
-          </p>
-          <div className='flex flex-wrap gap-4 mb-5'>
-            {categories && (
-              <div className='flex max-md:w-full flex-col'>
-                <select
-                  value={selectedCategoryIds[0] || ''}
-                  onChange={handleSelectChange}
-                  className='h-10 border capitalize border-gray-300 rounded-sm p-2'
-                >
-                  <option value=''>Select a category</option>
-                  {categories.map((category) => (
-                    <option
-                      className={`${
-                        category.name === 'admin blogs' &&
-                        user?.role !== 'admin' &&
-                        'hidden'
-                      }`}
-                      key={category.id}
-                      value={category.slug}
-                    >
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
-          </div>
+        <div className='lg:w-2/3'>
+          <Image
+            src={
+              file
+                ? URL.createObjectURL(file)
+                : image_url
+                ? `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/blog-post-images/${image_url}`
+                : '/default-thumbnail.jpg'
+            }
+            width={300}
+            height={60}
+            alt='Blog post image'
+          />
         </div>
 
         {/* Tag Input */}
-        <div className='my-5'>
-          <p className='text-lg font-semibold text-gray-700'>Tags</p>
-          <input
+        <div className='flex flex-col gap-1'>
+          <p className='text-sm text-gray-700'>Tags</p>
+          <Input
             type='text'
             onKeyDown={handleAddTag}
-            className='border border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4'
             placeholder='Type a tag and hit Enter...'
           />
           <div className='flex flex-wrap gap-2 mt-2'>
@@ -289,63 +359,45 @@ const EditPost = () => {
           </div>
         </div>
 
-        {/* JoditEditor to edit the fetched content */}
-        <JoditEditor
-          ref={editor}
+        <CustomEditor
           value={content}
-          tabIndex={1}
-          onBlur={(newContent) => setContent(newContent)}
           onChange={(newContent) => setContent(newContent)}
+          images={images}
         />
 
         <div className='flex gap-3 justify-end mt-3'>
-          <Button label={'Save Post'} onClick={() => handleSubmit('draft')} />{' '}
+          <Button label={'Save Post'} onClick={() => handleSubmit('draft')} />
           <Button
             label={'Submit Post'}
-            variant={'success'}
             onClick={() => handleSubmit('pending')}
+            variant={'success'}
           />
         </div>
-
+      </div>
+      <div className='lg:w-1/2 w-full border bg-white shadow-md p-5 rounded-xl'>
         {/* Post Preview */}
-        <div className='p-6 border border-zinc-200 bg-white rounded-md mt-5 shadow-lg'>
-          <p className='text-center text-4xl mb-5 font-semibold text-gray-400'>
-            Post Preview
-          </p>
-          <p className='font-semibold pb-4 text-3xl'>{title}</p>
+        <p className='text-center text-2xl mb-5 font-semibold text-gray-700'>
+          Post Preview
+        </p>
+        <p className='font-semibold pb-4 text-3xl'>{title}</p>
+        {thumbnail && (
           <Image
-            src={
-              thumbnail
-                ? thumbnail
-                : `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/blog-post-images/${image_url}`
-            }
+            src={thumbnail}
             alt='Thumbnail preview'
             className='mb-4 rounded-lg'
             width={300}
             height={150}
             layout='responsive'
           />
-          <div
-            className='prose lg:prose-xl'
-            dangerouslySetInnerHTML={{ __html: content }}
-          />
-          {/* Display Tags in Preview */}
-          {tags.length > 0 && (
-            <div className='mt-4'>
-              <p className='font-semibold'>Tags:</p>
-              <div className='flex flex-wrap gap-2'>
-                {tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className='bg-zinc-200 text-sm px-2 py-1 rounded-sm'
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        )}
+        <p>
+          {images.length > 0 &&
+            images.map((item, index) => <span key={index}>{item}</span>)}
+        </p>
+        <div
+          className='editor-content'
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
       </div>
     </div>
   )

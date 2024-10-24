@@ -19,6 +19,7 @@ import Replies from '@/app/Components/Replies'
 import HeroBlogCard from '@/app/Components/HeroBlogCard'
 import DataNotFound from '@/app/Components/DataNotFound'
 import ImageModal from '@/app/Components/ImageModal'
+import { blogUrl } from '@/app/Components/url'
 
 const Blog = ({ params }) => {
   const { setSelectedCategoryId } = useCategoryContext()
@@ -204,11 +205,11 @@ const Blog = ({ params }) => {
                 onClick={() => {
                   setImageModalOpen(true)
                 }}
-                className='w-full h-[200px] rounded-xl lg:h-[350px]'
+                className='w-full h-[200px] border rounded-xl lg:h-[350px]'
               >
                 <Image
                   className='rounded-xl w-full h-full object-cover cursor-pointer'
-                  src={'https://picsum.photos/651/207'}
+                  src={blogUrl + post?.image_url}
                   width={0}
                   height={0}
                   sizes='100vw'
@@ -248,7 +249,7 @@ const Blog = ({ params }) => {
                   {post?.title}
                 </h1>
                 <div
-                  className='mt-3 max-md:text-lg max-md:text-justify text-2xl leading-[38px] tracking-wide text-neutral-600'
+                  className='mt-3 max-md:text-lg max-md:text-justify text-xl leading-[38px] tracking-wide text-neutral-600'
                   dangerouslySetInnerHTML={{ __html: post?.content }}
                 />
               </div>

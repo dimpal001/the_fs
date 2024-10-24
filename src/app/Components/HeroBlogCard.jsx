@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import { blogUrl } from './url'
 
 const HeroBlogCard = ({ imageUrl, delay, post }) => {
   const router = useRouter()
@@ -19,7 +20,7 @@ const HeroBlogCard = ({ imageUrl, delay, post }) => {
     >
       <div className='w-[150px] max-md:w-[100px] h-[80px] rounded-md'>
         <Image
-          src={imageUrl}
+          src={blogUrl + post?.image_url}
           width={0}
           height={0}
           sizes='100vw'

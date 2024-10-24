@@ -29,3 +29,9 @@ body {
     transform: scale(1);
   }
 }
+
+.editor-content p:empty::before {
+  content: '\00a0';
+  display: block;
+  height: 1rem;
+}

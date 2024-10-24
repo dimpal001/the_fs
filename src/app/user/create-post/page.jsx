@@ -1,7 +1,7 @@
 'use client'
 import dynamic from 'next/dynamic'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { enqueueSnackbar } from 'notistack'
 import Image from 'next/image'
@@ -9,26 +9,70 @@ import axios from 'axios'
 import { useUserContext } from '@/app/context/UserContext'
 import Button from '@/app/Components/Button'
 
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-
-const JoditEditor = dynamic(() => import('jodit-react'), { ssr: false })
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3'
+import CustomEditor from '@/app/Components/CustomEditor'
+import Input from '@/app/Components/Input'
 
 const CreatePost = () => {
   const { user } = useUserContext()
   const router = useRouter()
-
-  const editor = useRef(null)
   const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
   const [thumbnail, setThumbnail] = useState(null)
   const [categories, setCategories] = useState([])
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
   const [tags, setTags] = useState([])
   const [fileName, setFileName] = useState('')
+  const [content, setContent] = useState('')
+  const [images, setImages] = useState([])
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value
     setSelectedCategoryIds([selectedValue])
+  }
+
+  // Function to extract image URLs from HTML content
+  const extractImageFilenames = (htmlContent) => {
+    const regex = /src="([^"]+\.(jpg|jpeg|png|gif|svg))"/g
+    const filenames = []
+    let match
+
+    while ((match = regex.exec(htmlContent)) !== null) {
+      const url = match[1] // The full URL
+      const filename = url.substring(url.lastIndexOf('/') + 1)
+      filenames.push(filename)
+    }
+
+    return filenames
+  }
+
+  const updateImagesBasedOnContent = () => {
+    const imageFilenamesInContent = extractImageFilenames(content)
+
+    const imagesToDelete = images.filter(
+      (image) => !imageFilenamesInContent.includes(image)
+    )
+
+    imagesToDelete.forEach((image) => {
+      deleteImageFromCDN(image)
+    })
+  }
+
+  const deleteImageFromCDN = async (image) => {
+    const deleteParams = {
+      Bucket: 'the-fashion-salad',
+      Key: `blog-post-images/${image}`,
+      // Body: thumbnail,
+      ACL: 'public-read',
+    }
+    try {
+      const data = await s3Client.send(new DeleteObjectCommand(deleteParams))
+    } catch (error) {
+      console.error(`Failed to delete ${image} from CDN:`, error)
+    }
   }
 
   const handleFetchCategories = async () => {
@@ -80,15 +124,52 @@ const CreatePost = () => {
 
   const handleImage = (e) => {
     const file = e.target.files[0]
+
+    if (!file) return
+
     const sanitizedFileName = file.name.replace(/\s+/g, '')
-    setFileName(sanitizedFileName)
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setThumbnail(reader.result)
-      }
-      reader.readAsDataURL(file)
+    const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+    const customFileName = `thumbnail-${timestamp}-${sanitizedFileName}`
+    setFileName(customFileName)
+
+    setThumbnail(file)
+    handleThumbnailUpload(file, customFileName)
+  }
+
+  const handleThumbnailUpload = async (file, customFileName) => {
+    if (!file || !customFileName) return
+
+    console.log('Uploading')
+
+    const params = {
+      Bucket: 'the-fashion-salad',
+      Key: `blog-post-images/${customFileName}`,
+      Body: file,
+      ACL: 'public-read',
     }
+
+    const data = await s3Client.send(new PutObjectCommand(params))
+
+    try {
+      console.log('Upload successful')
+    } catch (error) {
+      console.error('Error uploading thumbnail:', error)
+    }
+  }
+
+  const handleThumbnailDelete = async () => {
+    console.log(fileName)
+
+    const params = {
+      Bucket: 'the-fashion-salad',
+      Key: `blog-post-images/${fileName}`,
+      // Body: file,
+      ACL: 'public-read',
+    }
+    try {
+      const data = await s3Client.send(new DeleteObjectCommand(params))
+      setThumbnail(null)
+    } catch (error) {}
   }
 
   const handleSubmit = async (status) => {
@@ -121,9 +202,7 @@ const CreatePost = () => {
       return
     }
 
-    if (thumbnail) {
-      const data = await s3Client.send(new PutObjectCommand(params))
-    }
+    updateImagesBasedOnContent()
 
     try {
       const response = await axios.post('/api/posts', {
@@ -158,87 +237,92 @@ const CreatePost = () => {
   }
 
   return (
-    <div className='p-6 md:p-10 bg-gray-50'>
-      <div className='flex flex-col md:px-12 lg:px-48 gap-6'>
-        <h1 className='text-3xl font-bold text-center mb-5 text-gray-700'>
+    <div className='p-6 md:p-10 bg-gray-50 flex max-lg:flex-col gap-3'>
+      <div className='flex border shadow-md p-5 bg-white rounded-xl flex-col gap-3 lg:w-1/2 w-full'>
+        <h1 className='text-2xl font-bold text-center mb-5 text-gray-700'>
           Create a New Post
         </h1>
 
         {/* Title Input */}
-        <input
+        <Input
           value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          type='text'
-          className='text-3xl w-full py-4 font-semibold focus:outline-none px-3 border-b-2 border-gray-300 focus:border-blue-500'
           placeholder='Your title...'
+          onChange={(e) => setTitle(e.target.value)}
         />
 
-        {/* Upload Thumbnail Button */}
-        <div className='my-5 flex flex-col'>
-          <label className='text-lg font-semibold text-gray-700'>
-            Upload Thumbnail
-          </label>
-          <div className='flex gap-3'>
-            <input
-              id='image'
-              type='file'
-              accept='image/*'
-              onChange={handleImage}
-              className='border border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4 cursor-pointer hover:border-blue-400 transition duration-150'
-            />
-            {/* Remove Thumbnail Button */}
-            {thumbnail && (
-              <button
-                title='Remove Thumbnail'
-                onClick={() => setThumbnail(null)} // Clear the thumbnail state
-                className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
-              >
-                Remove Thumbnail
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Categories Selection */}
-        <div>
-          <p className='text-lg font-semibold text-gray-700'>
-            Select Categories
-          </p>
-          <div className='flex flex-wrap gap-4 mb-5'>
-            {categories && (
-              <div className='flex flex-col max-md:w-full'>
-                <select
-                  value={selectedCategoryIds[0] || ''}
-                  onChange={handleSelectChange}
-                  className='h-10 max-md:w-full capitalize border border-gray-300 rounded-sm p-2'
+        <div className='flex gap-5'>
+          {/* Upload Thumbnail Button */}
+          <div className='flex gap-1 flex-col'>
+            <label className='text-sm text-gray-700'>Upload Thumbnail</label>
+            <div className='flex gap-3'>
+              <input
+                id='image'
+                type='file'
+                accept='image/*'
+                onChange={handleImage}
+                className='border border-dotted border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4 cursor-pointer hover:border-blue-400 transition duration-150'
+              />
+              {/* Remove Thumbnail Button */}
+              {thumbnail && (
+                <button
+                  title='Remove Thumbnail'
+                  onClick={handleThumbnailDelete} // Clear the thumbnail state
+                  className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
                 >
-                  <option value=''>Select a category</option>
-                  {categories.map((category) => (
-                    <option
-                      className={`${
-                        category.name === 'admin blogs' &&
-                        user?.role !== 'admin' &&
-                        'hidden'
-                      }`}
-                      key={category.id}
-                      value={category.slug}
-                    >
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            )}
+                  Remove Thumbnail
+                </button>
+              )}
+            </div>
+          </div>
+
+          {/* Categories Selection */}
+          <div className='flex flex-col gap-1 w-full'>
+            <p className='text-sm text-gray-700'>Select Categories</p>
+            <div className='flex flex-wrap gap-4 w-full'>
+              {categories && (
+                <div className='flex w-full flex-col'>
+                  <select
+                    value={selectedCategoryIds[0] || ''}
+                    onChange={handleSelectChange}
+                    className='max-md:w-full p-3 border-dotted capitalize border bg-white rounded-sm w-full'
+                  >
+                    <option value=''>Select a category</option>
+                    {categories.map((category) => (
+                      <option
+                        className={`${
+                          category.name === 'admin blogs' &&
+                          user?.role !== 'admin' &&
+                          'hidden'
+                        }`}
+                        key={category.id}
+                        value={category.slug}
+                      >
+                        {category.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+        {thumbnail && (
+          <div className='lg:w-2/3'>
+            <Image
+              src={thumbnail && URL.createObjectURL(thumbnail)}
+              width={300}
+              height={60}
+              alt='Blog post image'
+            />
+          </div>
+        )}
 
         {/* Tag Input */}
-        <div className='my-5'>
-          <p className='text-lg font-semibold text-gray-700'>Tags</p>
-          <input
+        <div className='flex flex-col gap-1'>
+          <p className='text-sm text-gray-700'>Tags</p>
+          <Input
             type='text'
             onKeyDown={handleAddTag}
-            className='border border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4'
             placeholder='Type a tag and hit Enter...'
           />
           <div className='flex flex-wrap gap-2 mt-2'>
@@ -260,13 +344,10 @@ const CreatePost = () => {
           </div>
         </div>
 
-        {/* JoditEditor to edit the fetched content */}
-        <JoditEditor
-          ref={editor}
+        <CustomEditor
           value={content}
-          tabIndex={1}
-          onBlur={(newContent) => setContent(newContent)}
           onChange={(newContent) => setContent(newContent)}
+          images={images}
         />
 
         <div className='flex gap-3 justify-end mt-3'>
@@ -277,41 +358,31 @@ const CreatePost = () => {
             variant={'success'}
           />
         </div>
-
+      </div>
+      <div className='lg:w-1/2 w-full border bg-white shadow-md p-5 rounded-xl'>
         {/* Post Preview */}
-        <div className='p-6 border border-zinc-200 bg-white rounded-md mt-5 shadow-lg'>
-          <p className='text-center text-4xl mb-5 font-semibold text-gray-400'>
-            Post Preview
-          </p>
-          <p className='font-semibold pb-4 text-3xl'>{title}</p>
-          {thumbnail && (
-            <Image
-              src={thumbnail}
-              alt='Thumbnail preview'
-              className='mb-4 rounded-lg'
-              width={300}
-              height={150}
-              layout='responsive'
-            />
-          )}
-          <div dangerouslySetInnerHTML={{ __html: content }} />
-          {/* Display Tags in Preview */}
-          {tags.length > 0 && (
-            <div className='mt-4'>
-              <p className='font-semibold'>Tags:</p>
-              <div className='flex flex-wrap gap-2'>
-                {tags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className='bg-zinc-200 text-sm px-2 py-1 rounded-sm'
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
+        <p className='text-center text-2xl mb-5 font-semibold text-gray-700'>
+          Post Preview
+        </p>
+        <p className='font-semibold pb-4 text-3xl'>{title}</p>
+        {thumbnail && (
+          <Image
+            src={thumbnail}
+            alt='Thumbnail preview'
+            className='mb-4 rounded-lg'
+            width={300}
+            height={150}
+            layout='responsive'
+          />
+        )}
+        <p>
+          {images.length > 0 &&
+            images.map((item, index) => <span key={index}>{item}</span>)}
+        </p>
+        <div
+          className='editor-content'
+          dangerouslySetInnerHTML={{ __html: content }}
+        />
       </div>
     </div>
   )

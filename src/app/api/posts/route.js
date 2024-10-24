@@ -283,9 +283,39 @@ export async function PATCH(request) {
       )
     }
 
+    const [existingPost] = await db.query(
+      'SELECT title, slug FROM BlogPosts WHERE id = ?',
+      [id]
+    )
+
+    // Generate slug from title and append part of current timestamp
+    const timeSuffix = Date.now().toString().slice(-4)
+    const slug = `${slugify(title, {
+      lower: true,
+      strict: true,
+    })}-${timeSuffix}`
+
+    // Determine if the title has changed
+    let newSlug = existingPost.slug
+    if (title !== existingPost.title) {
+      const timeSuffix = Date.now().toString().slice(-4)
+      newSlug = `${slugify(title, { lower: true, strict: true })}-${timeSuffix}`
+    }
+
+    // Update the blog post with the new or existing slug
     const result = await db.query(
-      'UPDATE BlogPosts SET title = ?, category_ids = ?, content = ?, status = ?, updated_at = ?, tags = ?, image_url = ? WHERE id = ?',
-      [title, category_ids, content, status, new Date(), tags, image_url, id]
+      'UPDATE BlogPosts SET title = ?, category_ids = ?, content = ?, status = ?, updated_at = ?, tags = ?, image_url = ?, slug = ? WHERE id = ?',
+      [
+        title,
+        category_ids,
+        content,
+        status,
+        new Date(),
+        tags,
+        image_url,
+        newSlug,
+        id,
+      ]
     )
 
     if (result.affectedRows === 0) {

@@ -3,6 +3,7 @@ import ProfileCard from './ProfileCard'
 import Button from './Button'
 import { useRouter } from 'next/navigation'
 import { useBlogContext } from '../context/BlogContext'
+import { blogUrl } from './url'
 
 const BlogPostCard2 = ({ title, imageUrl, date, onClick, post }) => {
   const router = useRouter()
@@ -25,7 +26,7 @@ const BlogPostCard2 = ({ title, imageUrl, date, onClick, post }) => {
       >
         <Image
           onClick={onClick}
-          src={imageUrl}
+          src={blogUrl + post?.image_url}
           width={0}
           height={0}
           sizes='100vw'
