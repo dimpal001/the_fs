@@ -90,7 +90,7 @@ const CategoryBlog = ({ params }) => {
                 posts.map((post, index) => (
                   <BlogPostCard4
                     post={post}
-                    imageUrl={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/blog-post-images/${post?.image_url}`}
+                    imageUrl={`https://cdn.thefashionsalad.com/blog-post-images/${post?.image_url}`}
                     key={index}
                   />
                 ))}

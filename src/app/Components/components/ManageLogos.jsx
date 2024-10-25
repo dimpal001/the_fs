@@ -172,7 +172,7 @@ const ManageLogos = () => {
               <div className='w-[150px]'>
                 <Image
                   className='rounded-sm shadow-md'
-                  src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/${logo.url}`}
+                  src={`https://cdn.thefashionsalad.com/logos/${logo.url}`}
                   width={150}
                   height={150}
                   alt={'Logo'}

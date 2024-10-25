@@ -39,7 +39,7 @@ const MenuBar = ({ editor, images }) => {
     try {
       images.push(fileName)
       await s3Client.send(new PutObjectCommand(params))
-      const url = `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/blog-post-images/${fileName}`
+      const url = `https://cdn.thefashionsalad.com/blog-post-images/${fileName}`
 
       editor.chain().focus().setImage({ src: url }).run()
     } catch (error) {}

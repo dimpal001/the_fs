@@ -322,7 +322,7 @@ const EditPost = () => {
               file
                 ? URL.createObjectURL(file)
                 : image_url
-                ? `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/blog-post-images/${image_url}`
+                ? `https://cdn.thefashionsalad.com/blog-post-images/${image_url}`
                 : '/default-thumbnail.jpg'
             }
             width={300}

@@ -145,7 +145,7 @@ const HomePage = () => {
           <meta property='og:type' content='website' />
           <meta
             property='og:image'
-            content='https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
+            content='https://cdn.thefashionsalad.com/logos/The%20Fashion%20Salad%20(3).png'
           />
           <meta property='og:site_name' content='The Fashion Salad' />
           <meta property='og:locale' content='en_US' />
@@ -164,7 +164,7 @@ const HomePage = () => {
           />
           <meta
             name='twitter:image'
-            content='https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
+            content='https://cdn.thefashionsalad.com/logos/The%20Fashion%20Salad%20(3).png'
           />
         </Helmet>
 

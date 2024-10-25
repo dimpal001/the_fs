@@ -17,8 +17,8 @@ import {
   PutObjectCommand,
   S3Client,
 } from '@aws-sdk/client-s3'
-import useAuth from '@/app/context/useAuth'
 import Image from 'next/image'
+import DataNotFound from '@/app/Components/DataNotFound'
 
 const AccountPage = () => {
   const [name, setName] = useState('')
@@ -35,11 +35,11 @@ const AccountPage = () => {
   const [fetching, setFetching] = useState(false)
   const [posts, setPosts] = useState([])
   const { user, setUser } = useUserContext()
-  const [fetchUser, setFetchUser] = useState({})
+  const [fetchUser, setFetchUser] = useState(null)
   const router = useRouter()
   const postsSectionRef = useRef(null)
 
-  useAuth()
+  // useAuth()
 
   useEffect(() => {
     fetchUserData()
@@ -90,7 +90,7 @@ const AccountPage = () => {
       }
       const data = await s3Client.send(new PutObjectCommand(newParams))
 
-      const fileUrl = `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${customFileName}`
+      const fileUrl = `https://cdn.thefashionsalad.com/profile-pictures/${customFileName}`
 
       const response = await axios.patch('/api/admin/users/', {
         id: user?.id,
@@ -141,7 +141,7 @@ const AccountPage = () => {
   useEffect(() => {
     setTimeout(() => {
       fetchUserPosts()
-    }, 2000)
+    }, 500)
   }, [])
 
   if (fetching) {
@@ -240,7 +240,7 @@ const AccountPage = () => {
 
   return (
     <div>
-      {user && (
+      {fetchUser ? (
         <div className='container mx-auto p-5'>
           <Helmet>
             <title>Profile</title>
@@ -317,7 +317,7 @@ const AccountPage = () => {
                       className='rounded-full w-full h-full object-cover cursor-pointer'
                       src={
                         fetchUser?.image_url
-                          ? `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${fetchUser?.image_url}`
+                          ? `https://cdn.thefashionsalad.com/profile-pictures/${fetchUser?.image_url}`
                           : UserImg
                       }
                       width={0}
@@ -389,6 +389,10 @@ const AccountPage = () => {
               )}
             </div>
           </div>
+        </div>
+      ) : (
+        <div className='container mx-auto'>
+          <DataNotFound />
         </div>
       )}
     </div>

@@ -247,17 +247,17 @@ const CreatePost = () => {
           <div className='flex gap-1 flex-col'>
             <label className='text-sm text-gray-700'>Upload Thumbnail</label>
             <div className='flex gap-3'>
-              <button className='w-full md:w-72 rounded-sm p-2 border border-dotted flex items-center justify-center gap-2 text-sm'>
+              {/* <button className='w-full md:w-72 rounded-sm p-2 border border-dotted flex items-center justify-center gap-2 text-sm'>
                 <Upload />
                 Upload Thumbnail
-              </button>
-              {/* <input
+              </button> */}
+              <input
                 id='image'
                 type='file'
                 accept='image/*'
                 onChange={handleImage}
                 className='border border-dotted border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4 cursor-pointer hover:border-blue-400 transition duration-150'
-              /> */}
+              />
               {/* Remove Thumbnail Button */}
               {thumbnail && (
                 <button

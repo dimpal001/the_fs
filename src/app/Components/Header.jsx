@@ -156,9 +156,9 @@ const Header = () => {
                 <Image
                   className='lg:ms-28 max-md:w-[160px] max-md:-mt-4'
                   // src={
-                  //   'https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/logo-20241022T042118571Z-TheFashionSalad(3).png'
+                  //   'https://cdn.thefashionsalad.com/logos/logo-20241022T042118571Z-TheFashionSalad(3).png'
                   // }
-                  src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/${logoUrl}`}
+                  src={`https://cdn.thefashionsalad.com/logos/${logoUrl}`}
                   width={250}
                   height={10}
                   alt='The fashion salad'
@@ -178,7 +178,7 @@ const Header = () => {
                   button={
                     user?.image_url ? (
                       <Image
-                        src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${user?.image_url}`}
+                        src={`https://cdn.thefashionsalad.com/profile-pictures/${user?.image_url}`}
                         alt={user?.name || 'User'}
                         width={30}
                         height={30}

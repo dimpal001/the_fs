@@ -32,7 +32,7 @@ export default function RootLayout({ children }) {
       name: 'The Fashion Salad',
       logo: {
         '@type': 'ImageObject',
-        url: 'https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png',
+        url: 'https://cdn.thefashionsalad.com/logos/The%20Fashion%20Salad%20(3).png',
       },
     },
     mainEntityOfPage: 'https://www.thefashionsalad.com',
@@ -63,7 +63,7 @@ export default function RootLayout({ children }) {
         <meta property='og:type' content='website' />
         <meta
           property='og:image'
-          content='https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
+          content='https://cdn.thefashionsalad.com/logos/The%20Fashion%20Salad%20(3).png'
         />
         <meta property='og:site_name' content='The Fashion Salad' />
         <meta property='og:locale' content='en_US' />
@@ -79,7 +79,7 @@ export default function RootLayout({ children }) {
         />
         <meta
           name='twitter:image'
-          content='https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
+          content='https://cdn.thefashionsalad.com/logos/The%20Fashion%20Salad%20(3).png'
         />
 
         {/* Canonical link */}

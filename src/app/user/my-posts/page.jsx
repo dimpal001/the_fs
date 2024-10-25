@@ -37,22 +37,15 @@ const MyPosts = () => {
       setPosts(response.data)
       setFilteredPosts(response.data)
     } catch (error) {
-      enqueueSnackbar('Failed to fetch posts.', { variant: 'error' })
+      // enqueueSnackbar('Failed to fetch posts.', { variant: 'error' })
     } finally {
       setLoading(false)
     }
   }
 
   useEffect(() => {
-    if (!user) {
-      router.push('/')
-      enqueueSnackbar('You are not allowed to visit this page.', {
-        variant: 'error',
-      })
-    } else {
-      handleFetchMyPosts()
-    }
-  }, [user, router])
+    handleFetchMyPosts()
+  }, [router])
 
   useEffect(() => {
     // Filter posts based on search term and status filter

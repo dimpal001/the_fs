@@ -15,7 +15,7 @@ const ProfileCard = ({ name, id, date, author_image }) => {
           className='rounded-full w-full h-full object-cover cursor-pointer'
           src={
             author_image
-              ? `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${author_image}`
+              ? `https://cdn.thefashionsalad.com/profile-pictures/${author_image}`
               : UserImg
           }
           width={0}
