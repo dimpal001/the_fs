@@ -65,7 +65,7 @@ export const DynamicMenu = ({ button, children }) => {
       {isOpen && (
         <div
           ref={menuRef}
-          className='absolute z-30 top-7 w-32 right-7 border bg-white shadow-md rounded-md p-4'
+          className='absolute z-30 top-7 min-w-44 right-7 border bg-white shadow-md rounded-md p-4'
         >
           {React.Children.map(children, (child) => {
             if (React.isValidElement(child)) {

@@ -1,6 +1,17 @@
 'use client'
 
-import { CircleUserRound, Menu, Search, X } from 'lucide-react'
+import {
+  CircleUser,
+  CircleUserRound,
+  LayoutDashboard,
+  ListTodo,
+  LogOut,
+  Menu,
+  Search,
+  SquarePen,
+  UserRoundPen,
+  X,
+} from 'lucide-react'
 import { useEffect, useState } from 'react'
 import RegisterModal from './RegisterModal'
 import LoginModal from './LoginModal'
@@ -94,7 +105,7 @@ const Header = () => {
                     className='m-3 absolute cursor-pointer top-0 right-0'
                     onClick={() => setIsMenuOpen(false)}
                   />
-                  <div className='flex flex-col w-full gap-5 p-5 tracking-wider'>
+                  <div className='flex flex-col w-full gap-4 p-5 tracking-wider'>
                     <p className='text-first text-3xl pb-5'>Categories</p>
                     {categoryList.length > 0 &&
                       categoryList.map((item, index) => (
@@ -103,7 +114,7 @@ const Header = () => {
                             item.name === 'admin blogs' &&
                             user?.role !== 'admin' &&
                             'hidden'
-                          } text-balance text-sm hover:text-first uppercase font-extralight`}
+                          } text-balance hover:text-first capitalize font-semibold`}
                           key={index}
                           name={item.name}
                           onClick={() => {
@@ -163,9 +174,24 @@ const Header = () => {
                 size={25}
               />
               {user && (
-                <DynamicMenu button={<CircleUserRound />}>
+                <DynamicMenu
+                  button={
+                    user?.image_url ? (
+                      <Image
+                        src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${user?.image_url}`}
+                        alt={user?.name || 'User'}
+                        width={30}
+                        height={30}
+                        className='rounded-full'
+                      />
+                    ) : (
+                      <CircleUserRound />
+                    )
+                  }
+                >
                   {user.role === 'admin' && (
                     <ClickItem
+                      icon={<LayoutDashboard size={20} />}
                       label={'Dashboard'}
                       onClick={() => {
                         router.push('/admin/dashboard')
@@ -173,6 +199,7 @@ const Header = () => {
                     />
                   )}
                   <ClickItem
+                    icon={<CircleUser size={20} />}
                     label={'Profile'}
                     onClick={() => {
                       setIsMenuOpen(false)
@@ -180,18 +207,29 @@ const Header = () => {
                     }}
                   />
                   <ClickItem
+                    icon={<UserRoundPen size={20} />}
                     label={'Account'}
                     onClick={() => {
                       router.push('/user/account')
                     }}
                   />
                   <ClickItem
+                    icon={<SquarePen size={20} />}
+                    label={'Create Post'}
+                    onClick={() => {
+                      router.push('/user/create-post')
+                    }}
+                  />
+                  <ClickItem
+                    icon={<ListTodo size={20} />}
                     label={'Posts'}
                     onClick={() => {
                       router.push('/user/my-posts')
                     }}
                   />
                   <ClickItem
+                    icon={<LogOut size={20} className={'text-red-600'} />}
+                    className={'text-red-600 font-semibold'}
                     label={'Logout'}
                     onClick={() => {
                       localStorage.removeItem('user')
@@ -226,6 +264,7 @@ const Header = () => {
                 <DynamicMenu button={<CircleUserRound />}>
                   {user.role === 'admin' && (
                     <ClickItem
+                      icon={<LayoutDashboard size={20} />}
                       label={'Dashboard'}
                       onClick={() => {
                         router.push('/admin/dashboard')
@@ -233,25 +272,37 @@ const Header = () => {
                     />
                   )}
                   <ClickItem
+                    icon={<CircleUser size={20} />}
                     label={'Profile'}
                     onClick={() => {
-                      toggleDrawer()
+                      setIsMenuOpen(false)
                       router.push(`/profile/${user?.id}`)
                     }}
                   />
                   <ClickItem
+                    icon={<UserRoundPen size={20} />}
                     label={'Account'}
                     onClick={() => {
                       router.push('/user/account')
                     }}
                   />
                   <ClickItem
+                    icon={<SquarePen size={20} />}
+                    label={'Create Post'}
+                    onClick={() => {
+                      router.push('/user/create-post')
+                    }}
+                  />
+                  <ClickItem
+                    icon={<ListTodo size={20} />}
                     label={'Posts'}
                     onClick={() => {
                       router.push('/user/my-posts')
                     }}
                   />
                   <ClickItem
+                    icon={<LogOut size={20} className={'text-red-600'} />}
+                    className={'text-red-600 font-semibold'}
                     label={'Logout'}
                     onClick={() => {
                       localStorage.removeItem('user')

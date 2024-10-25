@@ -9,6 +9,7 @@ import { enqueueSnackbar } from 'notistack'
 import BlogPostCard4 from '@/app/Components/BlogPostCard4'
 import { useRouter } from 'next/navigation'
 import ImageModal from '@/app/Components/ImageModal'
+import userImg from '../../assets/user.svg'
 
 const Profile = ({ params }) => {
   const [userData, setUserData] = useState(null)
@@ -153,7 +154,11 @@ const Profile = ({ params }) => {
               >
                 <Image
                   className='rounded-full w-full h-full object-cover cursor-pointer'
-                  src={`https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${userData?.image_url}`}
+                  src={
+                    userData.image_url
+                      ? `https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/profile-pictures/${userData?.image_url}`
+                      : userImg
+                  }
                   width={0}
                   height={0}
                   sizes='100vw'

@@ -50,6 +50,7 @@ export async function POST(request) {
           email: user.email,
           role: user.role,
           is_active: user.is_active,
+          image_url: user.image_url,
         },
       },
       { status: 200 }
