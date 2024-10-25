@@ -8,9 +8,7 @@ async function sendBlogPostNotification(slug) {
     const link = `https://www.thefashionsalad.com/blogs/${slug}`
 
     emailQueue.add({ emails, link })
-  } catch (error) {
-    console.error('Failed to send email notification:', error)
-  }
+  } catch (error) {}
 }
 
 export async function PATCH(request, { params }) {
@@ -54,7 +52,6 @@ export async function PATCH(request, { params }) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error updating post:', error)
     return NextResponse.json({ error: 'Error updating post' }, { status: 500 })
   }
 }
@@ -74,7 +71,6 @@ export async function DELETE(request, { params }) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error deleting post:', error)
     return NextResponse.json({ error: 'Error deleting post' }, { status: 500 })
   }
 }

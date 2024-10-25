@@ -63,7 +63,6 @@ export async function GET(request) {
       )
     }
   } catch (error) {
-    console.error(error)
     return NextResponse.json(
       { message: 'Error fetching Users' },
       { status: 500 }
@@ -134,7 +133,6 @@ export async function PATCH(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error updating user:', error)
     return NextResponse.json(
       { message: 'Error updating user' },
       { status: 500 }
@@ -173,7 +171,6 @@ export async function DELETE(request) {
       )
     }
   } catch (error) {
-    console.error('Error updating user:', error)
     return NextResponse.json(
       { message: 'Error deleting user' },
       { status: 500 }

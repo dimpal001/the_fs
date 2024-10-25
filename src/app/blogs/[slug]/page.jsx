@@ -125,9 +125,7 @@ const Blog = ({ params }) => {
         params: { blog_post_id: postId },
       })
       setReplies(response.data)
-    } catch (error) {
-      console.error('Error fetching replies:', error)
-    }
+    } catch (error) {}
   }
 
   // Fetch related posts based on category IDs
@@ -140,9 +138,7 @@ const Blog = ({ params }) => {
         }
       )
       setRelatedPosts(response.data)
-    } catch (error) {
-      console.error('Error fetching related posts:', error)
-    }
+    } catch (error) {}
   }
 
   useEffect(() => {

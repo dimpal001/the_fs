@@ -7,11 +7,11 @@ export const FacebookIcon = () => {
       xmlns='http://www.w3.org/2000/svg'
       fill='#000000'
     >
-      <g id='SVGRepo_bgCarrier' stroke-width='0'></g>
+      <g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
       <g
         id='SVGRepo_tracerCarrier'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       ></g>
       <g id='SVGRepo_iconCarrier'>
         <circle cx='420.945' cy='296.781' r='294.5' fill='#3c5a9a'></circle>
@@ -33,11 +33,11 @@ export const InstagramIcon = () => {
       fill='none'
       xmlns='http://www.w3.org/2000/svg'
     >
-      <g id='SVGRepo_bgCarrier' stroke-width='0'></g>
+      <g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
       <g
         id='SVGRepo_tracerCarrier'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       ></g>
       <g id='SVGRepo_iconCarrier'>
         {' '}
@@ -72,13 +72,13 @@ export const FlipboardIcon = () => {
       xmlSpace='preserve'
       fill='#000000'
     >
-      <g id='SVGRepo_bgCarrier' stroke-width='0'></g>
+      <g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
       <g
         id='SVGRepo_tracerCarrier'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
         stroke='#CCCCCC'
-        stroke-width='1.024'
+        strokeWidth='1.024'
       ></g>
       <g id='SVGRepo_iconCarrier'>
         {' '}
@@ -118,11 +118,11 @@ export const TwitterIcon = () => {
       xmlns='http://www.w3.org/2000/svg'
       fill='#000000'
     >
-      <g id='SVGRepo_bgCarrier' stroke-width='0'></g>
+      <g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
       <g
         id='SVGRepo_tracerCarrier'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       ></g>
       <g id='SVGRepo_iconCarrier'>
         <circle cx='420.944' cy='296.781' r='294.5' fill='#2daae1'></circle>
@@ -148,11 +148,11 @@ export const PinterestIcon = () => {
       xmlSpace='preserve'
       fill='#000000'
     >
-      <g id='SVGRepo_bgCarrier' stroke-width='0'></g>
+      <g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
       <g
         id='SVGRepo_tracerCarrier'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        strokeLinecap='round'
+        strokeLinejoin='round'
       ></g>
       <g id='SVGRepo_iconCarrier'>
         {' '}

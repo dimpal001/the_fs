@@ -86,7 +86,6 @@ export async function GET(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error fetching related posts:', error)
     return NextResponse.json(
       { message: 'Error fetching related posts' },
       { status: 500 }

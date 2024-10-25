@@ -64,14 +64,12 @@ export async function POST(request) {
         { status: 201 }
       )
     } else {
-      console.error('Insertion did not affect any rows:', result)
       return NextResponse.json(
         { message: 'Failed to create category' },
         { status: 500 }
       )
     }
   } catch (error) {
-    console.error('Error creating category:', error.message)
     return NextResponse.json(
       { message: 'Error creating category' },
       { status: 500 }
@@ -104,7 +102,6 @@ export async function GET(request) {
       return NextResponse.json(categories, { status: 200 })
     }
   } catch (error) {
-    console.error(error)
     return NextResponse.json(
       { message: 'Error fetching categories' },
       { status: 500 }
@@ -172,7 +169,6 @@ export async function PATCH(request) {
       )
     }
   } catch (error) {
-    console.error('Error updating category:', error.message)
     return NextResponse.json(
       { message: 'Error updating category' },
       { status: 500 }

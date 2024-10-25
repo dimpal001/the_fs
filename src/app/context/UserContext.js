@@ -5,38 +5,18 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 const UserContext = createContext()
 
 export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(() => {
-    // Check if localStorage is available
-    if (typeof window !== 'undefined') {
-      const storedUser = localStorage.getItem('user')
-      return storedUser ? JSON.parse(storedUser) : null
-    }
-    return null // Return null if localStorage is not available
-  })
+  const [user, setUser] = useState(null)
 
   useEffect(() => {
-    // Check if localStorage is available
-    if (typeof window !== 'undefined') {
-      const storedUser = localStorage.getItem('user')
-      if (storedUser) {
-        try {
-          const parsedUser = JSON.parse(storedUser)
-          setUser(parsedUser)
-        } catch (error) {
-          console.error('Error parsing user data:', error)
-          // Optionally clear invalid data from localStorage
-          localStorage.removeItem('user')
-        }
-      }
+    const storedUser = localStorage.getItem('user')
+    if (storedUser) {
+      setUser(JSON.parse(storedUser))
     }
   }, [])
 
   const logout = () => {
     setUser(null)
-    // Clear user data from localStorage on logout
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('user')
-    }
+    localStorage.removeItem('user')
   }
 
   return (

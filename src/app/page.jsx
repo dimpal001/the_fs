@@ -12,12 +12,10 @@ import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Loading from './Components/Loading'
 import { Helmet } from 'react-helmet'
-import Instagram from './../../public/icons/instagram_icon.svg'
-import FacebookImg from './../../public/icons/facebook.svg'
-import YoutubeImg from './../../public/icons/youtube.svg'
 import Link from 'next/link'
 import SocialDiadies from './Components/SocialDiadies'
 import { blogUrl } from './Components/url'
+import { enqueueSnackbar } from 'notistack'
 
 const HomePage = () => {
   const [latestPosts, setLatestPosts] = useState([])
@@ -70,7 +68,7 @@ const HomePage = () => {
       })
       setCategory2Posts((prev) => [...prev, ...response.data.posts])
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+      enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
     }
   }
 
@@ -81,7 +79,7 @@ const HomePage = () => {
       })
       setCategory3Posts((prev) => [...prev, ...response.data.posts])
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+      enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
     }
   }
 
@@ -90,7 +88,7 @@ const HomePage = () => {
       const response = await axios.get('/api/admin/category')
       setCategories(response.data)
     } catch (error) {
-      enqueueSnackbar('Faild fetching categories', { variant: 'error' })
+      enqueueSnackbar('Faild fetching categories')
     }
   }
 
@@ -168,9 +166,6 @@ const HomePage = () => {
             name='twitter:image'
             content='https://the-fashion-salad.blr1.cdn.digitaloceanspaces.com/logos/The%20Fashion%20Salad%20(3).png'
           />
-
-          {/* Canonical link */}
-          <link rel='canonical' href='https://www.thefashionsalad.com' />
         </Helmet>
 
         {/* New hero section  */}

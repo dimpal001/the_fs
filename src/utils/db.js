@@ -12,7 +12,6 @@ export const connectToDatabase = async () => {
         database: process.env.DB_NAME,
       })
     } catch (error) {
-      console.error('Database connection failed:', error.message)
       throw new Error('Could not connect to the database')
     }
   }

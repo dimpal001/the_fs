@@ -33,7 +33,6 @@ export async function POST(request) {
       )
     }
   } catch (error) {
-    console.error('Error adding logo:', error)
     return NextResponse.json({ message: 'Error adding logo' }, { status: 500 })
   }
 }
@@ -69,7 +68,6 @@ export async function GET(request) {
     // Return all logos
     return NextResponse.json(logos, { status: 200 })
   } catch (error) {
-    console.error('Error fetching logos:', error)
     return NextResponse.json(
       { message: 'Error fetching logos' },
       { status: 500 }
@@ -136,7 +134,6 @@ export async function PATCH(request) {
       )
     }
   } catch (error) {
-    console.error('Error activating logo:', error)
     return NextResponse.json(
       { message: 'Error activating logo' },
       { status: 500 }
@@ -174,7 +171,6 @@ export async function DELETE(request) {
       )
     }
   } catch (error) {
-    console.error('Error deleting logo:', error)
     return NextResponse.json(
       { message: 'Error deleting logo' },
       { status: 500 }

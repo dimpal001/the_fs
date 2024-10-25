@@ -24,7 +24,6 @@ const UserProfileModal = ({ isOpen, onClose, id }) => {
       setUserDetails(response.data)
     } catch (error) {
       enqueueSnackbar('Error fetching user details', { variant: 'error' })
-      console.error(error)
     } finally {
       setLoading(false)
     }

@@ -13,6 +13,7 @@ import Image from 'next/image'
 import { enqueueSnackbar } from 'notistack'
 import React, { useEffect, useState } from 'react'
 import DeleteModal from '../DeleteModal'
+import { Upload } from 'lucide-react'
 
 const ManageLogos = () => {
   const { user } = useUserContext()
@@ -31,7 +32,6 @@ const ManageLogos = () => {
       const response = await axios.get('/api/admin/logos')
       setLogos(response.data)
     } catch (error) {
-      console.error('Error fetching logos:', error)
     } finally {
       setLoading(false)
     }
@@ -103,7 +103,6 @@ const ManageLogos = () => {
         setFileName('')
       }
     } catch (error) {
-      console.error('Error uploading logo:', error)
     } finally {
       setUploading(false)
     }
@@ -215,20 +214,24 @@ const ManageLogos = () => {
           ))}
         </div>
         <div className='lg:w-1/3 w-full'>
-          <div className='bg-white rounded-sm p-4 flex flex-col gap-6'>
+          <div className='bg-white rounded-sm p-4 flex flex-col gap-2'>
             <div>
-              <label
+              {/* <label
                 className='block mb-2 text-sm font-medium text-gray-900 dark:text-white'
                 for='default_size'
               >
                 Default size
-              </label>
-              <input
+              </label> */}
+              <button className='w-full rounded-sm p-2 bg-blue-200 flex items-center justify-center gap-2 text-sm font-semibold'>
+                <Upload />
+                Upload logo
+              </button>
+              {/* <input
                 onChange={handleFileChange}
                 className='block w-full p-2 mb-5 text-sm text-gray-900 border border-gray-300 rounded-sm cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400'
                 id='default_size'
                 type='file'
-              />
+              /> */}
             </div>
             {/* <input
               type='file'

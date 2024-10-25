@@ -84,9 +84,7 @@ const EditPost = () => {
     }
     try {
       const data = await s3Client.send(new DeleteObjectCommand(deleteParams))
-    } catch (error) {
-      console.error(`Failed to delete ${image} from CDN:`, error)
-    }
+    } catch (error) {}
   }
 
   const handleFetchCategories = async () => {
@@ -153,8 +151,6 @@ const EditPost = () => {
   const handleThumbnailUpload = async (file, customFileName) => {
     if (!file || !customFileName) return
 
-    console.log('Uploading')
-
     const params = {
       Bucket: 'the-fashion-salad',
       Key: `blog-post-images/${customFileName}`,
@@ -165,15 +161,10 @@ const EditPost = () => {
     const data = await s3Client.send(new PutObjectCommand(params))
 
     try {
-      console.log('Upload successful')
-    } catch (error) {
-      console.error('Error uploading thumbnail:', error)
-    }
+    } catch (error) {}
   }
 
   const handleThumbnailDelete = async () => {
-    console.log(fileName)
-
     const params = {
       Bucket: 'the-fashion-salad',
       Key: `blog-post-images/${fileName}`,
@@ -187,7 +178,6 @@ const EditPost = () => {
   }
 
   const handleSubmit = async (status) => {
-    console.log(file, image_url)
     if (title.length === 0) {
       enqueueSnackbar('Title should not be empty', { variant: 'error' })
       return
@@ -240,7 +230,6 @@ const EditPost = () => {
       enqueueSnackbar(response.data.message, { variant: 'success' })
       router.push('/user/my-posts')
     } catch (error) {
-      console.error('Error:', error)
       enqueueSnackbar('Error creating post', { variant: 'error' })
     }
   }

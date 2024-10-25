@@ -26,7 +26,6 @@ export async function PATCH(request) {
 
     return NextResponse.json({ message: 'About us updated' }, { status: 200 })
   } catch (error) {
-    console.error('Error updating data:', error)
     return NextResponse.json({ error: 'Error updating data' }, { status: 500 })
   }
 }
@@ -43,7 +42,6 @@ export async function GET(request) {
 
     return NextResponse.json(about[0], { status: 200 })
   } catch (error) {
-    console.error('Error fetching post:', error)
     return NextResponse.json({ error: 'Error fetching post' }, { status: 500 })
   }
 }

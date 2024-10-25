@@ -36,7 +36,6 @@ export async function POST(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error liking post:', error)
     return NextResponse.json({ error: 'Error liking post' }, { status: 500 })
   }
 }
@@ -71,7 +70,6 @@ export async function DELETE(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error unliking post:', error)
     return NextResponse.json({ error: 'Error unliking post' }, { status: 500 })
   }
 }

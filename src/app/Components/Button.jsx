@@ -32,7 +32,7 @@ const Button = ({
       } ${getVariantClass()} ${className} ${
         width ? 'w-full' : ''
       } p-2 px-5 text-white`}
-      disabled={disabled} // Disable button
+      disabled={disabled}
     >
       {loading ? 'Please wait...' : label}
     </button>

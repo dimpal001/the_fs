@@ -44,7 +44,6 @@ export async function POST(request) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Error creating subscriber:', error)
     return NextResponse.json(
       { error: 'Error creating subscriber' },
       { status: 500 }
@@ -89,7 +88,6 @@ export async function GET(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error fetching subscribers:', error)
     return NextResponse.json(
       { error: 'Error fetching subscribers' },
       { status: 500 }

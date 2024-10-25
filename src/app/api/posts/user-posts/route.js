@@ -37,7 +37,6 @@ export async function GET(request) {
       )
     }
   } catch (error) {
-    console.error('Error fetching post:', error)
     return NextResponse.json({ error: 'Error fetching post' }, { status: 500 })
   }
 }

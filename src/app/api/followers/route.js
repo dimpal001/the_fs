@@ -20,7 +20,6 @@ export async function POST(request) {
 
     return NextResponse.json({ message: 'User followed successfully' })
   } catch (error) {
-    console.error('Error adding follower:', error)
     return NextResponse.json(
       { message: 'Error adding follower' },
       { status: 500 }
@@ -47,7 +46,6 @@ export async function PATCH(request) {
 
     return NextResponse.json({ message: 'User unfollowed successfully' })
   } catch (error) {
-    console.error('Error unfollowing user:', error)
     return NextResponse.json(
       { message: 'Error unfollowing user' },
       { status: 500 }
@@ -110,7 +108,6 @@ export async function GET(request) {
       isFollowing,
     })
   } catch (error) {
-    console.error('Error fetching follow data:', error)
     return NextResponse.json(
       { message: 'Error fetching follow data' },
       { status: 500 }
@@ -140,7 +137,6 @@ export async function DELETE(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error unfollowing user:', error)
     return NextResponse.json(
       { message: 'Error unfollowing user' },
       { status: 500 }

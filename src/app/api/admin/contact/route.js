@@ -45,7 +45,6 @@ export async function POST(request) {
       { status: 201 }
     )
   } catch (error) {
-    console.error(error)
     return NextResponse.json(
       { message: 'Error sending message' },
       { status: 500 }
@@ -94,7 +93,6 @@ export async function GET(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error(error)
     return NextResponse.json(
       { message: 'Error fetching messages' },
       { status: 500 }
@@ -137,7 +135,6 @@ export async function DELETE(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error(error)
     return NextResponse.json(
       { message: 'Error deleting message' },
       { status: 500 }

@@ -46,6 +46,7 @@ export async function GET(request, { params }) {
 
     return NextResponse.json(
       {
+        success: true,
         posts,
         categoryName: category.name,
         currentPage: page,
@@ -55,7 +56,6 @@ export async function GET(request, { params }) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error fetching posts by category:', error)
     return NextResponse.json({ error: 'Error fetching posts' }, { status: 500 })
   }
 }

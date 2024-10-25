@@ -25,7 +25,6 @@ const CategoryManagement = () => {
       setCategories(response.data)
       setFilteredCategories(response.data) // Initialize filtered categories
     } catch (error) {
-      console.error(error)
     } finally {
       setLoading(false) // Stop loading when fetch completes
     }
@@ -48,7 +47,6 @@ const CategoryManagement = () => {
       setNewCategory('')
       setSelectedCategory({})
     } catch (error) {
-      console.error(error)
       enqueueSnackbar('Error adding category', { variant: 'error' })
     } finally {
       setAdding(false)
@@ -99,7 +97,6 @@ const CategoryManagement = () => {
       setSelectedCategory({})
       setIsEditing(false)
     } catch (error) {
-      console.error(error)
       enqueueSnackbar('Error updating category', { variant: 'error' })
     } finally {
       setSubmitting(false)
@@ -136,7 +133,6 @@ const CategoryManagement = () => {
       setSelectedCategory({})
       setDeleteModalOpen(false)
     } catch (error) {
-      console.error(error)
       enqueueSnackbar(
         error.response?.data?.message || 'Error deleting category',
         { variant: 'error' }

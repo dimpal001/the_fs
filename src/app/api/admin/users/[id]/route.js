@@ -24,7 +24,6 @@ export async function PATCH(request, { params }) {
       { status: 200 }
     )
   } catch (error) {
-    console.error(error)
     return NextResponse.json(
       { message: 'Error fetching Users' },
       { status: 500 }

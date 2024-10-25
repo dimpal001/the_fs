@@ -54,9 +54,7 @@ const Replies = ({ replies, postId }) => {
       setExternalLink('')
       setReplyToId(null)
       setIsPopupVisible(false)
-    } catch (error) {
-      console.error('Error submitting reply:', error)
-    }
+    } catch (error) {}
   }
 
   // Hide popup when clicking outside

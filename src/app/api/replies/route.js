@@ -55,7 +55,6 @@ export async function POST(request) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Error creating reply:', error)
     return NextResponse.json(
       { message: 'Error creating reply' },
       { status: 500 }
@@ -115,7 +114,6 @@ export async function GET(request) {
       )
     }
   } catch (error) {
-    console.error('Error fetching replies:', error)
     return NextResponse.json(
       { message: 'Error fetching replies' },
       { status: 500 }
@@ -149,7 +147,6 @@ export async function PATCH(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error updating reply status:', error)
     return NextResponse.json(
       { message: 'Error updating reply status' },
       { status: 500 }
@@ -181,7 +178,6 @@ export async function DELETE(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error deleting reply:', error)
     return NextResponse.json(
       { message: 'Error deleting reply' },
       { status: 500 }

@@ -16,6 +16,7 @@ import {
 } from '@aws-sdk/client-s3'
 import CustomEditor from '@/app/Components/CustomEditor'
 import Input from '@/app/Components/Input'
+import { Upload } from 'lucide-react'
 
 const CreatePost = () => {
   const { user } = useUserContext()
@@ -70,9 +71,7 @@ const CreatePost = () => {
     }
     try {
       const data = await s3Client.send(new DeleteObjectCommand(deleteParams))
-    } catch (error) {
-      console.error(`Failed to delete ${image} from CDN:`, error)
-    }
+    } catch (error) {}
   }
 
   const handleFetchCategories = async () => {
@@ -139,8 +138,6 @@ const CreatePost = () => {
   const handleThumbnailUpload = async (file, customFileName) => {
     if (!file || !customFileName) return
 
-    console.log('Uploading')
-
     const params = {
       Bucket: 'the-fashion-salad',
       Key: `blog-post-images/${customFileName}`,
@@ -151,15 +148,10 @@ const CreatePost = () => {
     const data = await s3Client.send(new PutObjectCommand(params))
 
     try {
-      console.log('Upload successful')
-    } catch (error) {
-      console.error('Error uploading thumbnail:', error)
-    }
+    } catch (error) {}
   }
 
   const handleThumbnailDelete = async () => {
-    console.log(fileName)
-
     const params = {
       Bucket: 'the-fashion-salad',
       Key: `blog-post-images/${fileName}`,
@@ -255,13 +247,17 @@ const CreatePost = () => {
           <div className='flex gap-1 flex-col'>
             <label className='text-sm text-gray-700'>Upload Thumbnail</label>
             <div className='flex gap-3'>
-              <input
+              <button className='w-full md:w-72 rounded-sm p-2 border border-dotted flex items-center justify-center gap-2 text-sm'>
+                <Upload />
+                Upload Thumbnail
+              </button>
+              {/* <input
                 id='image'
                 type='file'
                 accept='image/*'
                 onChange={handleImage}
                 className='border border-dotted border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4 cursor-pointer hover:border-blue-400 transition duration-150'
-              />
+              /> */}
               {/* Remove Thumbnail Button */}
               {thumbnail && (
                 <button

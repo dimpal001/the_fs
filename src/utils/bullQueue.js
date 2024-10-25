@@ -7,9 +7,7 @@ emailQueue.process(async (job) => {
   try {
     const { emails, link } = job.data
     await sendBlogPostAlert(emails, link)
-  } catch (error) {
-    console.error('Failed to send email notification:', error)
-  }
+  } catch (error) {}
 })
 
 // Expose the email queue

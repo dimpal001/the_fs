@@ -174,42 +174,56 @@ const UserManagement = () => {
               <th className='px-4 py-2 text-start'>Joined</th>
               <th className='px-4 py-2 text-start'>Role</th>
               <th className='px-4 py-2 text-start'></th>
+              <th className='px-4 py-2 text-start'></th>
               <th className='px-4 py-2 text-end'>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {filteredUsers.map((user) => (
-              <tr key={user.id} className='hover:bg-gray-100'>
+            {filteredUsers.map((fetchUser) => (
+              <tr
+                key={fetchUser.id}
+                className={`hover:bg-gray-100 ${
+                  user.id === fetchUser.id && 'bg-teal-50 '
+                }`}
+              >
                 <td
                   onClick={() => {
                     setIsUserModalOpen(true)
-                    setSelectedId(user.id)
+                    setSelectedId(fetchUser.id)
                   }}
                   className='px-4 py-2 hover:text-first hover:underline cursor-pointer'
                 >
-                  {user.email}
+                  {fetchUser.email}
                 </td>
                 <td
                   onClick={() => {
                     setIsUserModalOpen(true)
-                    setSelectedId(user.id)
+                    setSelectedId(fetchUser.id)
                   }}
                   className='px-4 py-2 hover:text-first hover:underline cursor-pointer'
                 >
-                  {user.name}
+                  {fetchUser.name}
                 </td>
                 <td className='px-4 py-2'>
-                  {new Date(user.created_at).toLocaleDateString()}
+                  {new Date(fetchUser.created_at).toLocaleDateString()}
                 </td>
-                <td className='px-4 py-2 capitalize'>{user.role}</td>
+                <td className='px-4 py-2 capitalize'>{fetchUser.role}</td>
                 <td className='px-4 py-2 text-sm text-zinc-400 capitalize'>
-                  {!user.is_active && 'This account is deactivated'}
+                  {!fetchUser.is_active && 'This account is deactivated'}
                 </td>
+                <td className='relative'>
+                  {user.id === fetchUser.id && (
+                    <span className='text-xs px-3 rounded-2xl p-1 bg-blue-700 text-white'>
+                      You
+                    </span>
+                  )}
+                </td>
+
                 <td className='px-4 py-2 text-end'>
-                  {user.is_active ? (
+                  {fetchUser.is_active ? (
                     <button
                       title='Deactivate'
-                      onClick={() => handleDeactivate(user)}
+                      onClick={() => handleDeactivate(fetchUser)}
                       className='bg-gray-600 text-white px-4 py-1 rounded-sm'
                     >
                       Deactivate
@@ -217,7 +231,7 @@ const UserManagement = () => {
                   ) : (
                     <button
                       title='Activate'
-                      onClick={() => handleActivate(user)}
+                      onClick={() => handleActivate(fetchUser)}
                       className='bg-green-600 text-white px-4 py-1 ml-2 rounded-sm'
                     >
                       Activate
@@ -226,7 +240,7 @@ const UserManagement = () => {
                   <button
                     title='Delete'
                     onClick={() => {
-                      setSelectedId(user.id)
+                      setSelectedId(fetchUser.id)
                       setDeleteModalOpen(true)
                     }}
                     className='bg-red-600 text-white px-4 py-1 ml-2 rounded-sm'

@@ -17,7 +17,6 @@ export const CategoryProvider = ({ children }) => {
         try {
           return JSON.parse(storedData)
         } catch (error) {
-          console.error('Error parsing stored data:', error)
           return null
         }
       }
@@ -34,9 +33,7 @@ export const CategoryProvider = ({ children }) => {
         } else {
           try {
             setSelectedCategoryId(JSON.parse(storedData))
-          } catch (error) {
-            console.error('Error parsing stored data in useEffect:', error)
-          }
+          } catch (error) {}
         }
       }
     }

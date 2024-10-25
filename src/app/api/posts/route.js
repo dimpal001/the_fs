@@ -45,7 +45,6 @@ export async function POST(request) {
       { status: 201 }
     )
   } catch (error) {
-    console.error('Error creating post:', error)
     return NextResponse.json({ error: 'Error creating post' }, { status: 500 })
   }
 }
@@ -213,7 +212,6 @@ export async function GET(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error fetching post:', error)
     return NextResponse.json({ error: 'Error fetching post' }, { status: 500 })
   }
 }
@@ -295,17 +293,12 @@ export async function PATCH(request) {
       strict: true,
     })}-${timeSuffix}`
 
-    console.log(existingPost)
-
     // Determine if the title has changed
     let newSlug = existingPost[0].slug
-    console.log(newSlug)
     if (title !== existingPost[0].title) {
       const timeSuffix = Date.now().toString().slice(-4)
       newSlug = `${slugify(title, { lower: true, strict: true })}-${timeSuffix}`
-      console.log(newSlug)
     }
-    console.log(newSlug)
 
     // Update the blog post with the new or existing slug
     const result = await db.query(
@@ -332,7 +325,6 @@ export async function PATCH(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error updating post:', error)
     return NextResponse.json({ error: 'Error updating post' }, { status: 500 })
   }
 }
@@ -360,7 +352,6 @@ export async function DELETE(request) {
       { status: 200 }
     )
   } catch (error) {
-    console.error('Error deleting post:', error)
     return NextResponse.json({ error: 'Error deleting post' }, { status: 500 })
   }
 }

@@ -29,7 +29,6 @@ const SubscriberManagement = () => {
       setCurrentPage(response.data.current_page)
       setTotalPages(response.data.total_pages)
     } catch (error) {
-      console.error(error)
     } finally {
       setLoading(false)
     }
@@ -69,7 +68,6 @@ const SubscriberManagement = () => {
       setSelectedSubscriber({})
       setDeleteModalOpen(false)
     } catch (error) {
-      console.error(error)
       enqueueSnackbar(
         error.response?.data?.message || 'Error deleting subscriber',
         { variant: 'error' }

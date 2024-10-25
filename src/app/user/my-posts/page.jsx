@@ -88,7 +88,6 @@ const MyPosts = () => {
 
       enqueueSnackbar(response.data.message, { variant: 'success' })
     } catch (error) {
-      console.error('Error deleting post:', error)
       enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
     }
   }
