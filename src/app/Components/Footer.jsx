@@ -20,7 +20,7 @@ const Footer = () => {
               We provide the latest in fashion trends and tips. Stay up-to-date
               with our blog for new fashion advice and inspirations.
             </p>
-            <div className='w-full flex mt-3'>
+            <div className='w-full mt-3 min-h-[100px]'>
               <SubscribeCard isSmall={true} />
             </div>
           </div>
@@ -105,7 +105,7 @@ const Footer = () => {
           {/* Follow Us Section */}
           <div className='lg:w-1/3 mb-6 md:mb-0'>
             <h6 className='text-lg font-semibold mb-4'>Follow Us</h6>
-            <div className='flex space-x-4'>
+            <div className='flex justify-start space-x-4'>
               <a
                 target='_blank'
                 href='https://www.instagram.com'
