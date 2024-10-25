@@ -125,7 +125,7 @@ const HomePage = () => {
           <title>The Fashion Salad - Fashion blog</title>
           <meta
             name='description'
-            content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
+            content='Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now'
           />
           <meta
             name='keywords'
@@ -139,7 +139,7 @@ const HomePage = () => {
           />
           <meta
             property='og:description'
-            content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
+            content='Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now'
           />
           <meta property='og:url' content='https://www.thefashionsalad.com' />
           <meta property='og:type' content='website' />
@@ -160,7 +160,7 @@ const HomePage = () => {
           />
           <meta
             name='twitter:description'
-            content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
+            content='Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now'
           />
           <meta
             name='twitter:image'

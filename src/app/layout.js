@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
     '@type': 'WebSite',
     name: 'The Fashion Salad',
     description:
-      'Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!',
+      'Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now',
     url: 'https://www.thefashionsalad.com',
     publisher: {
       '@type': 'Organization',
@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <meta
           name='description'
-          content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
+          content='Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now'
         />
         <meta name='keywords' content='fashion, blog, style, tips, trends' />
         <meta name='author' content='The Fashion Salad' />
@@ -57,7 +57,7 @@ export default function RootLayout({ children }) {
         <meta property='og:title' content='The Fashion Salad - Fashion blog' />
         <meta
           property='og:description'
-          content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
+          content='Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now'
         />
         <meta property='og:url' content='https://www.thefashionsalad.com' />
         <meta property='og:type' content='website' />
@@ -75,7 +75,7 @@ export default function RootLayout({ children }) {
         <meta name='twitter:title' content='The Fashion Salad - Fashion blog' />
         <meta
           name='twitter:description'
-          content='Discover the latest fashion trends and style tips from our blog. Stay up-to-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now!'
+          content='Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now'
         />
         <meta
           name='twitter:image'
