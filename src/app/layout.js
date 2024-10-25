@@ -1,25 +1,23 @@
 'use client'
 
-import localFont from 'next/font/local'
+// import localFont from 'next/font/local'
 import './globals.css'
-import { BlogProvider } from './context/BlogContext'
-import { CategoryProvider } from './context/CategoryContext'
 import 'animate.css'
 import { SnackbarProvider } from 'notistack'
 import { UserProvider } from './context/UserContext'
 import Footer from './Components/Footer'
 import Header from './Components/Header'
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-})
-const geistMono = localFont({
-  src: './fonts/GeistMonoVF.woff',
-  variable: '--font-geist-mono',
-  weight: '100 900',
-})
+// const geistSans = localFont({
+//   src: './fonts/GeistVF.woff',
+//   variable: '--font-geist-sans',
+//   weight: '100 900',
+// })
+// const geistMono = localFont({
+//   src: './fonts/GeistMonoVF.woff',
+//   variable: '--font-geist-mono',
+//   weight: '100 900',
+// })
 
 export default function RootLayout({ children }) {
   const schemaData = {
@@ -96,9 +94,7 @@ export default function RootLayout({ children }) {
         />
       </head>
 
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} relative antialiased`}
-      >
+      <body className={` relative antialiased`}>
         <h1 className='absolute bottom-0 text-center left-0 text-sm py-4 text-neutral-400 pb-5 right-0 z-20'>
           © 2024 The Fashion Salad. All Rights Reserved.
         </h1>
@@ -108,16 +104,12 @@ export default function RootLayout({ children }) {
             horizontal: 'left',
           }}
         />
-        <CategoryProvider>
-          <BlogProvider>
-            <UserProvider>
-              {/* <Navbar /> */}
-              <Header />
-              <div>{children}</div>
-              <Footer />
-            </UserProvider>
-          </BlogProvider>
-        </CategoryProvider>
+        <UserProvider>
+          {/* <Navbar /> */}
+          <Header />
+          <div>{children}</div>
+          <Footer />
+        </UserProvider>
       </body>
     </html>
   )

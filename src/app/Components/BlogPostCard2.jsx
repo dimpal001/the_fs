@@ -2,12 +2,10 @@ import Image from 'next/image'
 import ProfileCard from './ProfileCard'
 import Button from './Button'
 import { useRouter } from 'next/navigation'
-import { useBlogContext } from '../context/BlogContext'
 import { blogUrl } from './url'
 
 const BlogPostCard2 = ({ title, imageUrl, date, onClick, post }) => {
   const router = useRouter()
-  const { setSelectedPostId } = useBlogContext()
 
   const handleClick = () => {
     router.push(`/blogs/${post?.slug}`)

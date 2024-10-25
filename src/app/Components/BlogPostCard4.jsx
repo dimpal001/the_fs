@@ -1,12 +1,10 @@
 import { useRouter } from 'next/navigation'
-import { useBlogContext } from '../context/BlogContext'
 import Image from 'next/image'
 import ProfileCard from './ProfileCard'
 import { ChevronsRight } from 'lucide-react'
 import { blogUrl } from './url'
 
 const BlogPostCard4 = ({ title, imageUrl, post, onClick }) => {
-  const { setSelectedPostId } = useBlogContext()
   const router = useRouter()
 
   const handleClick = () => {

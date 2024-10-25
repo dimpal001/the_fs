@@ -8,11 +8,9 @@ import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { useBlogContext } from '../context/BlogContext'
 
 const BlogPost = ({ post }) => {
   const router = useRouter()
-  const { setSelectedPostId } = useBlogContext()
 
   useEffect(() => {
     AOS.init()
@@ -26,7 +24,6 @@ const BlogPost = ({ post }) => {
     .trim()
 
   const handleClick = () => {
-    setSelectedPostId(post.id)
     router.push(`/blogs/${formattedTitle}`)
   }
 
