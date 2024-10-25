@@ -68,7 +68,7 @@ const HomePage = () => {
       })
       setCategory2Posts((prev) => [...prev, ...response.data.posts])
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
+      // enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
     }
   }
 
@@ -79,7 +79,7 @@ const HomePage = () => {
       })
       setCategory3Posts((prev) => [...prev, ...response.data.posts])
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
+      // enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
     }
   }
 
@@ -88,7 +88,7 @@ const HomePage = () => {
       const response = await axios.get('/api/admin/category')
       setCategories(response.data)
     } catch (error) {
-      enqueueSnackbar('Faild fetching categories')
+      // enqueueSnackbar('Faild fetching categories')
     }
   }
 

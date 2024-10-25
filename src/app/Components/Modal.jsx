@@ -152,11 +152,11 @@ export const Menu = ({ children, isOpen, onClose }) => {
         className={`absolute top-0 right-0 bg-white p-4 transition-transform transform ${
           isOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
-        style={{
-          width: '250px',
-          height: '100%',
-          boxShadow: '2px 0 5px rgba(0,0,0,0.5)',
-        }}
+        // style={{
+        //   width: '250px',
+        //   height: '100%',
+        //   boxShadow: '2px 0 5px rgba(0,0,0,0.5)',
+        // }}
       >
         <button
           title='Close'
