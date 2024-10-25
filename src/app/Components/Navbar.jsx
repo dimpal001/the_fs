@@ -1,16 +1,11 @@
-import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { AlignJustify } from 'lucide-react'
 
-import { useCategoryContext } from '../context/CategoryContext'
 import { usePathname, useRouter } from 'next/navigation'
-import { useUserContext } from '../context/UserContext'
 import { enqueueSnackbar } from 'notistack'
 import axios from 'axios'
 
 const Navbar = () => {
   const router = useRouter()
-  const { setSelectedCategoryId } = useCategoryContext()
   const pathname = usePathname()
   const [isShow, setIsShow] = useState(true)
   const [categoryList, setCategoryList] = useState([])
@@ -44,7 +39,6 @@ const Navbar = () => {
       .replace(/--+/g, '-')
       .trim()
 
-    setSelectedCategoryId(item.id)
     localStorage.setItem('selectedCategoryId', item.id)
     localStorage.setItem('selectedCategoryName', JSON.stringify(item.name))
     router.push(`/category/${formattedTitle}`)

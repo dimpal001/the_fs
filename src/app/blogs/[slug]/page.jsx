@@ -6,15 +6,11 @@ import { enqueueSnackbar } from 'notistack'
 import axios from 'axios'
 import { useEffect, useState, useRef } from 'react'
 import Loading from '@/app/Components/Loading'
-import TextArea from '@/app/Components/TextArea'
-import Button from '@/app/Components/Button'
 import { useUserContext } from '@/app/context/UserContext'
-import { useCategoryContext } from '@/app/context/CategoryContext'
-import { Forward, Heart, Trash2 } from 'lucide-react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { Heart } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import { Helmet } from 'react-helmet'
 import SubscribeCard from '@/app/Components/SubscribeCard'
-import Avatar from '@/app/Components/Avatar'
 import Replies from '@/app/Components/Replies'
 import HeroBlogCard from '@/app/Components/HeroBlogCard'
 import DataNotFound from '@/app/Components/DataNotFound'
@@ -22,7 +18,6 @@ import ImageModal from '@/app/Components/ImageModal'
 import { blogUrl } from '@/app/Components/url'
 
 const Blog = ({ params }) => {
-  const { setSelectedCategoryId } = useCategoryContext()
   const { user } = useUserContext()
   const [post, setPost] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -48,7 +43,6 @@ const Blog = ({ params }) => {
       setPost(response.data.post)
       setHasLiked(response.data.hasLiked)
       fetchReplies(response.data.post.id)
-      setSelectedCategoryId(post.category_ids)
     } catch (error) {
       setNotfound(true)
     } finally {
@@ -159,9 +153,6 @@ const Blog = ({ params }) => {
         .replace(/ /g, '-')
         .replace(/--+/g, '-')
         .trim()
-
-      setSelectedCategoryId(id)
-      localStorage.setItem('selectedCategoryId', id)
       localStorage.setItem('selectedCategoryName', name)
 
       router.push(`/category/${formattedTitle}`)

@@ -146,7 +146,7 @@ const CustomEditor = ({ value, onChange, images }) => {
       }),
       Image.configure({
         HTMLAttributes: {
-          class: 'p-3 mx-auto max-md:w-full',
+          class: 'p-3 mx-auto w-[75%] max-md:w-full',
         },
         inline: true,
       }),
