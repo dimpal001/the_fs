@@ -232,11 +232,11 @@ const Blog = ({ params }) => {
                 </div>
               </div>
               <div className='p-3 font-serif'>
-                <h1 className='text-6xl pb-3 max-md:text-3xl font-semibold'>
+                <h1 className='text-5xl rozha pb-3 max-md:text-3xl font-semibold'>
                   {post?.title}
                 </h1>
                 <div
-                  className='mt-3 max-md:text-lg max-md:text-justify text-xl leading-[38px] tracking-wide text-neutral-600'
+                  className='mt-3 rozha max-md:text-lg max-md:text-justify text-xl leading-[38px] tracking-wide text-neutral-600'
                   dangerouslySetInnerHTML={{ __html: post?.content }}
                 />
               </div>

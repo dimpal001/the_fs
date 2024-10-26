@@ -129,8 +129,9 @@ const ImageCropper = ({ onCropComplete, onClose, isOpen }) => {
       </ModalHeader>
       <ModalBody>
         {imgSrc ? (
-          <div className='ImageCropper flex gap-5'>
+          <div className='ImageCropper bg-white max-md:flex-col flex gap-5'>
             <ReactCrop
+              className='bg-transparent'
               crop={crop}
               onChange={onCropChange} // Adjust crop dimensions
               onComplete={(newCrop) => setCompletedCrop(newCrop)} // Final crop area
@@ -141,6 +142,7 @@ const ImageCropper = ({ onCropComplete, onClose, isOpen }) => {
                 alt='Crop me'
                 src={imgSrc}
                 style={{ maxWidth: '100%' }}
+                className='bg-transparent'
               />
             </ReactCrop>
             {!!completedCrop && (

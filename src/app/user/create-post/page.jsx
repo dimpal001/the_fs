@@ -211,13 +211,13 @@ const CreatePost = () => {
         status: status,
         category_ids: selectedCategoryIds,
         tags: tags,
-        image_url: fileName,
+        image_url: customFileName,
       })
 
       enqueueSnackbar(response.data.message, { variant: 'success' })
       router.push('/user/my-posts')
     } catch (error) {
-      enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
+      // enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
     }
   }
 

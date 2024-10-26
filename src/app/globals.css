@@ -35,3 +35,25 @@ body {
   display: block;
   height: 1rem;
 }
+
+:root {
+  --font-rozha: 'Rozha Vihar', serif;
+  --font-coiny: 'Coiny', cursive;
+  --font-quintessential: 'Quintessential', serif;
+  --font-greatVibes: 'Great Vibes', cursive;
+}
+.rozha {
+  font-family: var(--font-rozha);
+}
+
+.coiny {
+  font-family: var(--font-coiny);
+}
+
+.quintessential {
+  font-family: var(--font-quintessential);
+}
+
+.greatVibes {
+  font-family: var(--font-greatVibes);
+}
