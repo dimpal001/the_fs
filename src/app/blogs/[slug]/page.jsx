@@ -232,7 +232,7 @@ const Blog = ({ params }) => {
                 </div>
               </div>
               <div className='p-3 font-serif'>
-                <h1 className='text-6xl max-md:text-3xl font-semibold'>
+                <h1 className='text-6xl pb-3 max-md:text-3xl font-semibold'>
                   {post?.title}
                 </h1>
                 <div
@@ -240,6 +240,12 @@ const Blog = ({ params }) => {
                   dangerouslySetInnerHTML={{ __html: post?.content }}
                 />
               </div>
+
+              {post?.author_role === 'admin' && (
+                <p className='italic text-neutral-600 p-3'>
+                  Posted by <strong>Admin</strong>
+                </p>
+              )}
 
               {/* Replies Section */}
               <Replies replies={replies} postId={post?.id} />

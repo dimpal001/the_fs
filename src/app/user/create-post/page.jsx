@@ -18,6 +18,7 @@ import CustomEditor from '@/app/Components/CustomEditor'
 import Input from '@/app/Components/Input'
 import { Upload } from 'lucide-react'
 import useAuth from '@/app/context/useAuth'
+import ImageCropper from '@/app/Components/ImageCroper'
 
 const CreatePost = () => {
   useAuth()
@@ -28,9 +29,10 @@ const CreatePost = () => {
   const [categories, setCategories] = useState([])
   const [selectedCategoryIds, setSelectedCategoryIds] = useState([])
   const [tags, setTags] = useState([])
-  const [fileName, setFileName] = useState('')
+  const [customFileName, setCustomFileName] = useState('')
   const [content, setContent] = useState('')
   const [images, setImages] = useState([])
+  const [showCropModal, setShowCropModal] = useState(false)
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value
@@ -99,17 +101,6 @@ const CreatePost = () => {
     },
   })
 
-  // Generate the custom file name
-  const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
-  const customFileName = `thumbnail-${timestamp}-${fileName}`
-
-  const params = {
-    Bucket: 'the-fashion-salad',
-    Key: `blog-post-images/${customFileName}`,
-    Body: thumbnail,
-    ACL: 'public-read',
-  }
-
   useEffect(() => {
     if (user?.name === '' || user?.name === null) {
       enqueueSnackbar('Please add your name before creating a post!')
@@ -120,26 +111,40 @@ const CreatePost = () => {
 
   useEffect(() => {}, [user, router])
 
-  const handleImage = (e) => {
-    const file = e.target.files[0]
+  // const handleImage = (e) => {
+  //   const file = e.target.files[0]
 
-    if (!file) return
+  //   if (!file) return
 
-    const sanitizedFileName = file.name.replace(/\s+/g, '')
-    const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
-    const customFileName = `thumbnail-${timestamp}-${sanitizedFileName}`
-    setFileName(customFileName)
+  //   const sanitizedFileName = file.name.replace(/\s+/g, '')
+  //   const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+  //   const customFileName = `thumbnail-${timestamp}-${sanitizedFileName}`
+  //   // setFileName(customFileName)
 
-    setThumbnail(file)
-    handleThumbnailUpload(file, customFileName)
-  }
+  //   setThumbnail(file)
+  //   handleThumbnailUpload(file, customFileName)
+  // }
 
-  const handleThumbnailUpload = async (file, customFileName) => {
-    if (!file || !customFileName) return
+  const handleThumbnailUpload = async (blob, image, name) => {
+    let newName
+    if (name) {
+      const sanitizedFileName = name.replace(/\s+/g, '')
+      const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+      newName = `thumbnail-${timestamp}-${sanitizedFileName}`
+      setCustomFileName(newName)
+      console.log(newName)
+    }
+
+    const file = new File([blob], name, { type: blob.type })
+    setThumbnail(image)
+
+    console.log(customFileName) // This may not reflect the updated state
+
+    if (!file || !file) return
 
     const params = {
       Bucket: 'the-fashion-salad',
-      Key: `blog-post-images/${customFileName}`,
+      Key: `blog-post-images/${newName}`,
       Body: file,
       ACL: 'public-read',
     }
@@ -151,15 +156,18 @@ const CreatePost = () => {
   }
 
   const handleThumbnailDelete = async () => {
+    console.log(customFileName)
+
     const params = {
       Bucket: 'the-fashion-salad',
-      Key: `blog-post-images/${fileName}`,
+      Key: `blog-post-images/${customFileName}`,
       // Body: file,
       ACL: 'public-read',
     }
     try {
       const data = await s3Client.send(new DeleteObjectCommand(params))
       setThumbnail(null)
+      setCustomFileName(null)
     } catch (error) {}
   }
 
@@ -246,27 +254,21 @@ const CreatePost = () => {
           <div className='flex gap-1 flex-col'>
             <label className='text-sm text-gray-700'>Upload Thumbnail</label>
             <div className='flex gap-3'>
-              {/* <button className='w-full md:w-72 rounded-sm p-2 border border-dotted flex items-center justify-center gap-2 text-sm'>
+              <button
+                onClick={() => setShowCropModal(true)}
+                className='w-full md:w-72 rounded-sm p-2 border border-dotted flex items-center justify-center gap-2 text-sm'
+              >
                 <Upload />
                 Upload Thumbnail
-              </button> */}
-              <input
+              </button>
+              {/* <input
                 id='image'
                 type='file'
                 accept='image/*'
                 onChange={handleImage}
                 className='border border-dotted border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4 cursor-pointer hover:border-blue-400 transition duration-150'
-              />
+              /> */}
               {/* Remove Thumbnail Button */}
-              {thumbnail && (
-                <button
-                  title='Remove Thumbnail'
-                  onClick={handleThumbnailDelete} // Clear the thumbnail state
-                  className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
-                >
-                  Remove Thumbnail
-                </button>
-              )}
             </div>
           </div>
 
@@ -304,11 +306,18 @@ const CreatePost = () => {
         {thumbnail && (
           <div className='lg:w-2/3'>
             <Image
-              src={thumbnail && URL.createObjectURL(thumbnail)}
+              src={thumbnail && thumbnail}
               width={300}
               height={60}
               alt='Blog post image'
             />
+            <button
+              title='Remove Thumbnail'
+              onClick={handleThumbnailDelete} // Clear the thumbnail state
+              className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
+            >
+              Remove
+            </button>
           </div>
         )}
 
@@ -360,26 +369,19 @@ const CreatePost = () => {
           Post Preview
         </p>
         <p className='font-semibold pb-4 text-3xl'>{title}</p>
-        {/* {thumbnail && (
-          <Image
-            src={thumbnail}
-            alt='Thumbnail preview'
-            className='mb-4 rounded-lg'
-            width={300}
-            height={150}
-            layout='responsive'
-          />
-        )} */}
-        {/* <p>
-          {images.length > 0 &&
-            images.map((item, index) => <span key={index}>{item}</span>)}
-        </p> */}
-        {/* <p>{content}</p> */}
         <div
           className='editor-content'
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>
+
+      {showCropModal && (
+        <ImageCropper
+          isOpen={true}
+          onClose={() => setShowCropModal(false)}
+          onCropComplete={handleThumbnailUpload}
+        />
+      )}
     </div>
   )
 }

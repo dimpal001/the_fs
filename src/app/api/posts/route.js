@@ -104,7 +104,7 @@ export async function GET(request) {
 
       // Fetch the post along with author information
       const [post] = await db.query(
-        `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email, Users.image_url as author_image
+        `SELECT BlogPosts.*, Users.name as author_name, Users.role as author_role, Users.email as author_email, Users.image_url as author_image
          FROM BlogPosts
          JOIN Users ON BlogPosts.author_id = Users.id
          WHERE BlogPosts.slug = ?`,

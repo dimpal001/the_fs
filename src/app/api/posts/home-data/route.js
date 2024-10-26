@@ -78,7 +78,7 @@ export async function GET(request) {
          JOIN Users ON BlogPosts.author_id = Users.id
          LEFT JOIN Replies ON BlogPosts.id = Replies.blog_post_id AND Replies.is_approved = 1
          LEFT JOIN Likes ON BlogPosts.id = Likes.blog_post_id
-         WHERE BlogPosts.isHeroPost = 1
+         WHERE BlogPosts.isHeroPost = 1 AND BlogPosts.status = 'approve'
          GROUP BY BlogPosts.id
          ORDER BY BlogPosts.created_at DESC`
       )

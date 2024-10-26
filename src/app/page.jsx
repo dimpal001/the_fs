@@ -191,9 +191,7 @@ const HomePage = () => {
                 </h2>
               </Link>
               <p className='text-stone-600 leading-5'>
-                Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quasi
-                ut sapiente recusandae. Eius sed numquam distinctio dolorum
-                facere aperiam, praesentium aspernatur a, quam soluta veniam.
+                {stripHtml(heroPosts[0]?.content)}
               </p>
               <Link href={`/blogs/${heroPosts[0]?.slug}`}>
                 <p className='text-2xl font-semibold hover:text-first cursor-pointer'>

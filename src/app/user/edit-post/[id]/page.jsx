@@ -15,6 +15,8 @@ import {
 import Input from '@/app/Components/Input'
 import CustomEditor from '@/app/Components/CustomEditor'
 import useAuth from '@/app/context/useAuth'
+import { Upload } from 'lucide-react'
+import ImageCropper from '@/app/Components/ImageCroper'
 
 const EditPost = () => {
   useAuth()
@@ -26,7 +28,6 @@ const EditPost = () => {
   const editor = useRef(null)
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const [thumbnail, setThumbnail] = useState(null)
   const [file, setFile] = useState(null)
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
@@ -35,6 +36,7 @@ const EditPost = () => {
   const [image_url, setImage_url] = useState('')
   const [fileName, setFileName] = useState('')
   const [images, setImages] = useState([])
+  const [showCropModal, setShowCropModal] = useState(false)
 
   const handleSelectChange = (event) => {
     const selectedValue = event.target.value
@@ -142,12 +144,26 @@ const EditPost = () => {
     handleThumbnailUpload(files, customFileName)
   }
 
-  const handleThumbnailUpload = async (file, customFileName) => {
-    if (!file || !customFileName) return
+  const handleThumbnailUpload = async (blob, image, name) => {
+    let newName
+    if (name) {
+      const sanitizedFileName = name.replace(/\s+/g, '')
+      const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+      newName = `thumbnail-${timestamp}-${sanitizedFileName}`
+      setFileName(newName)
+      console.log(newName)
+    }
+
+    const file = new File([blob], name, { type: blob.type })
+    setFile(image)
+
+    console.log(fileName)
+
+    if (!file || !file) return
 
     const params = {
       Bucket: 'the-fashion-salad',
-      Key: `blog-post-images/${customFileName}`,
+      Key: `blog-post-images/${newName}`,
       Body: file,
       ACL: 'public-read',
     }
@@ -261,22 +277,20 @@ const EditPost = () => {
           <div className='flex gap-1 flex-col'>
             <label className='text-sm text-gray-700'>Upload Thumbnail</label>
             <div className='flex gap-3'>
-              <Input
+              <button
+                onClick={() => setShowCropModal(true)}
+                className='w-full md:w-72 rounded-sm p-2 border border-dotted flex items-center justify-center gap-2 text-sm'
+              >
+                <Upload />
+                Upload Thumbnail
+              </button>
+              {/* <Input
                 type='file'
                 // accept='image/*'
                 onChange={handleImage}
                 // className='border border-dotted border-gray-300 w-full md:w-72 bg-white rounded-sm py-2 px-4 cursor-pointer hover:border-blue-400 transition duration-150'
-              />
+              /> */}
               {/* Remove Thumbnail Button */}
-              {file && (
-                <button
-                  title='Remove Thumbnail'
-                  onClick={handleThumbnailDelete} // Clear the thumbnail state
-                  className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
-                >
-                  Remove Thumbnail
-                </button>
-              )}
             </div>
           </div>
 
@@ -315,7 +329,7 @@ const EditPost = () => {
           <Image
             src={
               file
-                ? URL.createObjectURL(file)
+                ? file
                 : image_url
                 ? `https://cdn.thefashionsalad.com/blog-post-images/${image_url}`
                 : '/default-thumbnail.jpg'
@@ -324,6 +338,15 @@ const EditPost = () => {
             height={60}
             alt='Blog post image'
           />
+          {file && (
+            <button
+              title='Remove Thumbnail'
+              onClick={handleThumbnailDelete} // Clear the thumbnail state
+              className='text-sm bg-red-600 text-white px-4 py-2 rounded-sm hover:bg-red-500 transition duration-150'
+            >
+              Remove
+            </button>
+          )}
         </div>
 
         {/* Tag Input */}
@@ -374,7 +397,7 @@ const EditPost = () => {
           Post Preview
         </p>
         <p className='font-semibold pb-4 text-3xl'>{title}</p>
-        {thumbnail && (
+        {/* {thumbnail && (
           <Image
             src={thumbnail}
             alt='Thumbnail preview'
@@ -383,7 +406,7 @@ const EditPost = () => {
             height={150}
             layout='responsive'
           />
-        )}
+        )} */}
         {/* <p>
           {images.length > 0 &&
             images.map((item, index) => <span key={index}>{item}</span>)}
@@ -392,6 +415,13 @@ const EditPost = () => {
           className='editor-content'
           dangerouslySetInnerHTML={{ __html: content }}
         />
+        {showCropModal && (
+          <ImageCropper
+            isOpen={true}
+            onClose={() => setShowCropModal(false)}
+            onCropComplete={handleThumbnailUpload}
+          />
+        )}
       </div>
     </div>
   )
