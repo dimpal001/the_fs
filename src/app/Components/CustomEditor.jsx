@@ -12,64 +12,8 @@ import Heading from '@tiptap/extension-heading'
 import BulletList from '@tiptap/extension-bullet-list'
 import OrderedList from '@tiptap/extension-ordered-list'
 import Image from '@tiptap/extension-image'
-import { Node, mergeAttributes } from '@tiptap/core'
 import React, { useEffect, useRef, useState } from 'react'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
-
-// Custom Image Extension to wrap image inside <picture> tag
-const CustomImage = Node.create({
-  name: 'customImage',
-  group: 'inline',
-  inline: true,
-  selectable: true,
-  draggable: true,
-  addAttributes() {
-    return {
-      src: {
-        default: null,
-      },
-      alt: {
-        default: null,
-      },
-    }
-  },
-  parseHTML() {
-    return [
-      {
-        tag: 'picture',
-      },
-    ]
-  },
-  renderHTML({ HTMLAttributes }) {
-    return [
-      'picture',
-      {},
-      [
-        'source',
-        { srcset: HTMLAttributes.src, type: 'image/webp' }, // Add more sources if needed
-      ],
-      [
-        'img',
-        mergeAttributes(
-          { class: 'p-3 mx-auto w-[75%] max-md:w-full' }, // Add more CSS classes if needed
-          HTMLAttributes
-        ),
-      ],
-    ]
-  },
-  addCommands() {
-    return {
-      setPictureImage:
-        (options) =>
-        ({ commands }) => {
-          return commands.insertContent({
-            type: this.name,
-            attrs: options,
-          })
-        },
-    }
-  },
-})
 
 const MenuBar = ({ editor, images }) => {
   const fileInputRef = useRef(null)
@@ -85,7 +29,7 @@ const MenuBar = ({ editor, images }) => {
     },
   })
 
-  const handleImageUpload = async (fileName, file) => {
+  const handleImageUplaod = async (fileName, file) => {
     const params = {
       Bucket: 'the-fashion-salad',
       Key: `blog-post-images/${fileName}`,
@@ -97,10 +41,8 @@ const MenuBar = ({ editor, images }) => {
       await s3Client.send(new PutObjectCommand(params))
       const url = `https://cdn.thefashionsalad.com/blog-post-images/${fileName}`
 
-      editor.chain().focus().setPictureImage({ src: url }).run()
-    } catch (error) {
-      console.error('Error uploading image:', error)
-    }
+      editor.chain().focus().setImage({ src: url }).run()
+    } catch (error) {}
   }
 
   const handleFileChange = (event) => {
@@ -108,38 +50,52 @@ const MenuBar = ({ editor, images }) => {
     const sanitizedFileName = file.name.replace(/\s+/g, '')
     const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
     const customFileName = `blog-${timestamp}-${sanitizedFileName}`
-    handleImageUpload(customFileName, file)
+    handleImageUplaod(customFileName, file)
   }
 
   return (
     <div className='flex sticky top-0 z-20 gap-3 border border-dotted p-2 bg-first text-white'>
-      {/* Toolbar Buttons */}
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
+        className={`p-1 rounded-md ${
+          editor.isActive('heading', { level: 2 }) ? 'bg-gray-300' : ''
+        }`}
         type='button'
       >
         <HeadingIcon size={18} />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
+        className={`p-1 rounded-md ${
+          editor.isActive('bold') ? 'bg-gray-300' : ''
+        }`}
         type='button'
       >
         <Bold size={18} />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
+        className={`p-1 rounded-md ${
+          editor.isActive('italic') ? 'bg-gray-300' : ''
+        }`}
         type='button'
       >
         <Italic size={18} />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
+        className={`p-1 rounded-md ${
+          editor.isActive('bulletList') ? 'bg-gray-300' : ''
+        }`}
         type='button'
       >
         <List size={18} />
       </button>
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        className={`p-1 rounded-md ${
+          editor.isActive('orderedList') ? 'bg-gray-300' : ''
+        }`}
         type='button'
       >
         <ListOrdered size={18} />
@@ -152,9 +108,9 @@ const MenuBar = ({ editor, images }) => {
         className='hidden'
         onChange={handleFileChange}
       />
+
       <button
         onClick={() => fileInputRef.current && fileInputRef.current.click()}
-        type='button'
       >
         <ImagePlus size={18} />
       </button>
@@ -188,9 +144,14 @@ const CustomEditor = ({ value, onChange, images }) => {
           class: 'list-decimal ml-2',
         },
       }),
-      CustomImage, // Custom Image extension with Picture tag
+      Image.configure({
+        HTMLAttributes: {
+          class: 'p-3 mx-auto w-[75%] max-md:w-full',
+        },
+        inline: true,
+      }),
     ],
-    content: value || '',
+    content: value || '', // Ensure initial content is set
     editorProps: {
       attributes: {
         class: 'p-3 focus:outline-none',
@@ -213,6 +174,7 @@ const CustomEditor = ({ value, onChange, images }) => {
     }
   }, [editor, onChange])
 
+  // Update the editor content when the value prop changes
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
       editor.commands.setContent(value || '') // Set content when value changes
@@ -224,9 +186,11 @@ const CustomEditor = ({ value, onChange, images }) => {
   return (
     <div className='w-full'>
       <MenuBar images={images} editor={editor} />
+
       <EditorContent
         editor={editor}
-        className='min-h-[150px] editor-content mt-2 bg-white border border-dotted border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-justify leading-[35px] text-sm text-gray-800 placeholder-gray-400'
+        className='min-h-[150px] editor-content mt-2 bg-white border border-dotted border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+                   resize-none text-justify leading-[35px] text-sm text-gray-800 placeholder-gray-400'
       />
     </div>
   )
