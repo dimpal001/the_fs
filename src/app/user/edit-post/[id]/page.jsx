@@ -53,7 +53,7 @@ const EditPost = () => {
 
   // Function to extract image URLs from HTML content
   const extractImageFilenames = (htmlContent) => {
-    const regex = /src="([^"]+\.(jpg|jpeg|png|gif|svg))"/g
+    const regex = /src="([^"]+\.(jpg|jpeg|png|gif|svg|webp))"/g
     const filenames = []
     let match
 
