@@ -39,7 +39,7 @@ const CreatePost = () => {
 
   // Function to extract image URLs from HTML content
   const extractImageFilenames = (htmlContent) => {
-    const regex = /src="([^"]+\.(jpg|jpeg|png|gif|svg))"/g
+    const regex = /src="([^"]+\.(jpg|jpeg|png|gif|svg|webp))"/g
     const filenames = []
     let match
 
@@ -54,10 +54,14 @@ const CreatePost = () => {
 
   const updateImagesBasedOnContent = () => {
     const imageFilenamesInContent = extractImageFilenames(content)
+    console.log(images)
+    console.log(imageFilenamesInContent)
 
     const imagesToDelete = images.filter(
       (image) => !imageFilenamesInContent.includes(image)
     )
+
+    console.log(imagesToDelete)
 
     imagesToDelete.forEach((image) => {
       deleteImageFromCDN(image)
