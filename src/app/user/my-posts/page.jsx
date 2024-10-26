@@ -45,7 +45,7 @@ const MyPosts = () => {
 
   useEffect(() => {
     handleFetchMyPosts()
-  }, [router])
+  }, [])
 
   useEffect(() => {
     // Filter posts based on search term and status filter

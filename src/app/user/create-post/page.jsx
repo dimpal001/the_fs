@@ -17,8 +17,10 @@ import {
 import CustomEditor from '@/app/Components/CustomEditor'
 import Input from '@/app/Components/Input'
 import { Upload } from 'lucide-react'
+import useAuth from '@/app/context/useAuth'
 
 const CreatePost = () => {
+  useAuth()
   const { user } = useUserContext()
   const router = useRouter()
   const [title, setTitle] = useState('')
@@ -112,14 +114,7 @@ const CreatePost = () => {
     handleFetchCategories()
   }, [])
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/')
-      enqueueSnackbar('You are not allowed to enter this page.', {
-        variant: 'error',
-      })
-    }
-  }, [user, router])
+  useEffect(() => {}, [user, router])
 
   const handleImage = (e) => {
     const file = e.target.files[0]
@@ -371,10 +366,11 @@ const CreatePost = () => {
             layout='responsive'
           />
         )} */}
-        <p>
+        {/* <p>
           {images.length > 0 &&
             images.map((item, index) => <span key={index}>{item}</span>)}
-        </p>
+        </p> */}
+        {/* <p>{content}</p> */}
         <div
           className='editor-content'
           dangerouslySetInnerHTML={{ __html: content }}

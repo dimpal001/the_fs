@@ -14,8 +14,11 @@ import {
 } from '@aws-sdk/client-s3'
 import Input from '@/app/Components/Input'
 import CustomEditor from '@/app/Components/CustomEditor'
+import useAuth from '@/app/context/useAuth'
 
 const EditPost = () => {
+  useAuth()
+
   const { user } = useUserContext()
   const router = useRouter()
   const { id } = useParams()
@@ -124,15 +127,6 @@ const EditPost = () => {
     handleFetchPost()
   }, [])
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/')
-      enqueueSnackbar('You are not allowed to enter this page.', {
-        variant: 'error',
-      })
-    }
-  }, [user, router])
-
   const handleImage = async (event) => {
     const files = event.target.files[0]
 
@@ -204,6 +198,7 @@ const EditPost = () => {
         Key: `blog-post-images/${image_url}`,
         // Body: file,
         ACL: 'public-read',
+        CacheControl: 'no-cache',
       }
       const data = await s3Client.send(new DeleteObjectCommand(params))
     }
@@ -389,10 +384,10 @@ const EditPost = () => {
             layout='responsive'
           />
         )}
-        <p>
+        {/* <p>
           {images.length > 0 &&
             images.map((item, index) => <span key={index}>{item}</span>)}
-        </p>
+        </p> */}
         <div
           className='editor-content'
           dangerouslySetInnerHTML={{ __html: content }}

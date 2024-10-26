@@ -198,6 +198,7 @@ const Header = () => {
                       }}
                     />
                   )}
+
                   <ClickItem
                     icon={<CircleUser size={20} />}
                     label={'Profile'}
@@ -206,6 +207,7 @@ const Header = () => {
                       router.push(`/profile/${user?.id}`)
                     }}
                   />
+
                   <ClickItem
                     icon={<UserRoundPen size={20} />}
                     label={'Account'}
