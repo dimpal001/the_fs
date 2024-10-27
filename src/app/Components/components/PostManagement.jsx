@@ -232,7 +232,7 @@ const PostManagement = () => {
                 >
                   {post.title}
                 </td>
-                <td className='px-4 py-2'>{post.author_email}</td>
+                <td className='px-4 py-2'>{post.author_name}</td>
                 <td
                   className={`px-4 ${
                     post.status === 'approve' && 'text-green-500'
