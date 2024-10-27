@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Loader } from 'lucide-react'
+import { ChevronDown, EllipsisVertical, Loader } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 import RejectPostModal from './RejectPostModal'
@@ -9,6 +9,7 @@ import Input from '@/app/Components/Input'
 import Loading from '@/app/Components/Loading'
 import Paggination from './Paggination'
 import { useRouter } from 'next/navigation'
+import { DynamicMenu } from '../DynamicMenu'
 
 const PostManagement = () => {
   const [loading, setLoading] = useState(true)
@@ -218,7 +219,7 @@ const PostManagement = () => {
               <th className='px-4 text-start py-2'>Title</th>
               <th className='px-4 text-start py-2'>Author Name</th>
               <th className='px-4 text-start py-2'>Status</th>
-              <th className='px-4 text-start py-2'>Edit</th>
+              {/* <th className='px-4 text-start py-2'>Edit</th> */}
               <th className='px-4 py-2'>Actions</th>
             </tr>
           </thead>
@@ -232,8 +233,16 @@ const PostManagement = () => {
                   {post.title}
                 </td>
                 <td className='px-4 py-2'>{post.author_email}</td>
-                <td className='px-4 py-2 capitalize'>{post.status}</td>
-                <td className='px-4 py-2'>
+                <td
+                  className={`px-4 ${
+                    post.status === 'approve' && 'text-green-500'
+                  } ${
+                    post.status === 'deactivated' && 'text-red-500'
+                  } py-2 capitalize`}
+                >
+                  {post.status}
+                </td>
+                {/* <td className='px-4 py-2'>
                   <button
                     title='Preview'
                     onClick={() => router.push(`/user/edit-post/${post?.id}`)}
@@ -241,9 +250,9 @@ const PostManagement = () => {
                   >
                     Edit
                   </button>
-                </td>
+                </td> */}
                 <td className='px-4 py-2 flex justify-end items-center'>
-                  <button
+                  {/* <button
                     title='Approve'
                     onClick={() => handleApprovePost(post)}
                     className={`${
@@ -260,34 +269,39 @@ const PostManagement = () => {
                     ) : (
                       'Approve'
                     )}
-                  </button>
-                  <button
-                    title='Reject'
-                    onClick={() => {
-                      setSelectedPost(post)
-                      setIsRejectModalOpen(true)
-                    }}
-                    className={`bg-yellow-500 ${
-                      post.status === 'approve' &&
-                      'opacity-50 cursor-not-allowed'
-                    } text-white px-4 py-1 ml-2 rounded-sm`}
+                  </button> */}
+                  <DynamicMenu
+                    button={
+                      <button className='flex items-center gap-2 p-1 px-4 border border-dotted'>
+                        Action
+                        <ChevronDown />
+                      </button>
+                    }
                   >
-                    Reject
-                  </button>
-                  <button
-                    title='Deactivate'
-                    onClick={() => handleDeactive(post)}
-                    className='bg-zinc-600 text-white px-4 py-1 ml-2 rounded-sm'
-                  >
-                    Deactivate
-                  </button>
-                  <button
-                    title='Delete'
-                    onClick={() => handleDelete(post)}
-                    className='bg-red-500 text-white px-4 py-1 ml-2 rounded-sm'
-                  >
-                    Delete
-                  </button>
+                    <div className='w-full'>
+                      <ActionButton
+                        onClick={() =>
+                          router.push(`/user/edit-post/${post?.id}`)
+                        }
+                        title={'Edit'}
+                      />
+                      <ActionButton
+                        isDisabled={post.status !== 'approve' ? false : true}
+                        onClick={() => handleApprovePost(post)}
+                        title={'Approve'}
+                      />
+                      <ActionButton
+                        isDisabled={post.status === 'deactivated' && true}
+                        onClick={() => handleDeactive(post)}
+                        title={'Deactivate'}
+                      />
+                      <ActionButton
+                        onClick={() => handleDelete(post)}
+                        title={'Delete'}
+                        isNormal={false}
+                      />
+                    </div>
+                  </DynamicMenu>
                 </td>
               </tr>
             ))}
@@ -325,6 +339,23 @@ const PostManagement = () => {
         handlePreviousPage={handlePreviousPage}
       />
     </div>
+  )
+}
+
+const ActionButton = ({ onClick, title, isNormal = true, isDisabled }) => {
+  return (
+    <p
+      className={`p-2 font-semibold px-3 ${
+        isDisabled ? 'opacity-30 cursor-not-allowed' : 'cursor-pointer'
+      } border border-transparent hover:border-gray-600 ${
+        isNormal
+          ? 'text-black hover:text-blue-600'
+          : 'text-red-500 hover:text-red-700'
+      } hover:border-dotted`}
+      onClick={isDisabled ? null : onClick}
+    >
+      {title}
+    </p>
   )
 }
 

@@ -20,7 +20,7 @@ export async function GET(request) {
               Users.name AS author_name , Users.image_url as author_image
          FROM BlogPosts
          JOIN Users ON BlogPosts.author_id = Users.id
-         WHERE JSON_CONTAINS(BlogPosts.category_ids, ?, '$') 
+         WHERE JSON_CONTAINS(BlogPosts.category_ids, ?, '$') AND BlogPosts.status = 'approve'
          LIMIT 5`,
       [`"${category_id}"`]
     )

@@ -36,7 +36,7 @@ export async function GET(request, { params }) {
       `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.slug, SUBSTRING(BlogPosts.content, 1, 150) AS content, BlogPosts.author_id, BlogPosts.image_url, BlogPosts.category_ids, BlogPosts.created_at, BlogPosts.updated_at, BlogPosts.status, Users.name as author_name, Users.image_url as author_image ` +
         `FROM BlogPosts ` +
         `JOIN Users ON BlogPosts.author_id = Users.id ` +
-        `WHERE JSON_CONTAINS(BlogPosts.category_ids, ?) ` +
+        `WHERE JSON_CONTAINS(BlogPosts.category_ids, ?) AND BlogPosts.status = 'approve' ` +
         `LIMIT ${limit} OFFSET ${offset}`,
       [JSON.stringify(category.slug)]
     )
@@ -56,6 +56,7 @@ export async function GET(request, { params }) {
       { status: 200 }
     )
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error: 'Error fetching posts' }, { status: 500 })
   }
 }

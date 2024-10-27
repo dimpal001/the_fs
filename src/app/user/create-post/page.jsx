@@ -149,7 +149,7 @@ const CreatePost = () => {
       ACL: 'public-read',
     }
 
-    const data = await s3Client.send(new PutObjectCommand(params))
+    // const data = await s3Client.send(new PutObjectCommand(params))
 
     try {
     } catch (error) {}

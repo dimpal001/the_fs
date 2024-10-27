@@ -1,58 +1,81 @@
 import React, { useState, useRef } from 'react'
-import ReactCrop from 'react-image-crop'
+import ReactCrop, {
+  centerCrop,
+  makeAspectCrop,
+  Crop,
+  PixelCrop,
+  convertToPixelCrop,
+} from 'react-image-crop'
+import { canvasPreview } from './canvasPreview'
+import { useDebounceEffect } from './useDebounceEffect'
 import 'react-image-crop/dist/ReactCrop.css'
-import { Modal, ModalBody, ModalCloseButton, ModalHeader } from './Modal'
-import { enqueueSnackbar } from 'notistack'
+import { Modal, ModalBody, ModalCloseButton } from './Modal'
 
-const ImageCropper = ({ onCropComplete, onClose, isOpen }) => {
+// This is to demonstrate how to make and center a % aspect crop
+// which is a bit trickier so we use some helper functions.
+function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
+  return centerCrop(
+    makeAspectCrop(
+      {
+        unit: '%',
+        width: 90,
+      },
+      aspect,
+      mediaWidth,
+      mediaHeight
+    ),
+    mediaWidth,
+    mediaHeight
+  )
+}
+
+export default function ImageCroper({ isOpen, onClose, onCropComplete }) {
+  const [imgSrc, setImgSrc] = useState('')
   const previewCanvasRef = useRef(null)
   const imgRef = useRef(null)
-  const [crop, setCrop] = useState({
-    unit: 'px',
-    width: 160,
-    height: 90,
-    aspect: 16 / 9,
-  })
-  const [completedCrop, setCompletedCrop] = useState(null)
-  const [imgSrc, setImgSrc] = useState(null)
+  const hiddenAnchorRef = useRef(null)
+  const blobUrlRef = useRef('')
+  const [crop, setCrop] = useState()
+  const [completedCrop, setCompletedCrop] = useState()
+  const [scale, setScale] = useState(1)
+  const [rotate, setRotate] = useState(0)
+  const [aspect, setAspect] = useState(16 / 9)
   const [fileName, setFileName] = useState(null)
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0]
-
-    const validFormats = ['image/jpeg', 'image/jpg']
-    if (!validFormats.includes(file.type)) {
-      enqueueSnackbar('Please select a JPG or JPEG image.')
-      return
-    }
-
-    setFileName(file.name)
-    if (file) {
+  function onSelectFile(e) {
+    if (e.target.files && e.target.files.length > 0) {
+      setFileName(e.target.files[0].name)
+      setCrop(undefined)
       const reader = new FileReader()
-      reader.onloadend = () => {
-        setImgSrc(reader.result)
-      }
-      reader.readAsDataURL(file)
+      reader.addEventListener('load', () => setImgSrc(reader.result || ''))
+      reader.readAsDataURL(e.target.files[0])
+    }
+  }
+
+  function onImageLoad(e) {
+    if (aspect) {
+      const { width, height } = e.currentTarget
+      setCrop(centerAspectCrop(width, height, aspect))
     }
   }
 
   async function onDownloadCropClick() {
     const image = imgRef.current
     const previewCanvas = previewCanvasRef.current
-
     if (!image || !previewCanvas || !completedCrop) {
       throw new Error('Crop canvas does not exist')
     }
 
+    const scaleX = image.naturalWidth / image.width
+    const scaleY = image.naturalHeight / image.height
+
     const offscreen = new OffscreenCanvas(
-      completedCrop.width,
-      completedCrop.height
+      completedCrop.width * scaleX,
+      completedCrop.height * scaleY
     )
     const ctx = offscreen.getContext('2d')
-    // ctx.imageSmoothingEnabled = true
-
     if (!ctx) {
-      throw new Error('No 2d context')
+      throw new Error('No 2D context')
     }
 
     ctx.drawImage(
@@ -73,110 +96,136 @@ const ImageCropper = ({ onCropComplete, onClose, isOpen }) => {
     })
 
     const croppedImageUrl = URL.createObjectURL(blob)
-
-    onClose()
-
     onCropComplete(blob, croppedImageUrl, fileName)
+    onClose()
   }
 
-  React.useEffect(() => {
-    if (
-      completedCrop?.width &&
-      completedCrop?.height &&
-      imgRef.current &&
-      previewCanvasRef.current
-    ) {
-      const canvas = previewCanvasRef.current
-      const ctx = canvas.getContext('2d')
-      canvas.width = completedCrop.width
-      canvas.height = completedCrop.height
+  useDebounceEffect(
+    async () => {
+      if (
+        completedCrop?.width &&
+        completedCrop?.height &&
+        imgRef.current &&
+        previewCanvasRef.current
+      ) {
+        // Use canvasPreview for fast rendering
+        canvasPreview(
+          imgRef.current,
+          previewCanvasRef.current,
+          completedCrop,
+          scale,
+          rotate
+        )
+      }
+    },
+    100,
+    [completedCrop, scale, rotate]
+  )
 
-      ctx.drawImage(
-        imgRef.current,
-        completedCrop.x,
-        completedCrop.y,
-        completedCrop.width,
-        completedCrop.height,
-        0,
-        0,
-        completedCrop.width,
-        completedCrop.height
-      )
-    }
-  }, [completedCrop])
+  function handleToggleAspectClick() {
+    if (aspect) {
+      setAspect(undefined)
+    } else {
+      setAspect(16 / 9)
 
-  // Handle crop changes to maintain aspect ratio
-  const onCropChange = (newCrop) => {
-    // Calculate new dimensions while maintaining the aspect ratio
-    if (newCrop.width && newCrop.height) {
-      const aspectRatio = 16 / 9
-      if (newCrop.width / newCrop.height > aspectRatio) {
-        // Too wide, adjust width
-        newCrop.width = newCrop.height * aspectRatio
-      } else {
-        // Too tall, adjust height
-        newCrop.height = newCrop.width / aspectRatio
+      if (imgRef.current) {
+        const { width, height } = imgRef.current
+        const newCrop = centerAspectCrop(width, height, 16 / 9)
+        setCrop(newCrop)
+        // Updates the preview
+        setCompletedCrop(convertToPixelCrop(newCrop, width, height))
       }
     }
-    setCrop(newCrop)
   }
 
   return (
-    <Modal size={'4xl'} isOpen={isOpen}>
-      <ModalHeader>
-        <div className='flex items-center gap-5'>Upload Thumbnail</div>
-        <ModalCloseButton onClick={onClose} />
-      </ModalHeader>
+    <Modal isOpen={isOpen} size={'4xl'}>
+      <ModalCloseButton onClick={onClose} />
       <ModalBody>
-        {imgSrc ? (
-          <div className='ImageCropper bg-white max-md:flex-col flex gap-5'>
+        <div className='App'>
+          <div className='Crop-Controls'>
+            <input
+              className='p-2 border-[2px] mb-5 border-dotted'
+              type='file'
+              accept='image/*'
+              onChange={onSelectFile}
+            />
+            {fileName && (
+              <button
+                onClick={onDownloadCropClick}
+                className='rounded-sm p-2 px-4 bg-blue-600 text-white ml-4'
+              >
+                Upload
+              </button>
+            )}
+            {/* <div>
+              <label htmlFor='scale-input'>Scale: </label>
+              <input
+                id='scale-input'
+                type='number'
+                step='0.1'
+                value={scale}
+                disabled={!imgSrc}
+                onChange={(e) => setScale(Number(e.target.value))}
+              />
+            </div>
+            <div>
+              <label htmlFor='rotate-input'>Rotate: </label>
+              <input
+                id='rotate-input'
+                type='number'
+                value={rotate}
+                disabled={!imgSrc}
+                onChange={(e) =>
+                  setRotate(
+                    Math.min(180, Math.max(-180, Number(e.target.value)))
+                  )
+                }
+              />
+            </div> */}
+            {/* <div>
+              <button onClick={handleToggleAspectClick}>
+                Toggle aspect {aspect ? 'off' : 'on'}
+              </button>
+            </div> */}
+          </div>
+          {!!imgSrc && (
             <ReactCrop
-              className='bg-transparent'
               crop={crop}
-              onChange={onCropChange} // Adjust crop dimensions
-              onComplete={(newCrop) => setCompletedCrop(newCrop)} // Final crop area
-              ruleOfThirds // Optional: Adds grid lines for better cropping
+              onChange={(_, percentCrop) => setCrop(percentCrop)}
+              onComplete={(c) => setCompletedCrop(c)}
+              aspect={aspect}
+              minHeight={100}
             >
               <img
                 ref={imgRef}
                 alt='Crop me'
                 src={imgSrc}
-                style={{ maxWidth: '100%' }}
-                className='bg-transparent'
+                style={{ transform: `scale(${scale}) rotate(${rotate}deg)` }}
+                onLoad={onImageLoad}
               />
             </ReactCrop>
-            {!!completedCrop && (
+          )}
+          {!!completedCrop && (
+            <>
               <div>
                 <canvas
                   ref={previewCanvasRef}
                   style={{
                     border: '1px solid black',
-                    objectFit: 'cover',
+                    objectFit: 'contain',
                     width: completedCrop.width,
                     height: completedCrop.height,
                   }}
                 />
-                <button
-                  className='w-full bg-blue-600 p-1 text-white rounded-sm mt-3'
-                  onClick={onDownloadCropClick}
-                >
-                  Upload
-                </button>
               </div>
-            )}
-          </div>
-        ) : (
-          <div>
-            <input
-              type='file'
-              onChange={handleFileChange}
-              className='p-2 border border-dotted'
-            />
-          </div>
-        )}
+              <div>
+                {/* <button onClick={onDownloadCropClick}>Download Crop</button> */}
+              </div>
+            </>
+          )}
+        </div>
       </ModalBody>
     </Modal>
   )
 }
-
-export default ImageCropper
