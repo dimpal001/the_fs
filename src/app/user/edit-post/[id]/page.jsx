@@ -158,8 +158,6 @@ const EditPost = () => {
     const file = new File([blob], name, { type: blob.type })
     setFile(image)
 
-    console.log(fileName)
-
     if (!file || !file) return
 
     const params = {
@@ -170,9 +168,6 @@ const EditPost = () => {
     }
 
     const data = await s3Client.send(new PutObjectCommand(params))
-
-    try {
-    } catch (error) {}
   }
 
   const handleThumbnailDelete = async () => {

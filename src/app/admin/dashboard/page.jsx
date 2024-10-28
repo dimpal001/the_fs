@@ -1,10 +1,13 @@
 'use client'
 import dynamic from 'next/dynamic'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ManageLogos from '@/app/Components/components/ManageLogos'
 import useAuth from '@/app/context/useAuth'
 import { Helmet } from 'react-helmet'
+import { enqueueSnackbar } from 'notistack'
+import { useRouter } from 'next/navigation'
+import { useUserContext } from '@/app/context/UserContext'
 
 const ContactManagement = dynamic(
   () => import('../../Components/components/ContactManagement'),
@@ -58,8 +61,18 @@ const HeroPostManagement = dynamic(
 const AdminDashboard = () => {
   const [activeSection, setActiveSection] = useState('users')
   const [showDrawer, setShowDrawer] = useState(true)
+  const { user, setUser } = useUserContext()
+  const router = useRouter()
 
-  useAuth()
+  // useAuth()
+
+  useEffect(() => {
+    if (user?.role !== 'admin') {
+      enqueueSnackbar('Session expired! Login again', { variant: 'error' })
+      setUser(null)
+      router.push('/')
+    }
+  }, [])
 
   return (
     <div className='flex h-screen bg-gray-100'>

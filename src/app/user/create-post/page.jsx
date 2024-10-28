@@ -137,10 +137,6 @@ const CreatePost = () => {
     }
 
     const file = new File([blob], name, { type: blob.type })
-    setThumbnail(image)
-
-    console.log(customFileName) // This may not reflect the updated state
-
     if (!file || !file) return
 
     const params = {
@@ -150,10 +146,11 @@ const CreatePost = () => {
       ACL: 'public-read',
     }
 
-    // const data = await s3Client.send(new PutObjectCommand(params))
+    const data = await s3Client.send(new PutObjectCommand(params))
 
-    try {
-    } catch (error) {}
+    if (data.$metadata.httpStatusCode === 200) {
+      setThumbnail(image)
+    }
   }
 
   const handleThumbnailDelete = async () => {

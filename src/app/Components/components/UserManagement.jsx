@@ -183,7 +183,7 @@ const UserManagement = () => {
               <tr
                 key={fetchUser.id}
                 className={`hover:bg-gray-100 ${
-                  user.id === fetchUser.id && 'bg-teal-50 '
+                  user?.id === fetchUser?.id && 'bg-teal-50 '
                 }`}
               >
                 <td
@@ -212,7 +212,7 @@ const UserManagement = () => {
                   {!fetchUser.is_active && 'This account is deactivated'}
                 </td>
                 <td className='relative'>
-                  {user.id === fetchUser.id && (
+                  {user?.id === fetchUser?.id && (
                     <span className='text-xs px-3 rounded-2xl p-1 bg-blue-700 text-white'>
                       You
                     </span>

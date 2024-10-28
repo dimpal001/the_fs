@@ -41,10 +41,14 @@ const MenuBar = ({ editor, images }) => {
     }
     try {
       images.push(fileName)
-      await s3Client.send(new PutObjectCommand(params))
-      const url = `https://cdn.thefashionsalad.com/blog-post-images/${fileName}`
 
-      editor.chain().focus().setImage({ src: url }).run()
+      const data = await s3Client.send(new PutObjectCommand(params))
+      if (data.$metadata.httpStatusCode === 200) {
+        const url = `https://cdn.thefashionsalad.com/blog-post-images/${fileName}`
+        editor.chain().focus().setImage({ src: url }).run()
+      } else {
+        enqueueSnackbar('Error uploading image, try again')
+      }
     } catch (error) {}
   }
 
