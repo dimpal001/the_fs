@@ -31,7 +31,9 @@ const ProfileCard = ({ name, id, role, author_image }) => {
         >
           {name && name}
         </p>
-        <p className='font-light text-xs capitalize text-neutral-500'>{role}</p>
+        <p className='font-light text-xs capitalize text-neutral-500'>
+          {role === 'admin' ? 'Admin' : 'Member'}
+        </p>
       </div>
     </div>
   )
