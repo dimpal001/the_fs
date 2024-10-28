@@ -188,7 +188,7 @@ const Blog = ({ params }) => {
               'Default description'
             }
           />
-          <meta property='og:image' content={post?.image_url} />
+          <meta property='og:image' content={blogUrl + post?.image_url} />
           <meta
             property='og:url'
             content={`https://thefashionsalad.com/blogs/${post?.slug}`}
@@ -208,10 +208,7 @@ const Blog = ({ params }) => {
               'Default description'
             }
           />
-          <meta
-            name='twitter:image'
-            content={post?.image_url || 'default_image_url_here'}
-          />
+          <meta name='twitter:image' content={blogUrl + post?.image_url} />
 
           <meta
             name='keywords'
