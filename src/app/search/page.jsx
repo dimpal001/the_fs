@@ -7,6 +7,7 @@ import React, { useState, useEffect, Suspense } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Input from '../Components/Input'
 import BlogPostCard from '../Components/BlogPostCard'
+import { Helmet } from 'react-helmet'
 const LoadMore = dynamic(() => import('../Components/LoadMore'), { ssr: false })
 
 const SearchPage = () => {
@@ -92,6 +93,9 @@ const SearchContent = ({ router }) => {
 
   return (
     <div className='min-h-[590px] w-full max-md:px-6'>
+      <Helmet>
+        <title>Search here - The Fashion Salad</title>
+      </Helmet>
       {/* Hero Section */}
       {showHeroSection && (
         <div className='h-[450px] w-full flex flex-col justify-center items-center text-center'>

@@ -7,11 +7,13 @@ import {
   List,
   ListOrdered,
   ImagePlus,
+  LinkIcon,
 } from 'lucide-react'
 import Heading from '@tiptap/extension-heading'
 import BulletList from '@tiptap/extension-bullet-list'
 import OrderedList from '@tiptap/extension-ordered-list'
 import Image from '@tiptap/extension-image'
+import Link from '@tiptap/extension-link'
 import React, { useEffect, useRef, useState } from 'react'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 
@@ -51,6 +53,20 @@ const MenuBar = ({ editor, images }) => {
     const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
     const customFileName = `blog-${timestamp}-${sanitizedFileName}`
     handleImageUplaod(customFileName, file)
+  }
+
+  const handleLink = () => {
+    const { from, to } = editor.state.selection
+    if (from === to) {
+      alert('Please select text to link.')
+      return
+    }
+
+    const url = prompt('Enter the URL')
+    if (url) {
+      editor.commands.toggleLink({ href: url })
+      editor.commands.focus()
+    }
   }
 
   return (
@@ -101,6 +117,10 @@ const MenuBar = ({ editor, images }) => {
         <ListOrdered size={18} />
       </button>
 
+      <button onClick={handleLink}>
+        <LinkIcon size={18} />
+      </button>
+
       <input
         type='file'
         ref={fileInputRef}
@@ -149,6 +169,13 @@ const CustomEditor = ({ value, onChange, images }) => {
           class: 'p-3 mx-auto w-[75%] max-md:w-full',
         },
         inline: true,
+      }),
+      Link.configure({
+        defaultProtocol: 'https',
+        linkOnPaste: true,
+        HTMLAttributes: {
+          class: 'text-first hover:underline italic',
+        },
       }),
     ],
     content: value || '', // Ensure initial content is set

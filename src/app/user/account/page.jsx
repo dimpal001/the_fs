@@ -243,7 +243,7 @@ const AccountPage = () => {
       {fetchUser ? (
         <div className='container mx-auto p-5'>
           <Helmet>
-            <title>Profile</title>
+            <title>{fetchUser?.name || 'User Account'}</title>
           </Helmet>
           {/* General Information */}
           <div className='bg-gray-100 shadow-md rounded-sm lg:p-14 p-10 mb-6'>

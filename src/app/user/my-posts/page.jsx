@@ -11,6 +11,7 @@ import Input from '@/app/Components/Input'
 import ReviewPostModal from '@/app/Components/components/ReviewPostModal'
 import DeleteModal from '@/app/Components/DeleteModal'
 import useAuth from '@/app/context/useAuth'
+import { Helmet } from 'react-helmet'
 
 const MyPosts = () => {
   const [loading, setLoading] = useState(true)
@@ -91,6 +92,9 @@ const MyPosts = () => {
         <Loading />
       ) : (
         <div className='flex flex-col gap-3'>
+          <Helmet>
+            <title>My Posts - The Fashion Salad</title>
+          </Helmet>
           <h2 className='text-2xl font-bold mb-4'>My Posts</h2>
           <div className='flex justify-between mb-4 gap-5'>
             <Input

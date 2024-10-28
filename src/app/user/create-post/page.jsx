@@ -19,6 +19,7 @@ import Input from '@/app/Components/Input'
 import { Upload } from 'lucide-react'
 import useAuth from '@/app/context/useAuth'
 import ImageCropper from '@/app/Components/ImageCroper'
+import { Helmet } from 'react-helmet'
 
 const CreatePost = () => {
   useAuth()
@@ -224,7 +225,17 @@ const CreatePost = () => {
   // Add tag function
   const handleAddTag = (e) => {
     if (e.key === 'Enter' && e.target.value.trim()) {
+      if (tags.length === 10) {
+        enqueueSnackbar('You cannot add more than 10 tags. ', {
+          variant: 'error',
+        })
+        return
+      }
       const newTag = e.target.value.trim()
+      if (tags.includes(newTag)) {
+        e.target.value = ''
+        return
+      }
       setTags((prevTags) => [...prevTags, newTag])
       e.target.value = ''
     }
@@ -237,6 +248,9 @@ const CreatePost = () => {
 
   return (
     <div className='p-3 md:p-10 bg-gray-50 flex max-lg:flex-col gap-3'>
+      <Helmet>
+        <title>Create Post - The Fashion Salad</title>
+      </Helmet>
       <div className='flex border shadow-md p-5 bg-white rounded-xl flex-col gap-3 lg:w-1/2 w-full'>
         <h1 className='text-2xl font-bold text-center mb-5 text-gray-700'>
           Create a New Post

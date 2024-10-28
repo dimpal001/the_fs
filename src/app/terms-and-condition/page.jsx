@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Loading from '../Components/Loading'
+import { Helmet } from 'react-helmet'
 
 const TermsAndConditionPage = () => {
   const [content, setContent] = useState('')
@@ -34,6 +35,9 @@ const TermsAndConditionPage = () => {
 
   return (
     <div className='p-5 container mx-auto lg:px-56'>
+      <Helmet>
+        <title>Terms & Conditions - The Fashion Salad</title>
+      </Helmet>
       <h1 className='text-4xl lg:text-6xl py-4 font-bold mb-4 text-center'>
         Terms & Conditions
       </h1>

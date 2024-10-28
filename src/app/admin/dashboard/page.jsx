@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic'
 import { useState } from 'react'
 import ManageLogos from '@/app/Components/components/ManageLogos'
 import useAuth from '@/app/context/useAuth'
+import { Helmet } from 'react-helmet'
 
 const ContactManagement = dynamic(
   () => import('../../Components/components/ContactManagement'),
@@ -62,6 +63,9 @@ const AdminDashboard = () => {
 
   return (
     <div className='flex h-screen bg-gray-100'>
+      <Helmet>
+        <title>Admin Dashboard - The Fashion Salad</title>
+      </Helmet>
       {/* Sidebar */}
       {showDrawer && (
         <Sidebar

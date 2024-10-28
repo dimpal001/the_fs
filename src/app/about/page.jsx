@@ -3,6 +3,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Loading from '../Components/Loading'
+import Head from 'next/head' // Importing Head from next/head
+import { Helmet } from 'react-helmet'
 
 const AboutPage = () => {
   const [content, setContent] = useState('')
@@ -34,12 +36,27 @@ const AboutPage = () => {
 
   return (
     <div className='p-5 container mx-auto lg:px-56'>
+      {/* Dynamically updating head elements */}
+      <Helmet>
+        <title>About Us - The Fashion Salad</title>
+        <meta
+          name='description'
+          content='Learn more about The Fashion Salad, our mission, and what we do.'
+        />
+        <meta
+          name='keywords'
+          content='about, fashion salad, our mission, team, story'
+        />
+        <link rel='icon' href='/favicon.ico' />
+      </Helmet>
+
       <h1 className='text-4xl lg:text-6xl py-4 font-bold mb-4 text-center'>
         About Us
       </h1>
-      <p className='lg:leading-[35px] leading-7 tracking-wide'>
-        <div dangerouslySetInnerHTML={{ __html: content }} />
-      </p>
+      <div
+        className='lg:leading-[35px] leading-7 tracking-wide'
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   )
 }

@@ -33,6 +33,8 @@ const Blog = ({ params }) => {
   const [slug, setSlug] = useState(params.slug)
   const [likeAnimation, setLikeAnimation] = useState(false)
 
+  let tags
+
   // Fetch the blog post and its replies
   const handleFetchBlogPost = async (slug) => {
     try {
@@ -43,6 +45,11 @@ const Blog = ({ params }) => {
       setPost(response.data.post)
       setHasLiked(response.data.hasLiked)
       fetchReplies(response.data.post.id)
+
+      tags = post?.tags?.length
+        ? post?.tags.join(', ')
+        : 'fashion blog, tips, trends, blog, trending blog, blog, fashion, men clothing, women clothing, kid clothing, wedding, festives'
+      console.log(tags)
     } catch (error) {
       setNotfound(true)
     } finally {
@@ -141,25 +148,6 @@ const Blog = ({ params }) => {
     }, 1000)
   }, [post])
 
-  const handleSeeMore = (categoryId) => {
-    const category = categories.find((category) => category.id === categoryId)
-
-    if (category) {
-      const { id, name } = category
-
-      const formattedTitle = name
-        .toLowerCase()
-        .replace(/[?/:;'&*$#%.,!]/g, '')
-        .replace(/ /g, '-')
-        .replace(/--+/g, '-')
-        .trim()
-      localStorage.setItem('selectedCategoryName', name)
-
-      router.push(`/category/${formattedTitle}`)
-    } else {
-    }
-  }
-
   function extractPlainText(html) {
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = html
@@ -177,10 +165,54 @@ const Blog = ({ params }) => {
     <div>
       <div>
         <Helmet>
+          {/* Standard meta tags */}
           <title>{post?.title}</title>
           <meta
             name='description'
             content={extractPlainText(post?.content?.slice(0, 500))}
+          />
+
+          {/* Open Graph meta tags for social media sharing */}
+          <meta property='og:title' content={post?.title || 'Default Title'} />
+          <meta
+            property='og:description'
+            content={
+              extractPlainText(post?.content?.slice(0, 500)) ||
+              'Default description'
+            }
+          />
+          <meta property='og:image' content={post?.image_url} />
+          <meta
+            property='og:url'
+            content={`https://thefashionsalad.com/blogs/${post?.slug}`}
+          />
+          <meta property='og:type' content='article' />
+
+          {/* Twitter meta tags (optional) */}
+          <meta name='twitter:card' content='summary_large_image' />
+          <meta
+            name='twitter:title'
+            content={post?.title || 'The Fashion Salad'}
+          />
+          <meta
+            name='twitter:description'
+            content={
+              extractPlainText(post?.content?.slice(0, 500)) ||
+              'Default description'
+            }
+          />
+          <meta
+            name='twitter:image'
+            content={post?.image_url || 'default_image_url_here'}
+          />
+
+          <meta
+            name='keywords'
+            content={
+              post?.tags?.length
+                ? post.tags.join(', ')
+                : 'fashion blog, tips, trends, blog, trending blog, blog, fashion, men clothing, women clothing, kid clothing, wedding, festives'
+            }
           />
         </Helmet>
 

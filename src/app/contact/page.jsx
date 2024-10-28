@@ -5,6 +5,7 @@ import axios from 'axios'
 import Image from 'next/image'
 import ContactImg from '../../../public/icons/contact.png'
 import { enqueueSnackbar } from 'notistack'
+import { Helmet } from 'react-helmet'
 
 const Page = () => {
   const [formData, setFormData] = useState({
@@ -60,6 +61,9 @@ const Page = () => {
 
   return (
     <div className='min-h-[600px] lg:p-10 p-5 flex flex-col justify-center items-center bg-gradient-to-br from-blue-100 to-white from-10% to-90% w-full'>
+      <Helmet>
+        <title>Contact us - The Fashion Salad</title>
+      </Helmet>
       <div className='bg-white w-full md:w-[80%] shadow-md rounded-3xl p-10'>
         <div className='flex max-md:flex-col gap-7 max-md:gap-14'>
           <div className='lg:w-1/2 w-full flex flex-col justify-between'>
