@@ -136,7 +136,7 @@ const HeroPostManagement = () => {
               <tr className='bg-gray-200'>
                 <th className='px-4 text-start py-2'>Title</th>
                 <th className='px-4 text-start py-2'>Author Name</th>
-                <th className='px-4 text-start py-2'>Status</th>
+                {/* <th className='px-4 text-start py-2'>Status</th> */}
                 <th className='px-4 py-2 text-end'>Actions</th>
               </tr>
             </thead>
@@ -144,8 +144,8 @@ const HeroPostManagement = () => {
               {heroPosts.map((post) => (
                 <tr key={post.id}>
                   <td className='px-4 py-2'>{post.title}</td>
-                  <td className='px-4 py-2'>{post.author_email}</td>
-                  <td className='px-4 py-2 capitalize'>{post.status}</td>
+                  <td className='px-4 py-2'>{post.author_name}</td>
+                  {/* <td className='px-4 py-2 capitalize'>{post.status}</td> */}
                   <td className='px-4 py-2 flex justify-end items-center'>
                     <button
                       title='Remove'
@@ -182,7 +182,7 @@ const HeroPostManagement = () => {
             <tr className='bg-gray-200'>
               <th className='px-4 text-start py-2'>Title</th>
               <th className='px-4 text-start py-2'>Author Name</th>
-              <th className='px-4 text-start py-2'>Status</th>
+              {/* <th className='px-4 text-start py-2'>Status</th> */}
               <th className='px-4 py-2 text-end'>Actions</th>
             </tr>
           </thead>
@@ -190,8 +190,8 @@ const HeroPostManagement = () => {
             {filteredPosts.map((post) => (
               <tr key={post.id}>
                 <td className='px-4 py-2'>{post.title}</td>
-                <td className='px-4 py-2'>{post.author_email}</td>
-                <td className='px-4 py-2 capitalize'>{post.status}</td>
+                <td className='px-4 py-2'>{post.author_name}</td>
+                {/* <td className='px-4 py-2 capitalize'>{post.status}</td> */}
                 <td className='px-4 py-2 flex justify-end items-center'>
                   <button
                     title='Add to Hero Post'

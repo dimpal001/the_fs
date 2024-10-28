@@ -20,7 +20,8 @@ const HeroBlogCard = ({ imageUrl, delay, post }) => {
     >
       <div className='w-[150px] max-md:w-[100px] h-[80px] rounded-md'>
         <Image
-          src={blogUrl + post?.image_url}
+          src={imageUrl}
+          // src={blogUrl + post?.image_url}
           width={0}
           height={0}
           sizes='100vw'
@@ -33,11 +34,10 @@ const HeroBlogCard = ({ imageUrl, delay, post }) => {
           onClick={handleClick}
           className='font-semibold cursor-pointer hover:text-first text-lg leading-[20px] pb-1'
         >
-          {post?.title || 'Lorem ipsum dolor sit amet consectetur.'}
+          {post?.title.slice(0, 21) + '..'}
         </h3>
         <p className='text-xs'>
-          {stripHtml(post?.content) ||
-            'Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis earum eveniet accusantium.'}
+          {stripHtml(post?.content.slice(0, 47) + '..')}
         </p>
       </div>
     </div>

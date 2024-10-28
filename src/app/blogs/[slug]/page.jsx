@@ -247,7 +247,7 @@ const Blog = ({ params }) => {
                   name={post?.author_name}
                   id={post?.author_id}
                   author_image={post?.author_image}
-                  role={post?.author_role}
+                  r={post?.author_role}
                 />
                 <div className='flex gap-7 items-center text-sm max-md:text-xs text-neutral-600'>
                   <p>{post?.views} Views</p>

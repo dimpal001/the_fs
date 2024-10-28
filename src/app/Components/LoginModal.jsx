@@ -39,13 +39,13 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
     let valid = true
 
     // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-      setEmailError('Please enter a valid email address.')
-      valid = false
-    } else {
-      setEmailError('')
-    }
+    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    // if (!emailRegex.test(email)) {
+    //   setEmailError('Please enter a valid email address.')
+    //   valid = false
+    // } else {
+    //   setEmailError('')
+    // }
 
     // Password Validation
     if (password === '') {
