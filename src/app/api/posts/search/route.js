@@ -47,7 +47,7 @@ export async function GET(request) {
   LEFT JOIN Likes l ON bp.id = l.blog_post_id
   LEFT JOIN Replies r ON bp.id = r.blog_post_id
   LEFT JOIN Users u ON bp.author_id = u.id
-  WHERE ${whereClause}
+  WHERE ${whereClause} AND bp.status = 'approve'
   GROUP BY bp.id  -- Group by post id to ensure aggregation
   LIMIT ${limit} OFFSET ${offset}
 `

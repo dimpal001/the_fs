@@ -74,7 +74,7 @@ const MenuBar = ({ editor, images }) => {
       <button
         onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
         className={`p-1 rounded-md ${
-          editor.isActive('heading', { level: 2 }) ? 'bg-gray-300' : ''
+          editor.isActive('heading', { level: 2 }) ? 'bg-slate-800' : ''
         }`}
         type='button'
       >
@@ -83,7 +83,7 @@ const MenuBar = ({ editor, images }) => {
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={`p-1 rounded-md ${
-          editor.isActive('bold') ? 'bg-gray-300' : ''
+          editor.isActive('bold') ? 'bg-slate-800' : ''
         }`}
         type='button'
       >
@@ -92,7 +92,7 @@ const MenuBar = ({ editor, images }) => {
       <button
         onClick={() => editor.chain().focus().toggleItalic().run()}
         className={`p-1 rounded-md ${
-          editor.isActive('italic') ? 'bg-gray-300' : ''
+          editor.isActive('italic') ? 'bg-slate-800' : ''
         }`}
         type='button'
       >
@@ -101,7 +101,7 @@ const MenuBar = ({ editor, images }) => {
       <button
         onClick={() => editor.chain().focus().toggleBulletList().run()}
         className={`p-1 rounded-md ${
-          editor.isActive('bulletList') ? 'bg-gray-300' : ''
+          editor.isActive('bulletList') ? 'bg-slate-800' : ''
         }`}
         type='button'
       >
@@ -110,7 +110,7 @@ const MenuBar = ({ editor, images }) => {
       <button
         onClick={() => editor.chain().focus().toggleOrderedList().run()}
         className={`p-1 rounded-md ${
-          editor.isActive('orderedList') ? 'bg-gray-300' : ''
+          editor.isActive('orderedList') ? 'bg-slate-800' : ''
         }`}
         type='button'
       >
@@ -174,7 +174,7 @@ const CustomEditor = ({ value, onChange, images }) => {
         defaultProtocol: 'https',
         linkOnPaste: true,
         HTMLAttributes: {
-          class: 'text-first hover:underline italic',
+          class: 'text-first hover:underline',
         },
       }),
     ],
@@ -217,7 +217,7 @@ const CustomEditor = ({ value, onChange, images }) => {
       <EditorContent
         editor={editor}
         className='min-h-[150px] editor-content mt-2 bg-white border border-dotted border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                   resize-none text-justify leading-[35px] text-sm text-gray-800 placeholder-gray-400'
+                   resize-none leading-[26px] text-base text-gray-800 placeholder-gray-400'
       />
     </div>
   )

@@ -384,7 +384,7 @@ const CreatePost = () => {
         </p>
         <p className='font-semibold pb-4 text-3xl'>{title}</p>
         <div
-          className='editor-content'
+          className='editor-content leading-[26px]'
           dangerouslySetInnerHTML={{ __html: content }}
         />
       </div>

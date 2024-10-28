@@ -224,14 +224,14 @@ const Blog = ({ params }) => {
                 onClick={() => {
                   setImageModalOpen(true)
                 }}
-                className='w-full h-[200px] border rounded-xl lg:h-[350px]'
+                className='w-full aspect-video border rounded-xl'
               >
                 <Image
-                  className='rounded-xl w-full h-full object-cover cursor-pointer'
+                  className='rounded-xl aspect-video object-cover cursor-pointer'
                   src={blogUrl + post?.image_url}
-                  width={0}
-                  height={0}
-                  sizes='100vw'
+                  width={1280}
+                  height={720}
+                  // sizes='100vw'
                   alt={post?.title || 'Blog title'}
                 />
               </div>
