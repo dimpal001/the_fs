@@ -148,6 +148,13 @@ const Blog = ({ params }) => {
     }, 1000)
   }, [post])
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
+  }, [])
+
   function extractPlainText(html) {
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = html

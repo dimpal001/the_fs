@@ -93,6 +93,10 @@ const HomePage = () => {
   }
 
   useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth',
+    })
     // setIsClient(true)
     handleFetchCategories()
     handleFetchHeroPosts()

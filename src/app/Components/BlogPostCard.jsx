@@ -19,17 +19,14 @@ const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
   return (
     <div className='flex flex-col shadow-lg rounded-2xl transition-all duration-75 h-full items-center lg:items-start lg:space-y-0'>
       {/* Image Section */}
-      <div
-        onClick={handleClick}
-        className='lg:h-[200px] rounded-2xl w-full h-[170px]'
-      >
+      <div onClick={handleClick} className='rounded-2xl w-full'>
         <Image
-          className='rounded-t-2xl w-full h-full object-cover cursor-pointer'
+          className='rounded-t-2xl aspect-video object-cover cursor-pointer'
           onClick={onClick}
           src={blogUrl + post?.image_url}
-          width={0}
-          height={0}
-          sizes='100vw'
+          width={1280}
+          height={720}
+          // sizes='100vw'
           alt={title || 'The fashion Salad'}
         />
       </div>
@@ -44,7 +41,7 @@ const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
         {/* Title  */}
         <h3
           onClick={handleClick}
-          className='text-lg cursor-pointer lg:py-3 lg:text-xl font-semibold'
+          className='text-lg cursor-pointer lg:py-2 lg:text-xl font-semibold'
         >
           {post?.title}
         </h3>
@@ -53,7 +50,7 @@ const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
         <p className='text-base text-gray-600'>{stripHtml(post?.content)}...</p>
 
         {/* Author Details  */}
-        <div className='flex justify-between mt-5'>
+        <div className='flex justify-between mt-3'>
           <div className='flex justify-between items-center'>
             <ProfileCard
               name={post?.author_name}
