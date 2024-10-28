@@ -76,7 +76,7 @@ const Page = () => {
               <br /> <br /> For any sort of feedbacks, queries, suggestions or
               ideas you can directly contact us at{' '}
               <a className='text-first' href='mailto:contact@fashionsalad.com'>
-                contact@fashionsalad.com
+                contact.thefashionsalad@gmail.com
               </a>
               .
             </p>

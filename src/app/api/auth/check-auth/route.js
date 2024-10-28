@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 
 export async function GET(request) {
   const token = request.cookies.get('token')
+  console.log(token)
 
   if (!token) {
     return NextResponse.json(
@@ -11,6 +12,10 @@ export async function GET(request) {
       { status: 401 }
     )
   }
+
+  console.log(Date.now(), ' : Now')
+  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
+  console.log(decoded.exp * 1000, ' : Expire')
 
   try {
     // Verify the token
@@ -27,6 +32,7 @@ export async function GET(request) {
 
     return NextResponse.json({ isAuthenticated: true, userId: decoded.userId })
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { message: 'Access denied!', isAuthenticated: false },
       { status: 401 }
