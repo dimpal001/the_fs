@@ -38,6 +38,7 @@
     "react-helmet": "^6.1.0",
     "react-image-crop": "^11.0.7",
     "react-modern-drawer": "^1.4.0",
+    "sharp": "^0.33.5",
     "slugify": "^1.6.6"
   },
   "devDependencies": {
