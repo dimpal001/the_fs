@@ -328,18 +328,11 @@ const HomePage = () => {
               />
             ))}
             <div className='grid max-md:grid-cols-1 grid-cols-3 gap-5'>
-              {category1Posts?.map((post, index) => (
+              {category2Posts?.slice(1, -1).map((post, index) => (
                 <BlogPostCard4
                   key={index}
                   post={post}
                   imageUrl={`https://picsum.photos/778/3${index}7`}
-                />
-              ))}
-              {category1Posts?.map((post, index) => (
-                <BlogPostCard4
-                  key={index}
-                  post={post}
-                  imageUrl={`https://picsum.photos/778/3${index}3`}
                 />
               ))}
             </div>
