@@ -20,8 +20,8 @@ const HeroBlogCard = ({ imageUrl, delay, post }) => {
     >
       <div className='w-[150px] max-md:w-[100px] h-[80px] rounded-md'>
         <Image
-          src={imageUrl}
-          // src={blogUrl + post?.image_url}
+          // src={imageUrl}
+          src={blogUrl + post?.image_url}
           width={0}
           height={0}
           sizes='100vw'
