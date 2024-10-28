@@ -330,9 +330,7 @@ const EditPost = () => {
             src={
               file
                 ? file
-                : image_url
-                ? `https://cdn.thefashionsalad.com/blog-post-images/${image_url}`
-                : '/default-thumbnail.jpg'
+                : `https://cdn.thefashionsalad.com/blog-post-images/${image_url}`
             }
             width={300}
             height={60}
