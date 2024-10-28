@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import UserImg from '../assets/user.svg'
 import { useRouter } from 'next/navigation'
-const ProfileCard = ({ name, id, date, author_image }) => {
+const ProfileCard = ({ name, id, role, author_image }) => {
   const route = useRouter()
   const handleClick = () => {
     route.push(`/profile/${id}`)
@@ -31,9 +31,7 @@ const ProfileCard = ({ name, id, date, author_image }) => {
         >
           {name && name}
         </p>
-        <p className='font-light text-xs text-neutral-500'>
-          {date && new Date(date).toDateString()}
-        </p>
+        <p className='font-light text-xs capitalize text-neutral-500'>{role}</p>
       </div>
     </div>
   )

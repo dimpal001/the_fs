@@ -247,6 +247,7 @@ const Blog = ({ params }) => {
                   name={post?.author_name}
                   id={post?.author_id}
                   author_image={post?.author_image}
+                  role={post?.author_role}
                 />
                 <div className='flex gap-7 items-center text-sm max-md:text-xs text-neutral-600'>
                   <p>{post?.views} Views</p>
@@ -280,11 +281,14 @@ const Blog = ({ params }) => {
                 />
               </div>
 
-              {post?.author_role === 'admin' && (
-                <p className='italic text-neutral-600 p-3'>
-                  Posted by <strong>Admin</strong>
-                </p>
-              )}
+              {/* {post?.author_role === 'admin' && ( */}
+              <p className='italic text-neutral-600 p-3 capitalize'>
+                Posted by{' '}
+                <strong>
+                  {post?.author_role === 'admin' ? 'admin' : 'member'}
+                </strong>
+              </p>
+              {/* )} */}
 
               {/* Replies Section */}
               <Replies replies={replies} postId={post?.id} />

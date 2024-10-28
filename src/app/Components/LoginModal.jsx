@@ -22,6 +22,7 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
   const [isDeactivated, setIsDeactivated] = useState(false)
   const [isForgotPassword, setIsForgotPassword] = useState(false)
   const [otpSent, setOtpSent] = useState(false)
+  const [showPassowrd, setShowPassword] = useState(false)
   const { setUser } = useUserContext()
   const router = useRouter()
 
@@ -38,13 +39,13 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
     let valid = true
 
     // Email validation
-    // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    // if (!emailRegex.test(email)) {
-    //   setEmailError('Please enter a valid email address.')
-    //   valid = false
-    // } else {
-    //   setEmailError('')
-    // }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      setEmailError('Please enter a valid email address.')
+      valid = false
+    } else {
+      setEmailError('')
+    }
 
     // Password Validation
     if (password === '') {
@@ -60,6 +61,7 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
   // Handle user login
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setShowPassword(false)
     if (validation()) {
       try {
         setIsDeactivated(false)
@@ -190,6 +192,10 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
     }
   }
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassowrd)
+  }
+
   return (
     <Modal size={'sm'} isOpen={isOpen}>
       <ModalHeader>
@@ -213,7 +219,7 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
             />
             <Input
               error={passwordError}
-              type={'password'}
+              type={showPassowrd ? 'text' : 'password'}
               onChange={(e) => {
                 setPassword(e.target.value)
                 setPasswordError('')
@@ -221,6 +227,18 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
               value={password}
               placeholder={'Your password'}
             />
+            <div className='text-sm flex items-center gap-2'>
+              <input
+                type='checkbox'
+                name='showPassword'
+                value={showPassowrd}
+                id='showPassword'
+                onChange={toggleShowPassword}
+              />
+              <label htmlFor='showPassword' className='cursor-pointer'>
+                Show Password
+              </label>
+            </div>
             {isDeactivated && (
               <p className='text-sm text-red-600 text-center p-2'>
                 Your account has been <strong>deactivated</strong> by the admin.

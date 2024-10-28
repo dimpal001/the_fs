@@ -173,8 +173,14 @@ const Profile = ({ params }) => {
                 {userData?.name ? userData?.name : 'Anonymous'}
               </h1>
               <p className='text-sm text-neutral-500 text-center'>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+                {userData.role === 'admin'
+                  ? 'Administrator'
+                  : `Member from ${new Date(userData.created_at).toLocaleString(
+                      'default',
+                      { month: 'long' }
+                    )} ${new Date(userData.created_at).getFullYear()}`}
               </p>
+
               <div className='flex justify-center gap-10 p-7'>
                 <p className='font-semibold max-md:text-xs max-md:text-center tracking-wide'>
                   {followers && followers} Followers

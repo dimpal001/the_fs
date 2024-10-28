@@ -15,6 +15,7 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
   const [submitting, setSubmitting] = useState(false)
   const [verifying, setVerifying] = useState(false)
   const [isTypeOtp, setIsTypeOtp] = useState(false)
+  const [showPassowrd, setShowPassword] = useState(false)
   const [otp, setOtp] = useState('')
 
   const validation = () => {
@@ -53,6 +54,7 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
   }
 
   const handleSubmit = async () => {
+    setShowPassword(false)
     if (validation()) {
       try {
         setSubmitting(true)
@@ -94,6 +96,10 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
     }
   }
 
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassowrd)
+  }
+
   return (
     <Modal size={'sm'} isOpen={isOpen}>
       <ModalHeader>
@@ -123,7 +129,7 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
               placeholder={'Your mail address'}
             />
             <Input
-              type={'password'}
+              type={showPassowrd ? 'text' : 'password'}
               error={passwordError}
               onChange={(e) => {
                 setPassword(e.target.value)
@@ -133,7 +139,7 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
               placeholder={'A strong password'}
             />
             <Input
-              type={'password'}
+              type={showPassowrd ? 'text' : 'password'}
               error={cPasswordError}
               onChange={(e) => {
                 setCPassword(e.target.value)
@@ -142,6 +148,18 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
               value={cPassword}
               placeholder={'Confirm password'}
             />
+            <div className='text-sm flex items-center gap-2'>
+              <input
+                type='checkbox'
+                name='showPassword'
+                value={showPassowrd}
+                id='showPassword'
+                onChange={toggleShowPassword}
+              />
+              <label htmlFor='showPassword' className='cursor-pointer'>
+                Show Password
+              </label>
+            </div>
             <Button
               loading={submitting}
               onClick={handleSubmit}

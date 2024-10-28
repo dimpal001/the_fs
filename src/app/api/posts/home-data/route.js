@@ -12,7 +12,7 @@ export async function GET(request) {
       ;[posts] = await db.query(
         `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.image_url, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 250) AS content, 
-                BlogPosts.category_ids, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
+                BlogPosts.category_ids, Users.role as author_role, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
                 COUNT(DISTINCT Replies.id) AS replies,
                 COUNT(DISTINCT Likes.id) AS likes
          FROM BlogPosts
@@ -33,7 +33,7 @@ export async function GET(request) {
       ;[posts] = await db.query(
         `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.image_url, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 150) AS content, 
-                BlogPosts.category_ids, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
+                BlogPosts.category_ids, Users.role as author_role, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
                 COUNT(DISTINCT Replies.id) AS replies,
                 COUNT(DISTINCT Likes.id) AS likes
          FROM BlogPosts
@@ -54,7 +54,7 @@ export async function GET(request) {
       ;[posts] = await db.query(
         `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.image_url, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 150) AS content, 
-                BlogPosts.category_ids, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
+                BlogPosts.category_ids, Users.role as author_role, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
                 COUNT(DISTINCT Replies.id) AS replies,
                 COUNT(DISTINCT Likes.id) AS likes
          FROM BlogPosts
@@ -71,7 +71,7 @@ export async function GET(request) {
       ;[posts] = await db.query(
         `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.created_at, BlogPosts.image_url, BlogPosts.slug, BlogPosts.views,
                 SUBSTRING(BlogPosts.content, 1, 150) AS content, 
-                BlogPosts.category_ids, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
+                BlogPosts.category_ids, Users.role as author_role, Users.name AS author_name, Users.id AS author_id, Users.image_url as author_image,
                 COUNT(DISTINCT Replies.id) AS replies,
                 COUNT(DISTINCT Likes.id) AS likes
          FROM BlogPosts
