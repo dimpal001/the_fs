@@ -16,6 +16,7 @@ import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
 import React, { useEffect, useRef, useState } from 'react'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { enqueueSnackbar } from 'notistack'
 
 const MenuBar = ({ editor, images }) => {
   const fileInputRef = useRef(null)
@@ -49,9 +50,28 @@ const MenuBar = ({ editor, images }) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0]
+
+    if (!file) {
+      return
+    }
+
     const sanitizedFileName = file.name.replace(/\s+/g, '')
     const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
     const customFileName = `blog-${timestamp}-${sanitizedFileName}`
+
+    // Get the file extension and convert it to lowercase
+    const validExtensions = ['jpg', 'jpeg', 'png', 'webp']
+    const fileExtension = file.name.split('.').pop().toLowerCase()
+
+    // Check if the file extension is valid
+    if (!validExtensions.includes(fileExtension)) {
+      enqueueSnackbar(
+        'Please upload a valid image file (jpg, jpeg, png, webp).',
+        { variant: 'error' }
+      )
+      return
+    }
+
     handleImageUplaod(customFileName, file)
   }
 
