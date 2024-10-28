@@ -57,7 +57,7 @@ const Header = () => {
       const response = await axios.get('/api/admin/category')
       setCategoryList(response.data)
     } catch (error) {
-      enqueueSnackbar(error.response.data.message, { variant: 'error' })
+      enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
     }
   }
 
