@@ -69,10 +69,6 @@ export default function RootLayout({ children }) {
       <head>
         <meta charSet='UTF-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
-        <meta
-          name='description'
-          content='Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now'
-        />
         <meta name='keywords' content='fashion, blog, style, tips, trends' />
         <meta name='author' content='The Fashion Salad' />
 

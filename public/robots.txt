@@ -1,4 +1,3 @@
-# *
 User-agent: *
 Disallow: /admin
 Disallow: /private
@@ -6,12 +5,7 @@ Disallow: /user
 Disallow: /api
 Disallow: /context
 
-# *
-User-agent: *
 Allow: /
-
-# Host
-Host: https://thefashionsalad.com
 
 # Sitemaps
 Sitemap: https://thefashionsalad.com/sitemap.xml
