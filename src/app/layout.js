@@ -127,6 +127,7 @@ export default function RootLayout({ children }) {
             vertical: 'top',
             horizontal: 'left',
           }}
+          autoHideDuration={2000}
         />
         <UserProvider>
           {/* <Navbar /> */}

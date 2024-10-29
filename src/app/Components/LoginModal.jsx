@@ -81,7 +81,10 @@ const LoginModal = ({ isOpen, onClose, setIsRegisterModalOpen }) => {
         setUser(response.data.user)
         router.push('/')
         onClose()
-        enqueueSnackbar('Login successfull.', { variant: 'success' })
+        enqueueSnackbar('Login successfull.', {
+          variant: 'success',
+          autoHideDuration: 1000,
+        })
       } catch (error) {
         const errorMessage =
           error?.response?.data?.message ||

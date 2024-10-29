@@ -63,7 +63,10 @@ const RegisterModal = ({ isOpen, onClose, setIsLoginModalOpen }) => {
           password,
         })
         setIsTypeOtp(true)
-        enqueueSnackbar(response.data.message, { variant: 'success' })
+        enqueueSnackbar(response.data.message, {
+          variant: 'success',
+          autoHideDuration: 5000,
+        })
       } catch (error) {
         enqueueSnackbar(error.response.data.message, { variant: 'error' })
       } finally {
