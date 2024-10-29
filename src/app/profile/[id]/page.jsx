@@ -149,7 +149,9 @@ const Profile = ({ params }) => {
       {userData ? (
         <div className='min-h-[650px] relative flex items-center justify-center bg-neutral-50'>
           <Helmet>
-            <title>{userData?.name || 'User Profile'}</title>
+            <title className='capitalize'>
+              {userData?.name || 'User Profile'}
+            </title>
           </Helmet>
           <div className='lg:w-[60%] relative z-20 w-[90%] lg:p-14 p-6 shadow-xl rounded-3xl bg-white'>
             <div className='lg:-mt-32 -mt-16'>
