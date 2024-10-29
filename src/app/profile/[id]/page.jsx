@@ -134,6 +134,16 @@ const Profile = ({ params }) => {
     }
   }
 
+  const handleProfilePicutreClick = () => {
+    if (!userData.image_url) {
+      return
+    }
+    setImageUrl(
+      `https://cdn.thefashionsalad.com/profile-pictures/${userData?.image_url}`
+    )
+    setImageModalOpen(true)
+  }
+
   return (
     <div>
       {userData ? (
@@ -146,12 +156,7 @@ const Profile = ({ params }) => {
               {/* Image  */}
               <div className='flex justify-center'>
                 <div
-                  onClick={() => {
-                    setImageUrl(
-                      `https://cdn.thefashionsalad.com/profile-pictures/${userData?.image_url}`
-                    )
-                    setImageModalOpen(true)
-                  }}
+                  onClick={handleProfilePicutreClick}
                   className='w-[120px] border-4 border-blue-500 h-[120px] rounded-full lg:h-[180px] lg:w-[180px]'
                 >
                   <Image
@@ -169,7 +174,7 @@ const Profile = ({ params }) => {
                 </div>
               </div>
               {/* Name  */}
-              <h1 className='lg:text-5xl text-4xl p-5 font-semibold text-neutral-600 text-center'>
+              <h1 className='lg:text-5xl capitalize text-4xl p-5 font-semibold text-neutral-600 text-center'>
                 {userData?.name ? userData?.name : 'Anonymous'}
               </h1>
               <p className='text-sm text-neutral-500 text-center'>

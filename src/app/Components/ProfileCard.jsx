@@ -27,7 +27,7 @@ const ProfileCard = ({ name, id, role, author_image }) => {
       <div>
         <p
           onClick={handleClick}
-          className='text-sm cursor-pointer font-semibold'
+          className='text-sm cursor-pointer capitalize font-semibold'
         >
           {name && name}
         </p>
