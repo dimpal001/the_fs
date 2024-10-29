@@ -7,5 +7,6 @@ Disallow: /context
 
 Allow: /
 
+
 # Sitemaps
 Sitemap: https://thefashionsalad.com/sitemap.xml
