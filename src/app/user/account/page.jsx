@@ -19,6 +19,7 @@ import {
 } from '@aws-sdk/client-s3'
 import Image from 'next/image'
 import DataNotFound from '@/app/Components/DataNotFound'
+import useAuth from '@/app/context/useAuth'
 
 const AccountPage = () => {
   const [name, setName] = useState('')
@@ -39,7 +40,7 @@ const AccountPage = () => {
   const router = useRouter()
   const postsSectionRef = useRef(null)
 
-  // useAuth()
+  useAuth()
 
   useEffect(() => {
     fetchUserData()
@@ -110,18 +111,23 @@ const AccountPage = () => {
   }
 
   const fetchUserData = async () => {
+    const storedUser = JSON.parse(localStorage.getItem('user'))
+
     try {
       setFetching(true)
       const response = await axios.get('/api/admin/users/', {
-        params: { id: user?.id },
+        params: { id: storedUser.id },
         withCredentials: true,
       })
       setFetchUser(response.data)
       setName(response.data.name)
     } catch (error) {
-      enqueueSnackbar(error.response.data.message)
-      setUser(null)
-      router.push('/')
+      if (error.response.status === 401) {
+        enqueueSnackbar('Session expired! Login again', { variant: 'error' })
+        setUser(null)
+        localStorage.removeItem('user')
+        router.push('/')
+      }
     } finally {
       setFetching(false)
     }

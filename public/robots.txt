@@ -1,4 +1,5 @@
 User-agent: *
+
 Disallow: /admin
 Disallow: /private
 Disallow: /user
@@ -7,6 +8,6 @@ Disallow: /context
 
 Allow: /
 
-
 # Sitemaps
 Sitemap: https://thefashionsalad.com/sitemap.xml
+Sitemap: https://thefashionsalad.com/sitemap-0.xml

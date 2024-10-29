@@ -18,16 +18,18 @@ const useAuth = () => {
 
         if (response.data.isAuthenticated) {
         } else {
-          setUser(null)
-          router.push('/')
           enqueueSnackbar('Session expired! Please log in again.', {
             variant: 'error',
           })
+          setUser(null)
+          localStorage.removeItem('user')
+          router.push('/')
         }
       } catch (error) {
-        setUser(null)
-        router.push('/')
         enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
+        setUser(null)
+        localStorage.removeItem('user')
+        router.push('/')
       }
     }
 

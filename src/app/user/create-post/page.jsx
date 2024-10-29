@@ -22,7 +22,6 @@ import ImageCropper from '@/app/Components/ImageCroper'
 import { Helmet } from 'react-helmet'
 
 const CreatePost = () => {
-  // useAuth()
   const { user } = useUserContext()
   const router = useRouter()
   const [title, setTitle] = useState('')
@@ -39,6 +38,8 @@ const CreatePost = () => {
     const selectedValue = event.target.value
     setSelectedCategoryIds([selectedValue])
   }
+
+  useAuth()
 
   // Function to extract image URLs from HTML content
   const extractImageFilenames = (htmlContent) => {
