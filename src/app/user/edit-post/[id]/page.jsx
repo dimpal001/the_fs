@@ -20,7 +20,7 @@ import ImageCropper from '@/app/Components/ImageCroper'
 import { Helmet } from 'react-helmet'
 
 const EditPost = () => {
-  useAuth()
+  // useAuth()
 
   const { user } = useUserContext()
   const router = useRouter()

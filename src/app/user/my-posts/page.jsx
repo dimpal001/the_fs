@@ -25,7 +25,7 @@ const MyPosts = () => {
   const { user } = useUserContext()
   const router = useRouter()
 
-  useAuth()
+  // useAuth()
 
   const handleFetchMyPosts = async () => {
     setLoading(true)
