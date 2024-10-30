@@ -109,21 +109,22 @@ const Header = () => {
                     <p className='text-first text-3xl pb-5'>Categories</p>
                     {categoryList.length > 0 &&
                       categoryList.map((item, index) => (
-                        <p
-                          className={`cursor-pointer ${
-                            item.name === 'admin blogs' &&
-                            user?.role !== 'admin' &&
-                            'hidden'
-                          } text-balance hover:text-first capitalize font-semibold`}
-                          key={index}
-                          name={item.name}
-                          onClick={() => {
-                            setIsMenuOpen(false)
-                            handleClick(item)
-                          }}
-                        >
-                          {item.name}
-                        </p>
+                        <Link href={`/category/${item.slug}`} key={index}>
+                          <p
+                            className={`cursor-pointer ${
+                              item.name === 'admin blogs' &&
+                              user?.role !== 'admin' &&
+                              'hidden'
+                            } text-balance hover:text-first capitalize font-semibold`}
+                            name={item.name}
+                            onClick={() => {
+                              setIsMenuOpen(false)
+                              // handleClick(item)
+                            }}
+                          >
+                            {item.name}
+                          </p>
+                        </Link>
                       ))}
                     <div className='flex flex-col lg:hidden gap-4'>
                       <CreatePost

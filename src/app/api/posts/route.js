@@ -208,6 +208,7 @@ export async function GET(request) {
         posts,
         current_page: page,
         total_pages: totalPages,
+        total_posts: totalPosts,
       },
       { status: 200 }
     )

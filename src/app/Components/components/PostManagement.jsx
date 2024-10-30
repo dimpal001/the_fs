@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ChevronDown, EllipsisVertical, Loader } from 'lucide-react'
+import { ChevronDown } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 import RejectPostModal from './RejectPostModal'
@@ -22,9 +22,12 @@ const PostManagement = () => {
   const [confirmAction, setConfirmAction] = useState('')
   const [selectedPost, setSelectedPost] = useState({})
   const [filterStatus, setFilterStatus] = useState('All')
+  const [filterCategory, setFilterCategory] = useState('All')
   const [searchTerm, setSearchTerm] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [totalPages, setTotalPages] = useState('')
+  const [totalPosts, setTotalPosts] = useState(null)
+  const [categories, setCategories] = useState(null)
   const router = useRouter()
 
   const handleFetchPosts = async (page) => {
@@ -45,6 +48,7 @@ const PostManagement = () => {
       setFilteredPosts(response.data.posts)
       setCurrentPage(response.data.current_page)
       setTotalPages(response.data.total_pages)
+      setTotalPosts(response.data.total_posts)
     } catch (error) {
       enqueueSnackbar(error.response.data.message, { variant: 'error' })
     } finally {
@@ -52,7 +56,7 @@ const PostManagement = () => {
     }
   }
 
-  // Filter posts based on status and search term
+  // Filter posts based on status, category, and search term
   const handleFilterPosts = () => {
     let filtered = posts
 
@@ -61,6 +65,21 @@ const PostManagement = () => {
       filtered = filtered.filter(
         (post) => post.status === filterStatus.toLowerCase()
       )
+    }
+
+    // Filter by category
+    if (filterCategory !== 'All') {
+      const categoryId = categories.find(
+        (cat) => cat.slug === filterCategory
+      )?.slug
+
+      console.log(categoryId)
+
+      if (categoryId) {
+        filtered = filtered.filter((post) =>
+          post.category_ids.includes(categoryId)
+        )
+      }
     }
 
     // Filter by search term
@@ -103,6 +122,13 @@ const PostManagement = () => {
     }
   }
 
+  const handleFetchCategories = async () => {
+    try {
+      const response = await axios.get('/api/admin/category')
+      setCategories(response.data)
+    } catch (error) {}
+  }
+
   const handleNextPage = () => {
     if (currentPage < totalPages) {
       const newPage = parseInt(currentPage) + 1
@@ -121,11 +147,12 @@ const PostManagement = () => {
 
   useEffect(() => {
     handleFetchPosts()
+    handleFetchCategories()
   }, [])
 
   useEffect(() => {
     handleFilterPosts(currentPage)
-  }, [filterStatus, searchTerm, posts])
+  }, [filterStatus, filterCategory, searchTerm, posts])
 
   const handleReviewModal = (post) => {
     setSelectedPost(post)
@@ -185,7 +212,10 @@ const PostManagement = () => {
 
   return (
     <div>
-      <h2 className='text-2xl font-bold mb-4'>Manage Posts</h2>
+      <div className='flex justify-between'>
+        <h2 className='text-2xl font-bold mb-4'>Manage Posts</h2>
+        {totalPosts && <p className='text-sm'>Total Posts : {totalPosts}</p>}
+      </div>
 
       <div className='flex justify-between mb-4'>
         <div className='flex items-center gap-4'>
@@ -203,9 +233,23 @@ const PostManagement = () => {
             <option value='All'>All</option>
             <option value='Approve'>Published</option>
             <option value='Pending'>Pending</option>
-            <option value='Reject'>Rejected</option>
+            {/* <option value='Reject'>Rejected</option> */}
             <option value='Deactivated'>Deactivated</option>
           </select>
+          {categories && categories.length > 0 && (
+            <select
+              value={filterCategory}
+              onChange={(e) => setFilterCategory(e.target.value)}
+              className='border rounded-sm p-3 border-zinc-400 mr-2'
+            >
+              <option value='All'>All</option>
+              {categories.map((item) => (
+                <option key={item.id} value={item.slug}>
+                  {item.name.charAt(0).toUpperCase() + item.name.slice(1)}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
       </div>
       <p className='pb-2 px-2 text-gray-600'>
@@ -219,7 +263,6 @@ const PostManagement = () => {
               <th className='px-4 text-start py-2'>Title</th>
               <th className='px-4 text-start py-2'>Author Name</th>
               <th className='px-4 text-start py-2'>Status</th>
-              {/* <th className='px-4 text-start py-2'>Edit</th> */}
               <th className='px-4 py-2'>Actions</th>
             </tr>
           </thead>
@@ -242,34 +285,7 @@ const PostManagement = () => {
                 >
                   {post.status}
                 </td>
-                {/* <td className='px-4 py-2'>
-                  <button
-                    title='Preview'
-                    onClick={() => router.push(`/user/edit-post/${post?.id}`)}
-                    className='bg-blue-500 text-white px-4 py-1 rounded-sm'
-                  >
-                    Edit
-                  </button>
-                </td> */}
                 <td className='px-4 py-2 flex justify-end items-center'>
-                  {/* <button
-                    title='Approve'
-                    onClick={() => handleApprovePost(post)}
-                    className={`${
-                      post.status === 'approve'
-                        ? 'bg-green-400 cursor-not-allowed'
-                        : 'bg-green-600'
-                    } w-28 text-white px-4 py-1 rounded-sm`}
-                    disabled={isApprovingId === post.id}
-                  >
-                    {isApprovingId === post.id ? (
-                      <Loader size={24} className='animate-spin' />
-                    ) : post.status === 'approved' ? (
-                      'Approved'
-                    ) : (
-                      'Approve'
-                    )}
-                  </button> */}
                   <DynamicMenu
                     button={
                       <button className='flex items-center gap-2 p-1 px-4 border border-dotted'>

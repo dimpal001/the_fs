@@ -115,7 +115,8 @@ const HomePage = () => {
 
   const stripHtml = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html')
-    return doc.body.textContent || ''
+    const text = doc.body.textContent || ''
+    return text.slice(0, 120) // Return only the first 120 characters
   }
 
   const handleSeeMore = (slug) => {
@@ -179,18 +180,20 @@ const HomePage = () => {
             className='lg:h-[470px] lg:p-16 relative w-full gap-5 py-7 flex max-md:flex-col items-center'
           >
             <div className='lg:w-[28%] max-md:h-[300px] w-full h-full max-md:p-3'>
-              <Image
-                src={blogUrl + heroPosts[0].image_url}
-                width={0}
-                height={0}
-                sizes='100vw'
-                className='rounded-[15px] w-full h-full object-cover cursor-pointer'
-                alt={'Image'}
-              />
+              <Link href={`/blogs/${heroPosts[0]?.slug}`}>
+                <Image
+                  src={blogUrl + heroPosts[0].image_url}
+                  width={0}
+                  height={0}
+                  sizes='100vw'
+                  className='rounded-[15px] w-full h-full object-cover cursor-pointer'
+                  alt={'Image'}
+                />
+              </Link>
             </div>
             <div className='lg:w-[42%] h-full max-md:px-6 p-3 flex flex-col gap-6'>
               <Link href={`/blogs/${heroPosts[0]?.slug}`}>
-                <h2 className='text-4xl font-bold'>
+                <h2 className='text-4xl hover:text-first font-bold'>
                   {heroPosts.length > 0 && heroPosts[0].title}
                 </h2>
               </Link>

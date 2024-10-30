@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { blogUrl } from './url'
+import Link from 'next/link'
 
 const HeroBlogCard = ({ imageUrl, delay, post }) => {
   const router = useRouter()
@@ -12,22 +13,26 @@ const HeroBlogCard = ({ imageUrl, delay, post }) => {
 
   const stripHtml = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html')
-    return doc.body.textContent || ''
+    const text = doc.body.textContent || ''
+    return text.slice(0, 120) // Return only the first 120 characters
   }
+
   return (
     <div
       className={`flex animate__animated animate__fadeInUp animate__delay-${delay}s animate__faster relative z-20 bg-white p-3 shadow-md rounded-md gap-3`}
     >
       <div className='w-[150px] max-md:w-[100px] h-[80px] rounded-md'>
-        <Image
-          // src={imageUrl}
-          src={blogUrl + post?.image_url}
-          width={0}
-          height={0}
-          sizes='100vw'
-          className='rounded-md w-full h-full object-cover cursor-pointer'
-          alt={'Image'}
-        />
+        <Link href={`/blogs/${post?.slug}`}>
+          <Image
+            // src={imageUrl}
+            src={blogUrl + post?.image_url}
+            width={0}
+            height={0}
+            sizes='100vw'
+            className='rounded-md w-full h-full object-cover cursor-pointer'
+            alt={'Image'}
+          />
+        </Link>
       </div>
       <div>
         <h3

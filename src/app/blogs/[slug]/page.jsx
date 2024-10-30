@@ -273,7 +273,7 @@ const Blog = ({ params }) => {
                   {post?.title}
                 </h1>
                 <div
-                  className='mt-3 crimson max-md:text-lg text-xl leading-[34px] tracking-wide text-neutral-700'
+                  className='mt-3 editor-content crimson max-md:text-lg text-xl leading-[34px] tracking-wide text-neutral-700'
                   dangerouslySetInnerHTML={{ __html: post?.content }}
                 />
               </div>

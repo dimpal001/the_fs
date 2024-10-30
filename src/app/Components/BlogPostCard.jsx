@@ -3,6 +3,7 @@ import Image from 'next/image'
 import ProfileCard from './ProfileCard'
 import { ChevronsRight } from 'lucide-react'
 import { blogUrl } from './url'
+import Link from 'next/link'
 
 const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
   const router = useRouter()
@@ -13,22 +14,25 @@ const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
 
   const stripHtml = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html')
-    return doc.body.textContent || ''
+    const text = doc.body.textContent || ''
+    return text.slice(0, 120) // Return only the first 120 characters
   }
 
   return (
     <div className='flex flex-col shadow-lg rounded-2xl transition-all duration-75 h-full items-center lg:items-start lg:space-y-0'>
       {/* Image Section */}
       <div onClick={handleClick} className='rounded-2xl w-full'>
-        <Image
-          className='rounded-t-2xl aspect-video object-cover cursor-pointer'
-          onClick={onClick}
-          src={blogUrl + post?.image_url}
-          width={1280}
-          height={720}
-          // sizes='100vw'
-          alt={title || 'The fashion Salad'}
-        />
+        <Link href={`/blogs/${post?.slug}`}>
+          <Image
+            className='rounded-t-2xl aspect-video object-cover cursor-pointer'
+            onClick={onClick}
+            src={blogUrl + post?.image_url}
+            width={1280}
+            height={720}
+            // sizes='100vw'
+            alt={title || 'The fashion Salad'}
+          />
+        </Link>
       </div>
 
       {/* Text Section */}

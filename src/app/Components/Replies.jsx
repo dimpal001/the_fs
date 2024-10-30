@@ -113,10 +113,15 @@ const Replies = ({ replies, postId }) => {
         <textarea
           placeholder='Leave your thoughts here...'
           rows={2}
-          className='w-full rounded-none outline-none focus:border p-3'
-          value={replyContent} // Link to replyContent state
-          onChange={(e) => setReplyContent(e.target.value)} // Update replyContent
+          className='w-full rounded-none outline-none focus:border p-3 resize-none overflow-hidden' // Added 'overflow-hidden'
+          value={replyContent}
+          onChange={(e) => setReplyContent(e.target.value)}
+          onInput={(e) => {
+            e.target.style.height = 'auto'
+            e.target.style.height = `${e.target.scrollHeight}px`
+          }}
         ></textarea>
+
         <div className='flex gap-5'>
           {!user && (
             <input
