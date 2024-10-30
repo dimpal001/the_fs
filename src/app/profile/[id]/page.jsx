@@ -233,6 +233,7 @@ const Profile = ({ params }) => {
           isOpen={true}
           onClose={() => setImageModalOpen(false)}
           imageUrl={imageUrl}
+          type={'profile'}
         />
       )}
 

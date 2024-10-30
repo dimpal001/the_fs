@@ -57,8 +57,10 @@ export async function GET(request) {
   const userId = searchParams.get('userId')
   const isHeroPost = searchParams.get('isHeroPost')
   const type = searchParams.get('type')
-  const status = searchParams.get('status')
 
+  const status = searchParams.get('status')
+  const categoryId = searchParams.get('categoryId')
+  const searchQuery = searchParams.get('searchQuery')
   const page = parseInt(searchParams.get('page') || '1', 10)
   const limit = parseInt(searchParams.get('limit') || '10', 10)
   const offset = (page - 1) * limit
@@ -94,6 +96,7 @@ export async function GET(request) {
       return NextResponse.json(post, { status: 200 })
     }
 
+    // Single Post based on slug
     if (slug) {
       if (status === 'view') {
         await db.query(
@@ -151,11 +154,7 @@ export async function GET(request) {
       return NextResponse.json(posts, { status: 200 })
     }
 
-    // Count total posts
-    const [[{ totalPosts }]] = await db.query(
-      `SELECT COUNT(*) as totalPosts FROM BlogPosts`
-    )
-
+    // Return hero post
     if (isHeroPost) {
       const [posts] = await db.query(
         `SELECT BlogPosts.*, Users.name as author_name, Users.email as author_email, Users.image_url as author_image
@@ -192,9 +191,14 @@ export async function GET(request) {
       )
     }
 
+    // All posts
+    // Count total posts
+    const [[{ totalPosts }]] = await db.query(
+      `SELECT COUNT(*) as totalPosts FROM BlogPosts`
+    )
+
     const totalPages = Math.ceil(totalPosts / limit)
 
-    // All posts
     const [posts] = await db.query(
       `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.slug, BlogPosts.status, BlogPosts.image_url, BlogPosts.category_ids, Users.name as author_name, Users.email as author_email
        FROM BlogPosts
