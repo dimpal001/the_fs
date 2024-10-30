@@ -36,12 +36,10 @@ const UserProfileModal = ({ isOpen, onClose, id }) => {
   }, [id])
 
   return (
-    <Modal size={'sm'} isOpen={isOpen}>
+    <Modal size={'md'} isOpen={isOpen}>
       <ModalHeader>
         <ModalCloseButton onClick={onClose} />
-        <h2 className='text-lg capitalize font-bold'>
-          {userDetails?.role} Profile
-        </h2>
+        <h2 className='text-lg capitalize font-bold'>Profile details</h2>
       </ModalHeader>
       <ModalBody>
         {loading ? (

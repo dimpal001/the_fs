@@ -29,8 +29,16 @@ export async function GET(request) {
       )
       const totalPages = Math.ceil(totalUsers / limit)
 
+      // Fetch users along with the number of posts they have made
       const [users] = await db.query(
-        `SELECT * FROM Users  ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`
+        `
+        SELECT Users.*, COUNT(BlogPosts.id) as totalPosts 
+        FROM Users
+        LEFT JOIN BlogPosts ON BlogPosts.author_id = Users.id
+        GROUP BY Users.id
+        ORDER BY Users.created_at DESC
+        LIMIT ${limit} OFFSET ${offset}
+        `
       )
 
       return NextResponse.json(
@@ -43,6 +51,7 @@ export async function GET(request) {
       )
     }
   } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { message: 'Error fetching Users' },
       { status: 500 }
@@ -126,14 +135,6 @@ export async function DELETE(request) {
   const token = request.cookies.get('token')
   if (!token) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
-  }
-  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
-
-  if (decoded.role !== 'admin') {
-    return NextResponse.json(
-      { message: 'Unauthorized access!.' },
-      { status: 403 }
-    )
   }
 
   try {

@@ -169,10 +169,11 @@ const UserManagement = () => {
         <table className='min-w-full table-auto bg-white shadow-md rounded-sm'>
           <thead>
             <tr className='bg-gray-200'>
-              <th className='px-4 py-2 text-start'>Email</th>
+              {/* <th className='px-4 py-2 text-start'>Email</th> */}
               <th className='px-4 py-2 text-start'>Name</th>
               <th className='px-4 py-2 text-start'>Joined</th>
               <th className='px-4 py-2 text-start'>Role</th>
+              <th className='px-4 py-2 text-start'>Posts</th>
               <th className='px-4 py-2 text-start'></th>
               <th className='px-4 py-2 text-start'></th>
               <th className='px-4 py-2 text-end'>Actions</th>
@@ -186,7 +187,7 @@ const UserManagement = () => {
                   user?.id === fetchUser?.id && 'bg-teal-50 '
                 }`}
               >
-                <td
+                {/* <td
                   onClick={() => {
                     setIsUserModalOpen(true)
                     setSelectedId(fetchUser.id)
@@ -194,7 +195,7 @@ const UserManagement = () => {
                   className='px-4 py-2 hover:text-first hover:underline cursor-pointer'
                 >
                   {fetchUser.email}
-                </td>
+                </td> */}
                 <td
                   onClick={() => {
                     setIsUserModalOpen(true)
@@ -208,6 +209,9 @@ const UserManagement = () => {
                   {new Date(fetchUser.created_at).toLocaleDateString()}
                 </td>
                 <td className='px-4 py-2 capitalize'>{fetchUser.role}</td>
+                <td className='px-4 py-2 capitalize'>
+                  {fetchUser?.totalPosts}
+                </td>
                 <td className='px-4 py-2 text-sm text-zinc-400 capitalize'>
                   {!fetchUser.is_active && 'This account is deactivated'}
                 </td>
