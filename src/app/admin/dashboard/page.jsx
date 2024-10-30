@@ -62,7 +62,7 @@ const HeroPostManagement = dynamic(
 )
 
 const AdminDashboard = () => {
-  const [activeSection, setActiveSection] = useState('users')
+  const [activeSection, setActiveSection] = useState('posts')
   const [showDrawer, setShowDrawer] = useState(true)
   const { user, setUser } = useUserContext()
   const [loading, setLoading] = useState(true)
