@@ -57,11 +57,6 @@ const Footer = () => {
                   Contact Us
                 </Link>
               </li>
-              <li>
-                <Link href='/faq' className='hover:text-gray-400'>
-                  FAQ
-                </Link>
-              </li>
             </ul>
           </div>
 
