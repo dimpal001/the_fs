@@ -43,12 +43,12 @@ const BlogPostCard = ({ title, imageUrl, post, onClick }) => {
           <p>{post?.replies} Replies</p>
         </div>
         {/* Title  */}
-        <h3
+        <h2
           onClick={handleClick}
           className='text-lg cursor-pointer lg:py-2 lg:text-xl font-semibold'
         >
           {post?.title}
-        </h3>
+        </h2>
 
         {/* Content  */}
         <p className='text-base text-gray-600'>{stripHtml(post?.content)}...</p>

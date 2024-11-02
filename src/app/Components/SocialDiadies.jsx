@@ -21,11 +21,7 @@ const SocialDiadies = () => {
         <Link href={'https://www.instagram.com'}>
           <InstagramIcon />
         </Link>
-        <Link
-          href={
-            'https://www.facebook.com/people/The-Fashion-Salad/61567652667493/'
-          }
-        >
+        <Link href={'https://www.facebook.com/profile.php?id=61567652667493'}>
           <FacebookIcon />
         </Link>
         <Link href={'https://www.x.com'}>

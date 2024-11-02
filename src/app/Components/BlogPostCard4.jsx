@@ -1,7 +1,5 @@
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import ProfileCard from './ProfileCard'
-import { ChevronsRight } from 'lucide-react'
 import { blogUrl } from './url'
 import Link from 'next/link'
 
@@ -45,12 +43,12 @@ const BlogPostCard4 = ({ title, imageUrl, post, onClick }) => {
         </p>
 
         {/* Title  */}
-        <h3
+        <h2
           onClick={handleClick}
           className='text-lg hover:text-first cursor-pointer lg:py-3 lg:text-xl font-semibold'
         >
           {post?.title}
-        </h3>
+        </h2>
 
         {/* Content  */}
         <p className='text-base text-gray-600'>{stripHtml(post?.content)}...</p>
