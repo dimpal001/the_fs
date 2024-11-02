@@ -128,14 +128,14 @@ const HomePage = () => {
       <div className='overflow-hidden'>
         <Helmet>
           <title>The Fashion Salad - Fashion blog</title>
-          <meta
+          {/* <meta
             name='description'
             content='Discover the latest fashion trends and style tips from our blog. Stay upto-date with the hottest styles in fashion, beauty, lifestyle, and wellness. Explore now'
           />
           <meta
             name='keywords'
             content='fashion, blogs, fashion blogs, beauty, lifestyle, trends, tips, sustainable fashion, vintage fashion, fashion blog'
-          />
+          /> */}
 
           {/* Open Graph / Facebook */}
           <meta
