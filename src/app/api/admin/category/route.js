@@ -10,14 +10,6 @@ export async function POST(request) {
   if (!token) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
-  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
-
-  if (decoded.role !== 'admin') {
-    return NextResponse.json(
-      { message: 'Unauthorized access!.' },
-      { status: 403 }
-    )
-  }
 
   try {
     const { name } = await request.json()
@@ -116,14 +108,7 @@ export async function PATCH(request) {
   if (!token) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
-  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
 
-  if (decoded.role !== 'admin') {
-    return NextResponse.json(
-      { message: 'Unauthorized access!.' },
-      { status: 403 }
-    )
-  }
   try {
     const body = await request.json()
     const { id, name } = body
@@ -183,14 +168,7 @@ export async function DELETE(request) {
   if (!token) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
-  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
 
-  if (decoded.role !== 'admin') {
-    return NextResponse.json(
-      { message: 'Unauthorized access!.' },
-      { status: 403 }
-    )
-  }
   try {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')

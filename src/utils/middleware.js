@@ -14,8 +14,6 @@ export function middleware(request) {
     }
 
     try {
-      const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
-
       return NextResponse.next()
     } catch (error) {
       return NextResponse.redirect(new URL('/login', url.origin))
@@ -26,5 +24,5 @@ export function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/admin/:path*', '/api/admin/:path*'],
+  matcher: ['/admin/:path*'],
 }
