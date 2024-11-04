@@ -18,7 +18,7 @@ const SocialDiadies = () => {
         On our social networks
       </p>
       <div className='flex justify-center w-full'>
-        <Link href={'https://www.instagram.com'}>
+        <Link href={'https://www.instagram.com/thefashionsalad_blog/'}>
           <InstagramIcon />
         </Link>
         <Link href={'https://www.facebook.com/profile.php?id=61567652667493'}>
