@@ -75,6 +75,10 @@ const CategoryBlog = ({ params }) => {
         <title className='capitalize'>
           {categoryName || 'Blog category - The fashion salad'}
         </title>
+        <meta
+          name='description'
+          content="Shop the latest collection of men’s, women's and kid's clothes at The Fashion Salad. Find the perfect fit for every style, from wedding dress to festivals."
+        />
       </Helmet>
 
       <div>
