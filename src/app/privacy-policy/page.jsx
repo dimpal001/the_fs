@@ -1,51 +1,23 @@
-'use client'
-
-import { useEffect, useState } from 'react'
+// src/app/about/page.server.jsx
 import axios from 'axios'
-import Loading from '../Components/Loading'
-import { Helmet } from 'react-helmet'
+import PrivacyPolicyPage from './PrivacyPolicy'
 
-const PrivacyPolicyPage = () => {
-  const [content, setContent] = useState('')
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-
-  useEffect(() => {
-    const fetchPrivacyPolicyData = async () => {
-      try {
-        const response = await axios.get('/api/privacy-policy')
-        setContent(response.data.content)
-      } catch (err) {
-        setError('Failed to fetch data')
-      } finally {
-        setLoading(false)
-      }
-    }
-
-    fetchPrivacyPolicyData()
-  }, [])
-
-  if (loading) {
-    return <Loading />
+const fetchPrivacyPolicyData = async () => {
+  try {
+    const response = await axios.get(
+      'https://thefashionsalad.com/api/privacy-policy'
+    )
+    return response.data.content
+  } catch (err) {
+    console.error(err)
+    return ''
   }
-
-  if (error) {
-    return <div>{error}</div>
-  }
-
-  return (
-    <div className='p-5 container mx-auto lg:px-56'>
-      <Helmet>
-        <title>Privacy Policy - The Fashion Salad</title>
-      </Helmet>
-      <h1 className='text-4xl lg:text-6xl py-4 font-bold mb-4 text-center'>
-        Privacy Policy
-      </h1>
-      <p className='lg:leading-[35px] leading-7 tracking-wide'>
-        <div dangerouslySetInnerHTML={{ __html: content }} />
-      </p>
-    </div>
-  )
 }
 
-export default PrivacyPolicyPage
+const AboutServerPage = async () => {
+  const initialContent = await fetchPrivacyPolicyData()
+
+  return <PrivacyPolicyPage initialContent={initialContent} />
+}
+
+export default AboutServerPage
