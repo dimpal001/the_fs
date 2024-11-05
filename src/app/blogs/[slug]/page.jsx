@@ -5,8 +5,6 @@ import axios from 'axios'
 export default async function Page({ params }) {
   const { slug } = params
 
-  console.log(slug)
-
   let post
 
   try {
@@ -22,7 +20,6 @@ export default async function Page({ params }) {
       return { notFound: true }
     }
   } catch (error) {
-    console.error(error)
     return { notFound: true }
   }
 
@@ -39,7 +36,12 @@ export default async function Page({ params }) {
         <title>{title}</title>
         <meta property='og:title' content={title} />
         <meta property='og:description' content={description} />
-        <meta property='og:image' content={image_url} />
+        <meta
+          property='og:image'
+          content={
+            'https://cdn.thefashionsalad.com/blog-post-images/' + image_url
+          }
+        />
         <meta
           property='og:url'
           content={`https://www.thefashionsalad.com/blogs/${slug}`}
