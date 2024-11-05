@@ -132,11 +132,15 @@ const BlogPostPage = ({ post, slug }) => {
   }, [])
 
   function extractPlainText(html) {
+    if (typeof document === 'undefined') {
+      // Return an empty string or handle differently if on the server
+      return ''
+    }
+
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = html
 
     const plainText = tempDiv.textContent || tempDiv.innerText || ''
-
     return plainText.trim()
   }
 
