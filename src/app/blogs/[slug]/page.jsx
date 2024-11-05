@@ -1,30 +1,41 @@
 import BlogPostPage from './BlogPostPage'
 import axios from 'axios'
 
-export const metadata = async ({ params }) => {
-  const { slug } = params
-
-  let post
-
-  try {
-    const response = await axios.get(
-      `https://www.thefashionsalad.com/api/posts/`,
-      {
-        params: { slug, status: 'view' },
-      }
-    )
-    post = response.data.post
-
-    if (!post) {
-      return { notFound: true }
+// Function to fetch post data
+async function fetchPost(slug) {
+  const response = await axios.get(
+    `https://www.thefashionsalad.com/api/posts/`,
+    {
+      params: { slug, status: 'view' },
     }
-  } catch (error) {
-    return { notFound: true }
+  )
+  return response.data.post
+}
+
+// Generate metadata for the page
+export async function generateMetadata({ params }) {
+  const { slug } = params
+  const post = await fetchPost(slug)
+
+  if (!post) {
+    return {
+      title: 'Post not found',
+      description: 'This post does not exist.',
+      openGraph: {
+        title: 'Post not found',
+        description: 'This post does not exist.',
+      },
+    }
   }
 
   const { title, content, image_url, tags } = post
   const description =
     content.substring(0, 250) + (content.length > 250 ? '...' : '')
+
+  const ogImageUrl = image_url
+    ? `https://cdn.thefashionsalad.com/blog-post-images/${image_url}`
+    : 'https://cdn.thefashionsalad.com/logos/logo-20241022T042118571Z-TheFashionSalad(3).png'
+
   const keywords = tags.join(', ')
 
   return {
@@ -35,40 +46,23 @@ export const metadata = async ({ params }) => {
       title,
       description,
       url: `https://www.thefashionsalad.com/blogs/${slug}`,
-      type: 'article',
       images: [
         {
-          url: 'https://cdn.thefashionsalad.com/blog-post-images/' + image_url,
+          url: ogImageUrl,
         },
       ],
     },
   }
 }
 
+// Main component
 export default async function Page({ params }) {
   const { slug } = params
+  const post = await fetchPost(slug)
 
-  let post
-
-  try {
-    const response = await axios.get(
-      `https://www.thefashionsalad.com/api/posts/`,
-      {
-        params: { slug, status: 'view' },
-      }
-    )
-    post = response.data.post
-
-    if (!post) {
-      return { notFound: true }
-    }
-  } catch (error) {
+  if (!post) {
     return { notFound: true }
   }
 
-  return (
-    <>
-      <BlogPostPage post={post} slug={slug} />
-    </>
-  )
+  return <BlogPostPage post={post} slug={slug} />
 }
