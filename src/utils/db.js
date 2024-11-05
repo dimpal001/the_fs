@@ -1,26 +1,34 @@
 import mysql from 'mysql2/promise'
 
-let connection
+let pool
 
 export const connectToDatabase = async () => {
-  if (!connection) {
+  if (!pool) {
     try {
-      connection = await mysql.createConnection({
+      pool = mysql.createPool({
         host: process.env.DB_HOST,
         user: process.env.DB_USER,
         password: process.env.DB_PASS,
         database: process.env.DB_NAME,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
       })
     } catch (error) {
-      throw new Error('Could not connect to the database')
+      throw new Error('Could not create a connection pool')
     }
   }
-  return connection
+  return pool
 }
 
 export const db = {
   query: async (queryString, params) => {
-    const conn = await connectToDatabase() // Ensure connection
-    return conn.execute(queryString, params)
+    const pool = await connectToDatabase() // Ensure pool is ready
+    try {
+      const [rows] = await pool.execute(queryString, params)
+      return rows
+    } catch (error) {
+      throw new Error(`Query failed: ${error.message}`)
+    }
   },
 }
