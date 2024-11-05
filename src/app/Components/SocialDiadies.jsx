@@ -27,7 +27,7 @@ const SocialDiadies = () => {
         <Link href={'https://www.x.com'}>
           <TwitterIcon />
         </Link>
-        <Link href={'https://www.pinterest.com'}>
+        <Link href={'https://in.pinterest.com/thefashionsalad/'}>
           <PinterestIcon />
         </Link>
         <Link href={'https://www.flipboard.com'}>
