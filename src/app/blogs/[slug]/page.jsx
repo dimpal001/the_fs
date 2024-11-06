@@ -55,14 +55,25 @@ export async function generateMetadata({ params }) {
   }
 }
 
+const fetchReplies = async (postId) => {
+  try {
+    const response = await axios.get(`/api/replies`, {
+      params: { blog_post_id: postId },
+    })
+    return response.data
+  } catch (error) {}
+}
+
 // Main component
 export default async function Page({ params }) {
   const { slug } = params
   const post = await fetchPost(slug)
 
+  const replies = await fetchPost(post?.id)
+
   if (!post) {
     return { notFound: true }
   }
 
-  return <BlogPostPage post={post} slug={slug} />
+  return <BlogPostPage post={post} slug={slug} allReplies={replies} />
 }
