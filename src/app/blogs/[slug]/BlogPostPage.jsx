@@ -93,6 +93,7 @@ const BlogPostPage = ({ post, slug }) => {
   useEffect(() => {
     handleFetchCategories()
     // handleFetchBlogPost(slug)
+    fetchReplies()
   }, [slug])
 
   // Fetch replies for the current post
