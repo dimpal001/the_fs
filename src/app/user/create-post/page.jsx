@@ -385,6 +385,7 @@ const CreatePost = () => {
           className='editor-content leading-[26px]'
           dangerouslySetInnerHTML={{ __html: content }}
         />
+        <p>{content}</p>
       </div>
 
       {showCropModal && (

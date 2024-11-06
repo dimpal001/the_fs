@@ -1,3 +1,4 @@
+import React, { useEffect, useRef, useState } from 'react'
 import { useEditor, EditorContent } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 import {
@@ -14,7 +15,6 @@ import BulletList from '@tiptap/extension-bullet-list'
 import OrderedList from '@tiptap/extension-ordered-list'
 import Image from '@tiptap/extension-image'
 import Link from '@tiptap/extension-link'
-import React, { useEffect, useRef, useState } from 'react'
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import { enqueueSnackbar } from 'notistack'
 
@@ -32,7 +32,7 @@ const MenuBar = ({ editor, images }) => {
     },
   })
 
-  const handleImageUplaod = async (fileName, file) => {
+  const handleImageUpload = async (fileName, file) => {
     const params = {
       Bucket: 'the-fashion-salad',
       Key: `blog-post-images/${fileName}`,
@@ -54,20 +54,15 @@ const MenuBar = ({ editor, images }) => {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0]
-
-    if (!file) {
-      return
-    }
+    if (!file) return
 
     const sanitizedFileName = file.name.replace(/\s+/g, '')
     const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
     const customFileName = `blog-${timestamp}-${sanitizedFileName}`
 
-    // Get the file extension and convert it to lowercase
     const validExtensions = ['jpg', 'jpeg', 'png', 'webp']
     const fileExtension = file.name.split('.').pop().toLowerCase()
 
-    // Check if the file extension is valid
     if (!validExtensions.includes(fileExtension)) {
       enqueueSnackbar(
         'Please upload a valid image file (jpg, jpeg, png, webp).',
@@ -76,7 +71,7 @@ const MenuBar = ({ editor, images }) => {
       return
     }
 
-    handleImageUplaod(customFileName, file)
+    handleImageUpload(customFileName, file)
   }
 
   const handleLink = () => {
@@ -164,6 +159,11 @@ const MenuBar = ({ editor, images }) => {
 
 const CustomEditor = ({ value, onChange, images }) => {
   const [isClient, setIsClient] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [altText, setAltText] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null)
+  const [dialogPosition, setDialogPosition] = useState({ top: 0, left: 0 })
+  const dialogRef = useRef(null)
 
   useEffect(() => {
     setIsClient(true)
@@ -178,34 +178,57 @@ const CustomEditor = ({ value, onChange, images }) => {
           levels: [2],
         },
       }),
-      BulletList.configure({
-        HTMLAttributes: {
-          class: 'list-disc ml-2',
+      BulletList.configure({ HTMLAttributes: { class: 'list-disc ml-2' } }),
+      OrderedList.configure({ HTMLAttributes: { class: 'list-decimal ml-2' } }),
+      Image.extend({
+        addNodeView() {
+          return ({ node, getPos }) => {
+            const img = document.createElement('img')
+            img.src = node.attrs.src
+            img.alt = node.attrs.alt || ''
+
+            img.onclick = (event) => {
+              const rect = event.target.getBoundingClientRect()
+              setDialogPosition({
+                top: rect.top + window.scrollY + 10,
+                left: rect.left + window.scrollX + 10,
+              })
+              setSelectedImage({ src: node.attrs.src, pos: getPos() })
+              setAltText(node.attrs.alt || '')
+              setIsDialogOpen(true)
+            }
+
+            return {
+              dom: img,
+              contentDOM: null,
+              update: (updatedNode) => {
+                img.src = updatedNode.attrs.src
+                img.alt = updatedNode.attrs.alt || ''
+                return true
+              },
+            }
+          }
         },
-      }),
-      OrderedList.configure({
-        HTMLAttributes: {
-          class: 'list-decimal ml-2',
-        },
-      }),
-      Image.configure({
-        HTMLAttributes: {
-          class: 'p-3 mx-auto w-[75%] max-md:w-full',
-        },
-        inline: true,
       }),
       Link.configure({
         defaultProtocol: 'https',
         linkOnPaste: true,
-        HTMLAttributes: {
-          class: 'text-first underline',
-        },
+        HTMLAttributes: { class: 'text-first underline' },
       }),
     ],
-    content: value || '', // Ensure initial content is set
+    content: value || '',
     editorProps: {
-      attributes: {
-        class: 'p-3 focus:outline-none',
+      attributes: { class: 'p-3 focus:outline-none' },
+      handleDOMEvents: {
+        click: (view, event) => {
+          const target = event.target
+          if (target.tagName === 'IMG') {
+            setSelectedImage(target)
+            setAltText(target.alt || '')
+            setIsDialogOpen(true)
+          }
+          return false
+        },
       },
     },
     immediatelyRender: false,
@@ -225,24 +248,109 @@ const CustomEditor = ({ value, onChange, images }) => {
     }
   }, [editor, onChange])
 
-  // Update the editor content when the value prop changes
   useEffect(() => {
     if (editor && value !== editor.getHTML()) {
-      editor.commands.setContent(value || '') // Set content when value changes
+      editor.commands.setContent(value || '')
     }
   }, [editor, value])
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dialogRef.current && !dialogRef.current.contains(event.target)) {
+        // setSelectedImage(null)
+        setIsDialogOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [])
+
+  const handleAltTextSave = () => {
+    if (selectedImage) {
+      const { state, dispatch } = editor.view
+      const { doc } = state
+
+      let imagePos = null
+
+      // Traverse the document to find the current image position
+      doc.descendants((node, pos) => {
+        if (
+          node.type.name === 'image' &&
+          node.attrs.src === selectedImage.src
+        ) {
+          imagePos = pos
+          return false // Stop traversal once found
+        }
+      })
+
+      if (imagePos !== null) {
+        editor
+          .chain()
+          .focus()
+          .command(({ tr }) => {
+            tr.setNodeMarkup(imagePos, undefined, {
+              src: selectedImage.src,
+              alt: altText,
+            })
+            dispatch(tr)
+            return true
+          })
+          .run()
+
+        setSelectedImage(null)
+        setIsDialogOpen(false)
+      } else {
+        console.warn('Image not found in the document.')
+      }
+    }
+  }
 
   if (!isClient) return null
 
   return (
     <div className='w-full'>
       <MenuBar images={images} editor={editor} />
-
       <EditorContent
         editor={editor}
-        className='min-h-[150px] editor-content mt-2 bg-white border border-dotted border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
-                   resize-none leading-[26px] text-base text-gray-800 placeholder-gray-400'
+        className='min-h-[150px] editor-content mt-2 bg-white border border-dotted border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none leading-[26px] text-base text-gray-800 placeholder-gray-400'
       />
+
+      {isDialogOpen && selectedImage && (
+        <div
+          ref={dialogRef}
+          className='absolute z-50 p-3 border border-gray-300 bg-white shadow-lg rounded-md'
+          style={{
+            top: dialogPosition.top,
+            left: dialogPosition.left,
+          }}
+        >
+          <label className='block mb-2 text-sm font-medium text-gray-700'>
+            Alt Text:
+          </label>
+          <input
+            type='text'
+            className='w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500'
+            value={altText}
+            onChange={(e) => setAltText(e.target.value)}
+          />
+          <div className='mt-3 flex justify-end gap-2'>
+            <button
+              className='px-3 py-1 text-sm bg-gray-200 rounded-md'
+              onClick={() => setSelectedImage(null)}
+            >
+              Cancel
+            </button>
+            <button
+              className='px-3 py-1 text-sm bg-blue-500 text-white rounded-md'
+              onClick={handleAltTextSave}
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
