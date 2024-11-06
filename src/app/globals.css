@@ -36,6 +36,11 @@ body {
   height: 1rem;
 }
 
+.editor-content a {
+  text-decoration: underline;
+  font-weight: 600;
+}
+
 :root {
   --font-rozha: 'Rozha Vihar', serif;
   --font-coiny: 'Coiny', cursive;
