@@ -17,12 +17,12 @@ import DataNotFound from '@/app/Components/DataNotFound'
 import ImageModal from '@/app/Components/ImageModal'
 import { blogUrl } from '@/app/Components/url'
 
-const BlogPostPage = ({ post, allReplies }) => {
+const BlogPostPage = ({ post }) => {
   const { user } = useUserContext()
   const [loading, setLoading] = useState(false)
   const [notfound, setNotfound] = useState(false)
   const [imageModalOpen, setImageModalOpen] = useState(false)
-  const [replies, setReplies] = useState(allReplies)
+  const [replies, setReplies] = useState([])
   const [relatedPosts, setRelatedPosts] = useState([])
   const [categories, setCategories] = useState([])
   const router = useRouter()
@@ -92,8 +92,7 @@ const BlogPostPage = ({ post, allReplies }) => {
 
   useEffect(() => {
     handleFetchCategories()
-    // handleFetchBlogPost(slug)
-    fetchReplies()
+    fetchReplies(post?.id)
   }, [])
 
   // Fetch replies for the current post
