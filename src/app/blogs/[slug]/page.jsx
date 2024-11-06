@@ -57,9 +57,12 @@ export async function generateMetadata({ params }) {
 
 const fetchReplies = async (postId) => {
   try {
-    const response = await axios.get(`/api/replies`, {
-      params: { blog_post_id: postId },
-    })
+    const response = await axios.get(
+      `https://www.thefashionsalad.com/api/replies`,
+      {
+        params: { blog_post_id: postId },
+      }
+    )
     return response.data
   } catch (error) {}
 }
