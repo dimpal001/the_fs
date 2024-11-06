@@ -72,6 +72,7 @@ const ReplyManagement = () => {
           )
         )
         filterReplies(filterStatus)
+        handleFetchReplies()
       } catch (error) {
         enqueueSnackbar(error.response.data.message, { variant: 'error' })
       }
@@ -241,10 +242,10 @@ const ReplyManagement = () => {
                   </button>
                   <button
                     title='Approve'
+                    disabled={reply.is_approved}
                     onClick={() => handleApproveReply(reply)}
                     className={`${
-                      reply.status === 'approved' &&
-                      'opacity-50 cursor-not-allowed'
+                      reply.is_approved && 'opacity-50'
                     } bg-green-500 text-white px-4 py-1 rounded-sm`}
                   >
                     Approve

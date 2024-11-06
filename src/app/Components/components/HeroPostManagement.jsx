@@ -76,6 +76,7 @@ const HeroPostManagement = () => {
       })
       enqueueSnackbar(response.data.message, { variant: 'success' })
       handleFetchHeroPosts()
+      handleFetchPosts(currentPage)
     } catch (error) {
       enqueueSnackbar(error?.response?.data?.message, { variant: 'error' })
     }
@@ -188,7 +189,10 @@ const HeroPostManagement = () => {
           </thead>
           <tbody>
             {filteredPosts.map((post) => (
-              <tr key={post.id}>
+              <tr
+                key={post.id}
+                className={`${post.isHeroPost === 1 && 'hidden'}`}
+              >
                 <td className='px-4 py-2'>{post.title}</td>
                 <td className='px-4 py-2'>{post.author_name}</td>
                 {/* <td className='px-4 py-2 capitalize'>{post.status}</td> */}

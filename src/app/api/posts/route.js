@@ -168,6 +168,12 @@ export async function GET(request) {
     }
 
     if (type) {
+      // All posts
+      // Count total posts
+      const [[{ totalPosts }]] = await db.query(
+        `SELECT COUNT(*) as totalPosts FROM BlogPosts`
+      )
+
       const totalPages = Math.ceil(totalPosts / limit)
 
       // All posts
@@ -217,6 +223,7 @@ export async function GET(request) {
       { status: 200 }
     )
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ error: 'Error fetching post' }, { status: 500 })
   }
 }
