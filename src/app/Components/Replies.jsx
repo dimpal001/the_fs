@@ -57,6 +57,29 @@ const Replies = ({ replies, postId }) => {
     } catch (error) {}
   }
 
+  const renderLink = (text) => {
+    const urlRegex = /https?:\/\/[^\s]+/g // Regex to match URLs
+    return text.split(urlRegex).map((part, index) => {
+      const matchedUrl = text.match(urlRegex)
+      if (matchedUrl && matchedUrl[index]) {
+        return (
+          <span key={index}>
+            {part}
+            <a
+              href={matchedUrl[index]}
+              target='_blank'
+              rel='noopener noreferrer'
+              style={{ color: 'blue', textDecoration: 'underline' }}
+            >
+              {matchedUrl[index]}
+            </a>
+          </span>
+        )
+      }
+      return part
+    })
+  }
+
   // Hide popup when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -87,7 +110,7 @@ const Replies = ({ replies, postId }) => {
               {new Date(reply.created_at).toDateString()}
             </p>
           </div>
-          <p className='text-xs'>{reply.content}</p>
+          <p className='text-xs'>{renderLink(reply.content)}</p>
           <button
             title='Reply'
             className='text-blue-600 text-xs mt-2'
@@ -164,7 +187,9 @@ const Replies = ({ replies, postId }) => {
                     {new Date(reply.created_at).toDateString()}
                   </p>
                 </div>
-                <p className='lg:text-sm mt-1 text-xs'>{reply.content}</p>
+                <p className='lg:text-sm mt-1 text-xs'>
+                  {renderLink(reply.content)}
+                </p>
 
                 {/* Reply button */}
                 <button
