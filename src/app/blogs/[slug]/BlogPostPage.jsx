@@ -94,7 +94,7 @@ const BlogPostPage = ({ post, slug }) => {
     handleFetchCategories()
     // handleFetchBlogPost(slug)
     fetchReplies()
-  }, [slug])
+  }, [])
 
   // Fetch replies for the current post
   const fetchReplies = async (postId) => {
