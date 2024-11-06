@@ -198,7 +198,7 @@ const CustomEditor = ({ value, onChange, images }) => {
         defaultProtocol: 'https',
         linkOnPaste: true,
         HTMLAttributes: {
-          class: 'text-first hover:underline',
+          class: 'text-first underline',
         },
       }),
     ],
