@@ -394,24 +394,11 @@ const EditPost = () => {
           Post Preview
         </p>
         <p className='font-semibold pb-4 text-3xl'>{title}</p>
-        {/* {thumbnail && (
-          <Image
-            src={thumbnail}
-            alt='Thumbnail preview'
-            className='mb-4 rounded-lg'
-            width={300}
-            height={150}
-            layout='responsive'
-          />
-        )} */}
-        {/* <p>
-          {images.length > 0 &&
-            images.map((item, index) => <span key={index}>{item}</span>)}
-        </p> */}
         <div
           className='editor-content'
           dangerouslySetInnerHTML={{ __html: content }}
         />
+        <p>{content}</p>
         {showCropModal && (
           <ImageCropper
             isOpen={true}

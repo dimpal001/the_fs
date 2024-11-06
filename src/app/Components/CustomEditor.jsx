@@ -187,7 +187,13 @@ const CustomEditor = ({ value, onChange, images }) => {
             img.src = node.attrs.src
             img.alt = node.attrs.alt || ''
 
+            img.onload = () => {
+              // Ensure image is loaded before rendering
+              editor.commands.updateImageNode(node, img)
+            }
+
             img.onclick = (event) => {
+              // Handle image click for editing alt text
               const rect = event.target.getBoundingClientRect()
               setDialogPosition({
                 top: rect.top + window.scrollY + 10,
@@ -209,6 +215,11 @@ const CustomEditor = ({ value, onChange, images }) => {
             }
           }
         },
+      }).configure({
+        HTMLAttributes: {
+          class: 'p-3 mx-auto w-[75%] max-md:w-full',
+        },
+        inline: true,
       }),
       Link.configure({
         defaultProtocol: 'https',
