@@ -51,8 +51,8 @@ export async function POST(request) {
 
     // Successful creation
     return NextResponse.json(
-      { message: 'Reply created successfully' },
-      { status: 201 }
+      { message: 'Reply has been sent! Please wait for approval' },
+      { status: 200 }
     )
   } catch (error) {
     return NextResponse.json(

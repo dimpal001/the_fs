@@ -50,6 +50,10 @@ const Replies = ({ replies, postId }) => {
         link: externalLink || null,
       })
 
+      if (response.status === 200) {
+        enqueueSnackbar(response.data.message, { variant: 'success' })
+      }
+
       setReplyContent('')
       setExternalLink('')
       setReplyToId(null)
