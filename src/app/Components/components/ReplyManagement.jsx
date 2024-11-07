@@ -68,7 +68,7 @@ const ReplyManagement = () => {
         enqueueSnackbar(response.data.message, { variant: 'success' })
         setReplies((prevReplies) =>
           prevReplies.map((item) =>
-            item.id === reply.id ? { ...item, status: 'approved' } : item
+            item.id === reply.id ? { ...item, is_approved: 1 } : item
           )
         )
         filterReplies(filterStatus)
@@ -115,10 +115,12 @@ const ReplyManagement = () => {
     filterReplies(status)
   }
 
-  const filterReplies = (is_approved) => {
+  const filterReplies = (status) => {
     let filtered = replies
-    if (is_approved !== 'all') {
-      filtered = replies.filter((reply) => reply.is_approved === is_approved)
+    if (status === 'approved') {
+      filtered = replies.filter((reply) => reply.is_approved === 1) // Checking for approved (1)
+    } else if (status === 'pending') {
+      filtered = replies.filter((reply) => reply.is_approved === 0) // Checking for pending (0)
     }
     setFilteredReplies(filtered)
   }
