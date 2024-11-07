@@ -110,7 +110,9 @@ const Replies = ({ replies, postId }) => {
               {new Date(reply.created_at).toDateString()}
             </p>
           </div>
-          <p className='text-xs'>{renderLink(reply.content)}</p>
+          <p className='text-xs'>
+            <div dangerouslySetInnerHTML={{ __html: reply.content }} />
+          </p>
           <button
             title='Reply'
             className='text-blue-600 text-xs mt-2'
@@ -188,7 +190,7 @@ const Replies = ({ replies, postId }) => {
                   </p>
                 </div>
                 <p className='lg:text-sm mt-1 text-xs'>
-                  {renderLink(reply.content)}
+                  <div dangerouslySetInnerHTML={{ __html: reply.content }} />
                 </p>
 
                 {/* Reply button */}
