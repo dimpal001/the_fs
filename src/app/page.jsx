@@ -40,7 +40,11 @@ const Page = async () => {
   const latestPosts = await handleFetchLatestPosts()
 
   // Pass data to client-only HomePage
-  return <HomePage heroPost={heroPosts} latestPost={latestPosts} />
+  return (
+    <div className='min-h-[500px]'>
+      <HomePage heroPost={heroPosts} latestPost={latestPosts} />
+    </div>
+  )
 }
 
 export default Page

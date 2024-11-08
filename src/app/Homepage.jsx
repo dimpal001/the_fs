@@ -237,12 +237,20 @@ const HomePage = ({ heroPost, latestPost }) => {
           className='p-10 lg:-mt-16 lg:p-16 max-md:p-5'
         >
           <div className='flex justify-between items-center'>
-            <Link href={`/category/${latestPosts[0]?.category_ids[0]}`}>
+            <Link
+              href={`/category/${
+                latestPosts && latestPosts[0]?.category_ids[0]
+              }`}
+            >
               <h2 className='text-6xl capitalize max-md:text-3xl font-[900]'>
                 Latest Blog Posts
               </h2>
             </Link>
-            <Link href={`/category/${latestPosts[0]?.category_ids[0]}`}>
+            <Link
+              href={`/category/${
+                latestPosts && latestPosts[0]?.category_ids[0]
+              }`}
+            >
               <ArrowRight
                 size={50}
                 className='cursor-pointer hover:text-first'
