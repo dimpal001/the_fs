@@ -11,7 +11,13 @@ module.exports = {
       },
       {
         userAgent: '*',
-        allow: '/',
+        allow: [
+          '/contact',
+          '/privacy-policy',
+          '/terms-and-condition',
+          '/favicon.ico',
+          '/blogs/*',
+        ],
       },
     ],
   },

@@ -8,7 +8,11 @@ Disallow: /context
 
 # *
 User-agent: *
-Allow: /
+Allow: /contact
+Allow: /privacy-policy
+Allow: /terms-and-condition
+Allow: /favicon.ico
+Allow: /blogs/*
 
 # Host
 Host: https://thefashionsalad.com
