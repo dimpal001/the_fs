@@ -215,10 +215,6 @@ const PostManagement = () => {
     setIsConfirmModalOpen(false)
   }
 
-  if (loading) {
-    return <Loading />
-  }
-
   return (
     <div>
       <div className='flex justify-between'>
