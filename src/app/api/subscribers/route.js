@@ -58,14 +58,6 @@ export async function GET(request) {
   if (!token) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
   }
-  const decoded = jwt.verify(token.value, process.env.JWT_SECRET)
-
-  if (decoded.role !== 'admin') {
-    return NextResponse.json(
-      { message: 'Unauthorized access!.' },
-      { status: 403 }
-    )
-  }
 
   const { searchParams } = new URL(request.url)
   const page = parseInt(searchParams.get('page') || '1', 10)

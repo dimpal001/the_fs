@@ -58,12 +58,17 @@ export async function GET(request) {
   const isHeroPost = searchParams.get('isHeroPost')
   const type = searchParams.get('type')
 
+  const categorySlug = searchParams.get('categorySlug')
+  const searchQuery = searchParams.get('searchQuery')
   const status = searchParams.get('status')
   const categoryId = searchParams.get('categoryId')
-  const searchQuery = searchParams.get('searchQuery')
   const page = parseInt(searchParams.get('page') || '1', 10)
   const limit = parseInt(searchParams.get('limit') || '10', 10)
   const offset = (page - 1) * limit
+
+  if (isNaN(limit) || isNaN(offset)) {
+    throw new Error('Limit and offset must be valid numbers')
+  }
 
   try {
     // Single post
@@ -168,7 +173,6 @@ export async function GET(request) {
     }
 
     if (type) {
-      // All posts
       // Count total posts
       const [[{ totalPosts }]] = await db.query(
         `SELECT COUNT(*) as totalPosts FROM BlogPosts`
@@ -197,21 +201,57 @@ export async function GET(request) {
       )
     }
 
-    // All posts
-    // Count total posts
-    const [[{ totalPosts }]] = await db.query(
-      `SELECT COUNT(*) as totalPosts FROM BlogPosts`
-    )
+    console.log('All post calling...')
+    console.log(categorySlug)
+    console.log(status)
+    console.log(searchQuery)
+
+    const queryBase = `
+    SELECT BlogPosts.id, BlogPosts.title, BlogPosts.slug, BlogPosts.status, BlogPosts.image_url, BlogPosts.category_ids,
+           Users.name AS author_name, Users.email AS author_email
+    FROM BlogPosts
+    JOIN Users ON BlogPosts.author_id = Users.id
+`
+
+    const filters = []
+    const params = []
+
+    // Apply filters based on request parameters
+    if (status) {
+      filters.push(`BlogPosts.status = ?`)
+      params.push(status)
+    }
+
+    if (categorySlug) {
+      filters.push(`JSON_CONTAINS(BlogPosts.category_ids, JSON_QUOTE(?))`)
+      params.push(categorySlug)
+    }
+
+    if (searchQuery) {
+      filters.push(`BlogPosts.title LIKE ?`)
+      params.push(`%${searchQuery}%`)
+    }
+
+    // Construct WHERE clause
+    const whereClause =
+      filters.length > 0 ? ` WHERE ${filters.join(' AND ')}` : ''
+
+    // Add ORDER BY, LIMIT, and OFFSET clauses
+    const mainQuery = `${queryBase} ${whereClause} ORDER BY BlogPosts.created_at DESC LIMIT ${limit} OFFSET ${offset}`
+
+    // Add `limit` and `offset` to `params` to safely parameterize them
+    // params.push(limit, offset)
+
+    // Total count query to get the number of filtered posts
+    const countQuery = `SELECT COUNT(*) AS totalPosts FROM BlogPosts ${whereClause}`
+
+    console.log(countQuery, params)
+    const [[{ totalPosts }]] = await db.query(countQuery, params) // Exclude limit/offset params for count query
+
+    console.log('Result : ', totalPosts)
 
     const totalPages = Math.ceil(totalPosts / limit)
-
-    const [posts] = await db.query(
-      `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.slug, BlogPosts.status, BlogPosts.image_url, BlogPosts.category_ids, Users.name as author_name, Users.email as author_email
-       FROM BlogPosts
-       JOIN Users ON BlogPosts.author_id = Users.id
-       ORDER BY BlogPosts.created_at DESC
-       LIMIT ${limit} OFFSET ${offset}`
-    )
+    const [posts] = await db.query(mainQuery, params)
 
     return NextResponse.json(
       {

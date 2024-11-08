@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import { db } from '../../../../utils/db'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 
 // Get all users or a specific user by ID
 export async function GET(request) {
@@ -9,9 +8,13 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url)
     const id = searchParams.get('id')
 
+    const searchQuery = searchParams.get('searchQuery')
+    const activeUser = parseInt(searchParams.get('activeUser'))
     const page = parseInt(searchParams.get('page') || '1', 10)
     const limit = parseInt(searchParams.get('limit') || '10', 10)
     const offset = (page - 1) * limit
+
+    console.log(searchParams)
 
     if (id) {
       const [users] = await db.query('SELECT * FROM Users WHERE id = ?', [id])
@@ -23,22 +26,45 @@ export async function GET(request) {
       }
       return NextResponse.json(users[0], { status: 200 })
     } else {
-      // Count total users
+      // Build the WHERE clauses conditionally
+      const conditions = []
+      const params = []
+
+      // Filter by active status if `activeUser` is set
+      if (!isNaN(activeUser)) {
+        conditions.push('Users.is_active = ?')
+        params.push(activeUser)
+      }
+
+      // Search by username or email if `searchQuery` is set
+      if (searchQuery) {
+        conditions.push('(Users.name LIKE ? OR Users.email LIKE ?)')
+        params.push(`%${searchQuery}%`, `%${searchQuery}%`)
+      }
+
+      // Convert conditions to SQL
+      const whereClause = conditions.length
+        ? `WHERE ${conditions.join(' AND ')}`
+        : ''
+
+      // Count total users with the applied filters
       const [[{ totalUsers }]] = await db.query(
-        `SELECT COUNT(*) as totalUsers FROM Users`
+        `SELECT COUNT(*) as totalUsers FROM Users ${whereClause}`,
+        params
       )
       const totalPages = Math.ceil(totalUsers / limit)
 
-      // Fetch users along with the number of posts they have made
       const [users] = await db.query(
         `
         SELECT Users.*, COUNT(BlogPosts.id) as totalPosts 
         FROM Users
         LEFT JOIN BlogPosts ON BlogPosts.author_id = Users.id
+        ${whereClause}
         GROUP BY Users.id
         ORDER BY Users.created_at DESC
         LIMIT ${limit} OFFSET ${offset}
-        `
+        `,
+        [...params]
       )
 
       return NextResponse.json(

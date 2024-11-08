@@ -111,11 +111,7 @@ const Header = () => {
                       categoryList.map((item, index) => (
                         <Link href={`/category/${item.slug}`} key={index}>
                           <p
-                            className={`cursor-pointer ${
-                              item.name === 'admin blogs' &&
-                              user?.role !== 'admin' &&
-                              'hidden'
-                            } text-balance hover:text-first capitalize font-semibold`}
+                            className={`cursor-pointer text-balance hover:text-first capitalize font-semibold`}
                             name={item.name}
                             onClick={() => {
                               setIsMenuOpen(false)
