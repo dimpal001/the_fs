@@ -12,8 +12,13 @@ const BlogPostCard3 = ({ title, imageUrl, post, onClick }) => {
 
   const stripHtml = (html) => {
     const doc = new DOMParser().parseFromString(html, 'text/html')
-    const text = doc.body.textContent || ''
-    return text.slice(0, 120) // Return only the first 120 characters
+    let text = doc.body.textContent || ''
+
+    text = text.replace(/\s+\S+$/, '')
+
+    // text = text.slice(0, 120).trim()
+
+    return text
   }
 
   return (

@@ -232,10 +232,7 @@ const HomePage = ({ heroPost, latestPost }) => {
         )}
 
         {/* Latest blog post section  */}
-        <section
-          id='latest-posts'
-          className='p-10 lg:-mt-16 lg:p-16 max-md:p-5'
-        >
+        <section id='latest-posts' className='p-10 lg:-mt-8 lg:p-16 max-md:p-5'>
           <div className='flex justify-between items-center'>
             <Link
               href={`/category/${
@@ -258,7 +255,7 @@ const HomePage = ({ heroPost, latestPost }) => {
               />
             </Link>
           </div>
-          <div className='grid max-md:grid-cols-1 grid-cols-2 py-10 gap-28 max-md:gap-10'>
+          <div className='grid max-md:grid-cols-1 grid-cols-2 py-10 gap-20 max-md:gap-10'>
             {latestPosts &&
               latestPosts.length > 0 &&
               latestPosts.slice(0, 2).map((post, index) => (
@@ -275,7 +272,7 @@ const HomePage = ({ heroPost, latestPost }) => {
         {/* Latest blog post with Subscribe box section  */}
         <section
           id='subscribe'
-          className='grid max-md:grid-cols-1 grid-cols-3 max-md:p-5 p-10 lg:p-16 pt-10 gap-14'
+          className='grid max-md:grid-cols-1 grid-cols-3 max-md:p-5 p-10 lg:p-16 pt-10 lg:-mt-16 gap-14'
         >
           <SubscribeCard />
           {latestPosts &&
@@ -291,7 +288,7 @@ const HomePage = ({ heroPost, latestPost }) => {
         </section>
 
         {/* Category 1 blog post section  */}
-        <section className='p-10 lg:p-16 max-md:p-5 lg:-mt-24'>
+        <section className='p-10 lg:p-16 max-md:p-5 lg:-mt-16'>
           <div className='relative'>
             <Link href={`/category/${category1Posts[0]?.category_ids[0]}`}>
               <h3 className='text-6xl capitalize max-md:text-3xl font-[900]'>
@@ -353,34 +350,36 @@ const HomePage = ({ heroPost, latestPost }) => {
         {/* Instagram section  */}
         <section
           id='social-diaries'
-          className='flex w-full lg:-mt-20 gap-10 max-md:p-5 max-md:flex-col p-10 lg:p-16'
+          className='flex w-full lg:-mt-14 gap-10 max-md:p-5 max-md:flex-col p-10 lg:p-16'
         >
           <SocialDiadies />
         </section>
 
-        <section className='p-10 lg:p-16 max-md:p-5'>
-          <div className='flex justify-between items-center'>
-            <Link href={`/category/${category3Posts[0]?.category_ids[0]}`}>
-              <h6 className='text-6xl capitalize max-md:text-3xl font-[900]'>
-                {categories[2]?.name}
-              </h6>
-            </Link>
-          </div>
-          <div className='grid max-md:grid-cols-1 grid-cols-3 py-10 gap-14 max-md:gap-5'>
-            {category3Posts &&
-              category3Posts.length > 0 &&
-              category3Posts
-                .slice(0, 3)
-                .map((post, index) => (
-                  <BlogPostCard
-                    key={post.id}
-                    imageUrl={`https://picsum.photos/548/3${index}1`}
-                    date={new Date().toDateString()}
-                    post={post}
-                  />
-                ))}
-          </div>
-        </section>
+        {category3Posts.length > 0 && (
+          <section className='p-10 lg:p-16 max-md:p-5'>
+            <div className='flex justify-between items-center'>
+              <Link href={`/category/${category3Posts[0]?.category_ids[0]}`}>
+                <h6 className='text-6xl capitalize max-md:text-3xl font-[900]'>
+                  {categories[2]?.name}
+                </h6>
+              </Link>
+            </div>
+            <div className='grid max-md:grid-cols-1 grid-cols-3 py-10 gap-14 max-md:gap-5'>
+              {category3Posts &&
+                category3Posts.length > 0 &&
+                category3Posts
+                  .slice(0, 3)
+                  .map((post, index) => (
+                    <BlogPostCard
+                      key={post.id}
+                      imageUrl={`https://picsum.photos/548/3${index}1`}
+                      date={new Date().toDateString()}
+                      post={post}
+                    />
+                  ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   )

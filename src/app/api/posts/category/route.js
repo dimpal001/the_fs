@@ -33,11 +33,20 @@ export async function GET(request, { params }) {
 
     // Fetch the posts for the specified category
     const [posts] = await db.query(
-      `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.slug, SUBSTRING(BlogPosts.content, 1, 150) AS content, BlogPosts.author_id, BlogPosts.image_url, BlogPosts.category_ids, BlogPosts.created_at, BlogPosts.updated_at, BlogPosts.status, Users.name as author_name, Users.role as author_role, Users.image_url as author_image ` +
-        `FROM BlogPosts ` +
-        `JOIN Users ON BlogPosts.author_id = Users.id ` +
-        `WHERE JSON_CONTAINS(BlogPosts.category_ids, ?) AND BlogPosts.status = 'approve' ` +
-        `LIMIT ${limit} OFFSET ${offset}`,
+      `SELECT BlogPosts.id, BlogPosts.title, BlogPosts.slug, BlogPosts.views, 
+              SUBSTRING(BlogPosts.content, 1, 200) AS content, BlogPosts.author_id, 
+              BlogPosts.image_url, BlogPosts.category_ids, BlogPosts.created_at, 
+              BlogPosts.updated_at, BlogPosts.status, Users.name as author_name, 
+              Users.role as author_role, Users.image_url as author_image, 
+              COUNT(DISTINCT Replies.id) AS replies, 
+              COUNT(DISTINCT Likes.id) AS likes
+       FROM BlogPosts 
+       JOIN Users ON BlogPosts.author_id = Users.id 
+       LEFT JOIN Replies ON BlogPosts.id = Replies.blog_post_id AND Replies.is_approved = 1 
+       LEFT JOIN Likes ON BlogPosts.id = Likes.blog_post_id 
+       WHERE JSON_CONTAINS(BlogPosts.category_ids, ?) AND BlogPosts.status = 'approve' 
+       GROUP BY BlogPosts.id 
+       LIMIT ${limit} OFFSET ${offset}`,
       [JSON.stringify(category.slug)]
     )
 
