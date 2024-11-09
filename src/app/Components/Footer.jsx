@@ -7,6 +7,7 @@ import {
   TwitterIcon,
   WhatsappIcon,
 } from 'next-share'
+import { FlipboardIcon } from './SocialIcons'
 
 const Footer = () => {
   return (
@@ -103,7 +104,7 @@ const Footer = () => {
             <div className='flex space-x-4'>
               <a
                 target='_blank'
-                href='https://www.instagram.com'
+                href='https://www.instagram.com/thefashionsalad_blog/'
                 aria-label='Follow us on Instagram'
                 rel='noopener noreferrer'
                 className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
@@ -112,25 +113,25 @@ const Footer = () => {
               </a>
               <a
                 target='_blank'
-                href='https://www.facebook.com'
+                href='https://www.facebook.com/profile.php?id=61567652667493'
                 aria-label='Follow us on Facebook'
                 rel='noopener noreferrer'
                 className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
               >
                 <FacebookIcon round size={45} />
               </a>
-              <a
+              {/* <a
                 target='_blank'
-                href='https://www.whatsapp.com'
+                href='https://www.flipboard.com'
                 aria-label='Follow us on WhatsApp'
                 rel='noopener noreferrer'
                 className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
               >
-                <WhatsappIcon round size={45} />
-              </a>
+                <FlipboardIcon round size={45} />
+              </a> */}
               <a
                 target='_blank'
-                href='https://www.x.com'
+                href='https://x.com/Fashion_Salad'
                 aria-label='Follow us on Twitter'
                 rel='noopener noreferrer'
                 className='hover:text-gray-400 min-w-[45px] min-h-[45px]'
@@ -139,7 +140,7 @@ const Footer = () => {
               </a>
               <a
                 target='_blank'
-                href='https://in.pinterest.com/'
+                href='https://in.pinterest.com/thefashionsalad'
                 aria-label='Follow us on Pinterest'
                 rel='noopener noreferrer'
                 className='hover:text-gray-400 min-w-[45px] min-h-[45px]'

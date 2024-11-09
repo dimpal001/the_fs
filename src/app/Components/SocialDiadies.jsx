@@ -4,7 +4,7 @@ import {
   FlipboardIcon,
   InstagramIcon,
   PinterestIcon,
-  TwitterIcon,
+  TwitterIcons,
 } from './SocialIcons'
 import Link from 'next/link'
 
@@ -25,7 +25,7 @@ const SocialDiadies = () => {
           <FacebookIcon />
         </Link>
         <Link href={'https://x.com/Fashion_Salad'}>
-          <TwitterIcon />
+          <TwitterIcons />
         </Link>
         <Link href={'https://in.pinterest.com/thefashionsalad/'}>
           <PinterestIcon />
