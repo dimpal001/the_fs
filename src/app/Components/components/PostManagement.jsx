@@ -216,7 +216,7 @@ const PostManagement = () => {
   }
 
   return (
-    <div>
+    <div className='min-h-screen'>
       <div className='flex justify-between'>
         <h2 className='text-2xl font-bold mb-4'>Manage Posts</h2>
         {totalPosts && <p className='text-sm'>Total Posts : {totalPosts}</p>}
