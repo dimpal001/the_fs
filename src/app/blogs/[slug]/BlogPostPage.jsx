@@ -249,9 +249,9 @@ const BlogPostPage = ({ post }) => {
                 </div>
               </div>
               <div className='p-3 font-serif'>
-                <h1 className='text-5xl rozha pb-3 max-md:text-3xl font-semibold'>
+                <h2 className='text-5xl rozha pb-3 max-md:text-3xl font-semibold'>
                   {post?.title}
-                </h1>
+                </h2>
                 <div
                   className='mt-3 editor-content crimson max-md:text-lg text-xl leading-[34px] tracking-wide text-neutral-700'
                   dangerouslySetInnerHTML={{ __html: post?.content }}

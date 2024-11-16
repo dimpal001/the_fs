@@ -250,9 +250,9 @@ const CreatePost = () => {
         <title>Create Post - The Fashion Salad</title>
       </Helmet>
       <div className='flex border shadow-md p-5 bg-white rounded-xl flex-col gap-3 lg:w-1/2 w-full'>
-        <h1 className='text-2xl font-bold text-center mb-5 text-gray-700'>
+        <h2 className='text-2xl font-bold text-center mb-5 text-gray-700'>
           Create a New Post
-        </h1>
+        </h2>
 
         {/* Title Input */}
         <Input

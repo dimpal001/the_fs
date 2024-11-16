@@ -32,9 +32,9 @@ const Sidebar = ({ activeSection, setActiveSection }) => {
   return (
     <div className='w-64 bg-white '>
       <div className='p-6'>
-        <h1 className='text-2xl max-md:text-sm font-bold text-gray-800'>
+        <h2 className='text-2xl max-md:text-sm font-bold text-gray-800'>
           Admin Dashboard
-        </h1>
+        </h2>
       </div>
       <nav className='mt-10'>
         <ul className=''>

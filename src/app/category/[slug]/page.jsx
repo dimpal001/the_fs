@@ -86,9 +86,9 @@ const CategoryBlog = ({ params }) => {
           <div>
             {/* First block  */}
             <div className='flex flex-col lg:gap-10 gap-8 pb-10'>
-              <h1 className='capitalize font-semibold lg:text-5xl text-2xl pt-7'>
+              <h2 className='capitalize font-semibold lg:text-5xl text-2xl pt-7'>
                 {categoryName && categoryName}
-              </h1>
+              </h2>
               <div className='h-[1px] bg-gray-300'></div>
             </div>
 

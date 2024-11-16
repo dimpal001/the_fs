@@ -67,9 +67,9 @@ const Page = () => {
       <div className='bg-white w-full md:w-[80%] shadow-md rounded-3xl p-10'>
         <div className='flex max-md:flex-col gap-7 max-md:gap-14'>
           <div className='lg:w-1/2 w-full flex flex-col justify-between'>
-            <h1 className='text-5xl max-md:text-3xl mb-3 font-bold'>
+            <h2 className='text-5xl max-md:text-3xl mb-3 font-bold'>
               CONTACT US
-            </h1>
+            </h2>
             <p className='max-md:text-sm text-neutral-600'>
               Our fashion enthusiasts are excited to communicate with you and
               take your ideas and views to the next level.
@@ -92,7 +92,7 @@ const Page = () => {
             </div>
           </div>
           <div className='lg:w-1/2 w-full'>
-            <h2 className='text-3xl mb-3 font-thin'>Hey, dear</h2>
+            <h3 className='text-3xl mb-3 font-thin'>Hey, dear</h3>
             <form onSubmit={handleSubmit}>
               <input
                 placeholder='Your name'

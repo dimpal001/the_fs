@@ -38,9 +38,9 @@ const PrivacyPolicyPage = ({ initialContent }) => {
       <Helmet>
         <title>Privacy Policy - The Fashion Salad</title>
       </Helmet>
-      <h1 className='text-4xl lg:text-6xl py-4 font-bold mb-4 text-center'>
+      <h2 className='text-4xl lg:text-6xl py-4 font-bold mb-4 text-center'>
         Privacy Policy
-      </h1>
+      </h2>
       <p className='lg:leading-[35px] leading-7 tracking-wide'>
         <div dangerouslySetInnerHTML={{ __html: content }} />
       </p>

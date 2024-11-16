@@ -99,9 +99,9 @@ const SearchContent = ({ router }) => {
       {/* Hero Section */}
       {showHeroSection && (
         <div className='h-[450px] w-full flex flex-col justify-center items-center text-center'>
-          <h1 className='text-4xl font-bold mb-4'>
+          <h2 className='text-4xl font-bold mb-4'>
             Find What You’re Looking For
-          </h1>
+          </h2>
           <p className='text-lg text-gray-600 mb-8'>
             Search through our collection of resources and discover something
             new today.
@@ -140,9 +140,9 @@ const SearchContent = ({ router }) => {
         <div className='container pt-10 mx-auto'>
           <div className='flex max-md:flex-col-reverse max-md:gap-3 justify-between'>
             <div>
-              <h2 className='text-5xl max-md:text-xl font-[900]'>
+              <h3 className='text-5xl max-md:text-xl font-[900]'>
                 Search Result for {resultQuery}
-              </h2>
+              </h3>
             </div>
             <div>
               <form onSubmit={(e) => fetchSearchPosts(currentPage, e)}>
