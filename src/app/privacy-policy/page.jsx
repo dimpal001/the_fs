@@ -1,4 +1,3 @@
-// src/app/about/page.server.jsx
 import axios from 'axios'
 import PrivacyPolicyPage from './PrivacyPolicy'
 
@@ -12,6 +11,10 @@ const fetchPrivacyPolicyData = async () => {
     console.error(err)
     return ''
   }
+}
+
+export const metadata = {
+  title: 'Privacy Policy - The Fashion Salad',
 }
 
 const AboutServerPage = async () => {

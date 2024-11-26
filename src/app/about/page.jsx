@@ -12,6 +12,13 @@ const fetchAboutData = async () => {
   }
 }
 
+export const metadata = {
+  title: 'About Us - The Fashion Salad',
+  description:
+    'Learn more about The Fashion Salad, our mission, and what we do.',
+  keywords: 'about, fashion salad, our mission, team, story',
+}
+
 const AboutServerPage = async () => {
   const initialContent = await fetchAboutData()
 
