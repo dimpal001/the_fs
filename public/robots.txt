@@ -5,14 +5,18 @@ Disallow: /private
 Disallow: /user
 Disallow: /api
 Disallow: /context
+Disallow: /_next/static/media/*
+Disallow: /cdn.thefashionsalad.com/*
 
 # *
 User-agent: *
+Allow: /about
 Allow: /contact
 Allow: /privacy-policy
 Allow: /terms-and-condition
 Allow: /favicon.ico
 Allow: /blogs/*
+Allow: /category/*
 
 # Host
 Host: https://thefashionsalad.com
