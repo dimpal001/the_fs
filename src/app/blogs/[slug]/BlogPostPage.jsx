@@ -227,6 +227,7 @@ const BlogPostPage = ({ post }) => {
                   role={post?.author_role}
                 />
                 <div className='flex gap-7 items-center text-sm max-md:text-xs text-neutral-600'>
+                  <p>Posted on {new Date(post?.created_at).toDateString()}</p>
                   <p>{post?.views} Views</p>
                   <div className='flex gap-1 items-center'>
                     <div
