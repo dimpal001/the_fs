@@ -398,7 +398,7 @@ const EditPost = () => {
           className='editor-content'
           dangerouslySetInnerHTML={{ __html: content }}
         />
-        <p>{content}</p>
+        {/* <p>{content}</p> */}
         {showCropModal && (
           <ImageCropper
             isOpen={true}
