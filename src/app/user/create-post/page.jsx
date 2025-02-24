@@ -98,8 +98,8 @@ const CreatePost = () => {
     forcePathStyle: false,
     region: 'blr1',
     credentials: {
-      accessKeyId: 'DO00TK892YLJBW7MV82Y',
-      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
+      accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID,
+      secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY,
     },
   })
 
@@ -112,20 +112,6 @@ const CreatePost = () => {
   }, [])
 
   useEffect(() => {}, [user, router])
-
-  // const handleImage = (e) => {
-  //   const file = e.target.files[0]
-
-  //   if (!file) return
-
-  //   const sanitizedFileName = file.name.replace(/\s+/g, '')
-  //   const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
-  //   const customFileName = `thumbnail-${timestamp}-${sanitizedFileName}`
-  //   // setFileName(customFileName)
-
-  //   setThumbnail(file)
-  //   handleThumbnailUpload(file, customFileName)
-  // }
 
   const handleThumbnailUpload = async (blob, image, name) => {
     let newName

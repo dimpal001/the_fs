@@ -27,8 +27,8 @@ const MenuBar = ({ editor, images }) => {
     forcePathStyle: false,
     region: 'blr1',
     credentials: {
-      accessKeyId: 'DO00TK892YLJBW7MV82Y',
-      secretAccessKey: '9a1ueUXe6X+ngKZoZEyvnfjQw5PI7t3bzbquBCWc2bY',
+      accessKeyId: process.env.NEXT_PUBLIC_ACCESS_KEY_ID,
+      secretAccessKey: process.env.NEXT_PUBLIC_SECRET_ACCESS_KEY,
     },
   })
 
