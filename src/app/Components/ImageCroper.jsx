@@ -224,7 +224,7 @@ export default function ImageCroper({
             />
           </div>
         )}
-        {fileName && (
+        {/* {fileName && (
           <input
             className='px-2 py-[4px] border text-black border-neutral-400'
             type='text'
@@ -232,7 +232,7 @@ export default function ImageCroper({
             value={imageAltText}
             onChange={(e) => setImageAltText(e.target.value)}
           />
-        )}
+        )} */}
         {fileName && (
           <button
             disabled={adding}

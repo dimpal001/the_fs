@@ -395,6 +395,7 @@ const CreatePost = () => {
           isOpen={true}
           onClose={() => setShowCropModal(false)}
           onCropComplete={handleThumbnailUpload}
+          aspectRatio={13 / 9}
         />
       )}
     </div>

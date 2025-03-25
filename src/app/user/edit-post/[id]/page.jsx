@@ -146,28 +146,59 @@ const EditPost = () => {
   }
 
   const handleThumbnailUpload = async (blob, image, name) => {
-    let newName
-    if (name) {
-      const sanitizedFileName = name.replace(/\s+/g, '')
-      const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
-      newName = `thumbnail-${timestamp}-${sanitizedFileName}`
-      setFileName(newName)
-      console.log(newName)
+    try {
+      if (!blob || !(blob instanceof Blob)) {
+        console.error('Invalid blob provided.')
+        return
+      }
+
+      // Sanitize the file name and create a custom name with a timestamp
+      let newName
+      if (name) {
+        const sanitizedFileName = name.replace(/\s+/g, '')
+        const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+        newName = `thumbnail-${timestamp}-${sanitizedFileName}`
+        setFileName(newName)
+        console.log('Generated file name:', newName)
+      } else {
+        console.error('Name parameter is missing.')
+        return
+      }
+
+      // Convert Blob to a File object
+      const file = new File([blob], newName, { type: blob.type })
+
+      if (!file) {
+        console.error('Failed to create a valid File object.')
+        return
+      }
+
+      // Set the image for preview
+      setFile(image)
+
+      // Define S3 upload parameters
+      const params = {
+        Bucket: 'the-fashion-salad',
+        Key: `blog-post-images/${newName}`,
+        Body: file, // Use the File object here
+        ACL: 'public-read',
+      }
+
+      console.log('Uploading with params:', params)
+
+      // Upload to S3
+      const data = await s3Client.send(new PutObjectCommand(params))
+      if (data?.$metadata?.httpStatusCode === 200) {
+        console.log('Thumbnail successfully uploaded:', data)
+      } else {
+        console.error(
+          'Failed to upload thumbnail. HTTP status:',
+          data.$metadata?.httpStatusCode
+        )
+      }
+    } catch (error) {
+      console.error('Error in handleThumbnailUpload:', error)
     }
-
-    const file = new File([blob], name, { type: blob.type })
-    setFile(image)
-
-    if (!file || !file) return
-
-    const params = {
-      Bucket: 'the-fashion-salad',
-      Key: `blog-post-images/${newName}`,
-      Body: file,
-      ACL: 'public-read',
-    }
-
-    const data = await s3Client.send(new PutObjectCommand(params))
   }
 
   const handleThumbnailDelete = async () => {
