@@ -225,7 +225,6 @@ const CreatePost = () => {
     }
   }
 
-  // Add tag function
   const handleAddTag = (e) => {
     if (e.key === 'Enter' && e.target.value.trim()) {
       if (tags.length === 10) {
@@ -244,7 +243,6 @@ const CreatePost = () => {
     }
   }
 
-  // Remove tag function
   const handleRemoveTag = (tagToRemove) => {
     setTags((prevTags) => prevTags.filter((tag) => tag !== tagToRemove))
   }

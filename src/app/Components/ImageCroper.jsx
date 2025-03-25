@@ -90,9 +90,8 @@ export default function ImageCroper({ isOpen, onClose, onCropComplete }) {
       offscreen.height
     )
 
-    const blob = await offscreen.convertToBlob({
-      type: 'image/jpeg',
-      quality: 1,
+    const blob = await new Promise((resolve) => {
+      offscreen.convertToBlob({ type: 'image/jpeg', quality: 1 }).then(resolve)
     })
 
     const croppedImageUrl = URL.createObjectURL(blob)
