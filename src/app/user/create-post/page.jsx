@@ -125,8 +125,8 @@ const CreatePost = () => {
 
       if (!blob || !(blob instanceof Blob)) {
         console.warn('Invalid blob, attempting conversion:', blob)
-        if (blob && typeof blob.arrayBuffer === 'function') {
-          const arrayBuffer = await blob.arrayBuffer()
+        if (blob && typeof blob?.arrayBuffer === 'function') {
+          const arrayBuffer = await blob?.arrayBuffer()
           blob = new Blob([arrayBuffer], { type: blob?.type || 'image/jpeg' })
         } else {
           console.error('Cannot convert blob, aborting')
@@ -154,12 +154,12 @@ const CreatePost = () => {
         return
       }
 
-      const file = new File([blob], newName, { type: blob.type })
+      const file = new File([blob], newName, { type: blob?.type })
       console.log('Created file:', {
         file,
-        name: file.name,
-        type: file.type,
-        size: file.size,
+        name: file?.name,
+        type: file?.type,
+        size: file?.size,
       })
 
       const params = {
