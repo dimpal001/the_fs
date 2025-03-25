@@ -114,29 +114,48 @@ const CreatePost = () => {
   useEffect(() => {}, [user, router])
 
   const handleThumbnailUpload = async (blob, image, name) => {
-    let newName
-    if (name) {
-      const sanitizedFileName = name.replace(/\s+/g, '')
-      const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
-      newName = `thumbnail-${timestamp}-${sanitizedFileName}`
-      setCustomFileName(newName)
-      console.log(newName)
-    }
+    try {
+      if (!blob || !(blob instanceof Blob)) {
+        console.error('Invalid blob:', blob)
+        return
+      }
 
-    const file = new File([blob], name, { type: blob.type })
-    if (!file || !file) return
+      let newName
+      if (name) {
+        const sanitizedFileName = name.replace(/\s+/g, '')
+        const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+        newName = `thumbnail-${timestamp}-${sanitizedFileName}`
+        setCustomFileName(newName)
+        console.log('Sanitized file name:', newName)
+      } else {
+        console.error('Invalid name:', name)
+        return
+      }
 
-    const params = {
-      Bucket: 'the-fashion-salad',
-      Key: `blog-post-images/${newName}`,
-      Body: file,
-      ACL: 'public-read',
-    }
+      const file = new File([blob], newName, { type: blob.type })
+      console.log('Created file:', file)
 
-    const data = await s3Client.send(new PutObjectCommand(params))
+      const params = {
+        Bucket: 'the-fashion-salad',
+        Key: `blog-post-images/${newName}`,
+        Body: file,
+        ACL: 'public-read',
+      }
+      console.log('S3 Params:', params)
 
-    if (data.$metadata.httpStatusCode === 200) {
-      setThumbnail(image)
+      const data = await s3Client.send(new PutObjectCommand(params))
+      console.log('S3 Response:', data)
+
+      if (data.$metadata.httpStatusCode === 200) {
+        setThumbnail(image)
+      } else {
+        console.error(
+          'Failed to upload thumbnail. HTTP Status:',
+          data.$metadata.httpStatusCode
+        )
+      }
+    } catch (error) {
+      console.error('Error in handleThumbnailUpload:', error)
     }
   }
 
