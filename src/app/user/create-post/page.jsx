@@ -117,7 +117,13 @@ const CreatePost = () => {
     try {
       if (!blob || !(blob instanceof Blob)) {
         console.error('Invalid blob:', blob)
-        return
+        // If it's a ReadableStream, convert to Blob
+        if (blob && typeof blob.arrayBuffer === 'function') {
+          const arrayBuffer = await blob.arrayBuffer()
+          blob = new Blob([arrayBuffer], { type: blob.type || 'image/jpeg' })
+        } else {
+          return
+        }
       }
 
       let newName

@@ -69,7 +69,6 @@ export default function ImageCroper({ isOpen, onClose, onCropComplete }) {
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
-    // Use regular canvas as fallback
     const tempCanvas = document.createElement('canvas')
     tempCanvas.width = completedCrop.width * scaleX
     tempCanvas.height = completedCrop.height * scaleY
@@ -90,16 +89,38 @@ export default function ImageCroper({ isOpen, onClose, onCropComplete }) {
       tempCanvas.height
     )
 
-    const blob = await new Promise((resolve) => {
-      tempCanvas.toBlob(resolve, 'image/jpeg', 1)
+    const blob = await new Promise((resolve, reject) => {
+      tempCanvas.toBlob(
+        (blobResult) => {
+          if (!blobResult) {
+            reject(new Error('Failed to create blob'))
+            return
+          }
+          resolve(blobResult)
+        },
+        'image/jpeg',
+        1
+      )
     })
 
-    if (!blob) {
-      throw new Error('Failed to create blob')
+    // Debug: Log blob type
+    console.log('Blob type:', blob, blob instanceof Blob)
+
+    // If blob is not a Blob (e.g., a ReadableStream), convert it
+    let finalBlob = blob
+    if (!(blob instanceof Blob)) {
+      try {
+        const arrayBuffer = await blob.arrayBuffer()
+        finalBlob = new Blob([arrayBuffer], { type: 'image/jpeg' })
+        console.log('Converted to Blob:', finalBlob)
+      } catch (err) {
+        console.error('Failed to convert stream to Blob:', err)
+        throw err
+      }
     }
 
-    const croppedImageUrl = URL.createObjectURL(blob)
-    onCropComplete(blob, croppedImageUrl, fileName)
+    const croppedImageUrl = URL.createObjectURL(finalBlob)
+    onCropComplete(finalBlob, croppedImageUrl, fileName)
     onClose()
   }
 
