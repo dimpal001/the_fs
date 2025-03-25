@@ -130,8 +130,6 @@ const CreatePost = () => {
       const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
       const newName = `thumbnail-${timestamp}-${sanitizedFileName}`
 
-      console.log('Sanitized file name:', newName)
-
       const arrayBuffer = await blob.arrayBuffer()
       const uint8Array = new Uint8Array(arrayBuffer)
 
@@ -148,6 +146,7 @@ const CreatePost = () => {
 
       if (data.$metadata.httpStatusCode === 200) {
         setThumbnail(image)
+        setCustomFileName(newName)
       } else {
         console.error(
           'Failed to upload thumbnail. HTTP Status:',

@@ -144,7 +144,9 @@ const sendOtp = async (email, otp) => {
     }
 
     await transporter.sendMail(mailOptions)
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 module.exports = { sendOtp }
