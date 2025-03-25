@@ -3,12 +3,15 @@ const nodemailer = require('nodemailer')
 const sendSubscriptionEmail = async (email) => {
   try {
     const transporter = nodemailer.createTransport({
-      host: 'smtpout.secureserver.net',
-      port: 465,
-      secure: true,
+      host: process.env.HOST,
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL,
         pass: process.env.SMTP_PASSWORD,
+      },
+      tls: {
+        rejectUnauthorized: false,
       },
     })
 
