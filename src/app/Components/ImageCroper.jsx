@@ -162,6 +162,44 @@ export default function ImageCroper({ isOpen, onClose, onCropComplete }) {
     }
   }
 
+  useDebounceEffect(
+    async () => {
+      if (
+        completedCrop?.width &&
+        completedCrop?.height &&
+        imgRef.current &&
+        previewCanvasRef.current
+      ) {
+        // Use canvasPreview for fast rendering
+        canvasPreview(
+          imgRef.current,
+          previewCanvasRef.current,
+          completedCrop,
+          scale,
+          rotate
+        )
+      }
+    },
+    100,
+    [completedCrop, scale, rotate]
+  )
+
+  function handleToggleAspectClick() {
+    if (aspect) {
+      setAspect(undefined)
+    } else {
+      setAspect(16 / 9)
+
+      if (imgRef.current) {
+        const { width, height } = imgRef.current
+        const newCrop = centerAspectCrop(width, height, 16 / 9)
+        setCrop(newCrop)
+        // Updates the preview
+        setCompletedCrop(convertToPixelCrop(newCrop, width, height))
+      }
+    }
+  }
+
   return (
     <Modal isOpen={isOpen} size={'4xl'}>
       <ModalCloseButton onClick={onClose} />
