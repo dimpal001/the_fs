@@ -69,11 +69,11 @@ export default function ImageCroper({ isOpen, onClose, onCropComplete }) {
     const scaleX = image.naturalWidth / image.width
     const scaleY = image.naturalHeight / image.height
 
-    const offscreen = new OffscreenCanvas(
-      completedCrop.width * scaleX,
-      completedCrop.height * scaleY
-    )
-    const ctx = offscreen.getContext('2d')
+    // Use regular canvas as fallback
+    const tempCanvas = document.createElement('canvas')
+    tempCanvas.width = completedCrop.width * scaleX
+    tempCanvas.height = completedCrop.height * scaleY
+    const ctx = tempCanvas.getContext('2d')
     if (!ctx) {
       throw new Error('No 2D context')
     }
@@ -86,13 +86,17 @@ export default function ImageCroper({ isOpen, onClose, onCropComplete }) {
       previewCanvas.height,
       0,
       0,
-      offscreen.width,
-      offscreen.height
+      tempCanvas.width,
+      tempCanvas.height
     )
 
     const blob = await new Promise((resolve) => {
-      offscreen.convertToBlob({ type: 'image/jpeg', quality: 1 }).then(resolve)
+      tempCanvas.toBlob(resolve, 'image/jpeg', 1)
     })
+
+    if (!blob) {
+      throw new Error('Failed to create blob')
+    }
 
     const croppedImageUrl = URL.createObjectURL(blob)
     onCropComplete(blob, croppedImageUrl, fileName)
