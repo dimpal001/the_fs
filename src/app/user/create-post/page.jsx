@@ -117,8 +117,8 @@ const CreatePost = () => {
     try {
       if (!blob || !(blob instanceof Blob)) {
         console.warn('Invalid blob, attempting conversion:', blob)
-        if (blob && typeof blob?.arrayBuffer === 'function') {
-          const arrayBuffer = await blob?.arrayBuffer()
+        if (blob && typeof blob.arrayBuffer === 'function') {
+          const arrayBuffer = await blob.arrayBuffer()
           blob = new Blob([arrayBuffer], { type: blob?.type || 'image/jpeg' })
         } else {
           console.error('Cannot convert blob, aborting')
@@ -126,22 +126,19 @@ const CreatePost = () => {
         }
       }
 
-      let newName
-      if (name) {
-        const sanitizedFileName = name.replace(/\s+/g, '')
-        const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
-        newName = `thumbnail-${timestamp}-${sanitizedFileName}`
-        setCustomFileName(newName)
-        console.log('Sanitized file name:', newName)
-      } else {
-        console.error('Invalid name:', name)
-        return
-      }
+      const sanitizedFileName = name?.replace(/\s+/g, '') || 'default-name'
+      const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+      const newName = `thumbnail-${timestamp}-${sanitizedFileName}`
+
+      console.log('Sanitized file name:', newName)
+
+      const arrayBuffer = await blob.arrayBuffer()
+      const uint8Array = new Uint8Array(arrayBuffer)
 
       const params = {
         Bucket: 'the-fashion-salad',
         Key: `blog-post-images/${newName}`,
-        Body: blob,
+        Body: uint8Array,
         ACL: 'public-read',
       }
       console.log('S3 Params:', params)

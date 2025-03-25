@@ -33,26 +33,37 @@ const MenuBar = ({ editor, images }) => {
   })
 
   const handleImageUpload = async (fileName, file) => {
-    const params = {
-      Bucket: 'the-fashion-salad',
-      Key: `blog-post-images/${fileName}`,
-      Body: file,
-      ACL: 'public-read',
-    }
     try {
-      images.push(fileName)
+      const arrayBuffer = await file.arrayBuffer()
+      const uint8Array = new Uint8Array(arrayBuffer)
+
+      const params = {
+        Bucket: 'the-fashion-salad',
+        Key: `blog-post-images/${fileName}`,
+        Body: uint8Array,
+        ACL: 'public-read',
+      }
 
       const data = await s3Client.send(new PutObjectCommand(params))
       if (data.$metadata.httpStatusCode === 200) {
         const url = `https://cdn.thefashionsalad.com/blog-post-images/${fileName}`
         editor.chain().focus().setImage({ src: url }).run()
+
+        images.push(fileName)
       } else {
-        enqueueSnackbar('Error uploading image, try again')
+        enqueueSnackbar('Error uploading image, please try again.', {
+          variant: 'error',
+        })
       }
-    } catch (error) {}
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      enqueueSnackbar('An unexpected error occurred. Please try again.', {
+        variant: 'error',
+      })
+    }
   }
 
-  const handleFileChange = (event) => {
+  const handleFileChange = async (event) => {
     const file = event.target.files[0]
     if (!file) return
 
@@ -71,7 +82,7 @@ const MenuBar = ({ editor, images }) => {
       return
     }
 
-    handleImageUpload(customFileName, file)
+    await handleImageUpload(customFileName, file)
   }
 
   const handleLink = () => {
