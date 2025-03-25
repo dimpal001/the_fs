@@ -115,16 +115,32 @@ const CreatePost = () => {
 
   const handleThumbnailUpload = async (blob, image, name) => {
     try {
+      // Debug: Log incoming blob
+      console.log('Incoming blob in handleThumbnailUpload:', {
+        blob,
+        isBlob: blob instanceof Blob,
+        type: blob?.type,
+        size: blob?.size,
+      })
+
       if (!blob || !(blob instanceof Blob)) {
-        console.error('Invalid blob:', blob)
-        // If it's a ReadableStream, convert to Blob
+        console.warn('Invalid blob, attempting conversion:', blob)
         if (blob && typeof blob.arrayBuffer === 'function') {
           const arrayBuffer = await blob.arrayBuffer()
-          blob = new Blob([arrayBuffer], { type: blob.type || 'image/jpeg' })
+          blob = new Blob([arrayBuffer], { type: blob?.type || 'image/jpeg' })
         } else {
+          console.error('Cannot convert blob, aborting')
           return
         }
       }
+
+      // Debug: Log blob after conversion
+      console.log('Blob after validation/conversion:', {
+        blob,
+        isBlob: blob instanceof Blob,
+        type: blob?.type,
+        size: blob?.size,
+      })
 
       let newName
       if (name) {
@@ -139,7 +155,12 @@ const CreatePost = () => {
       }
 
       const file = new File([blob], newName, { type: blob.type })
-      console.log('Created file:', file)
+      console.log('Created file:', {
+        file,
+        name: file.name,
+        type: file.type,
+        size: file.size,
+      })
 
       const params = {
         Bucket: 'the-fashion-salad',
