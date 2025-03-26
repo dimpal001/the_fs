@@ -176,8 +176,6 @@ const EditPost = () => {
         ACL: 'public-read',
       }
 
-      console.log('Uploading with params:', params)
-
       const data = await s3Client.send(new PutObjectCommand(params))
       if (data?.$metadata?.httpStatusCode === 200) {
         console.log('Thumbnail successfully uploaded:', data)
