@@ -148,51 +148,42 @@ const EditPost = () => {
   const handleThumbnailUpload = async (blob, image, name) => {
     try {
       if (!blob || !(blob instanceof Blob)) {
-        console.error('Invalid blob provided.')
-        return
+        console.warn('Invalid blob, attempting conversion:', blob)
+        if (blob && typeof blob.arrayBuffer === 'function') {
+          const arrayBuffer = await blob.arrayBuffer()
+          blob = new Blob([arrayBuffer], { type: blob?.type || 'image/jpeg' })
+        } else {
+          console.error('Cannot convert blob, aborting.')
+          return
+        }
       }
 
-      // Sanitize the file name and create a custom name with a timestamp
-      let newName
-      if (name) {
-        const sanitizedFileName = name.replace(/\s+/g, '')
-        const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
-        newName = `thumbnail-${timestamp}-${sanitizedFileName}`
-        setFileName(newName)
-        console.log('Generated file name:', newName)
-      } else {
-        console.error('Name parameter is missing.')
-        return
-      }
+      const sanitizedFileName = name?.replace(/\s+/g, '') || 'default-name'
+      const timestamp = new Date().toISOString().replace(/[-:.]/g, '')
+      const newName = `thumbnail-${timestamp}-${sanitizedFileName}`
+      console.log('Generated file name:', newName)
 
-      // Convert Blob to a File object
-      const file = new File([blob], newName, { type: blob.type })
+      const arrayBuffer = await blob.arrayBuffer()
+      const uint8Array = new Uint8Array(arrayBuffer)
 
-      if (!file) {
-        console.error('Failed to create a valid File object.')
-        return
-      }
-
-      // Set the image for preview
       setFile(image)
+      setFileName(newName)
 
-      // Define S3 upload parameters
       const params = {
         Bucket: 'the-fashion-salad',
         Key: `blog-post-images/${newName}`,
-        Body: file, // Use the File object here
+        Body: uint8Array,
         ACL: 'public-read',
       }
 
       console.log('Uploading with params:', params)
 
-      // Upload to S3
       const data = await s3Client.send(new PutObjectCommand(params))
       if (data?.$metadata?.httpStatusCode === 200) {
         console.log('Thumbnail successfully uploaded:', data)
       } else {
         console.error(
-          'Failed to upload thumbnail. HTTP status:',
+          'Failed to upload thumbnail. HTTP Status:',
           data.$metadata?.httpStatusCode
         )
       }
