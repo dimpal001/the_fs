@@ -13,6 +13,8 @@ const sendOtp = async (email, otp) => {
       tls: {
         rejectUnauthorized: false,
       },
+      logger: true,
+      debug: true,
     })
 
     const mailOptions = {
